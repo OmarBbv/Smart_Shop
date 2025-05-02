@@ -6,16 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CategoryNav() {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
-  const [scrolled, setScrolled] = useState<boolean>(false);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const header = document.querySelector('header');
@@ -28,7 +19,6 @@ export default function CategoryNav() {
     <>
       <nav
         className={`hidden md:flex items-center h-14 relative my-1 transition-all duration-300
-        ${scrolled ? 'shadow-md bg-white/95 backdrop-blur-sm' : 'bg-white'}
         px-4 rounded-lg z-50`}
       >
         <button

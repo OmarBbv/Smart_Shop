@@ -1,5 +1,5 @@
 import { ChevronRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface SubcategoryLevel3 {
   name: string;
@@ -508,11 +508,13 @@ const categories: Category[] = [
 ];
 
 export default function MultiLevelCategory() {
-  const [activeCategory, setActiveCategory] = useState<number>(0);
-  const [activeSubcategory, setActiveSubcategory] = useState<number | null>(0);
+  const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const [activeSubcategory, setActiveSubcategory] = useState<number | null>(
+    null
+  );
   const [activeSubSubcategory, setActiveSubSubcategory] = useState<
     number | null
-  >(0);
+  >(null);
 
   const getSubcategories = () => {
     if (activeCategory === null) return [];
@@ -533,20 +535,8 @@ export default function MultiLevelCategory() {
   const subcategories = getSubcategories();
   const subSubcategories = getSubSubcategories();
 
-  useEffect(() => {
-    if (categories.length > 0) {
-      setActiveCategory(0);
-      if (categories[0].subcategories.length > 0) {
-        setActiveSubcategory(0);
-        if (categories[0].subcategories[0].subcategories.length > 0) {
-          setActiveSubSubcategory(0);
-        }
-      }
-    }
-  }, []);
-
   return (
-    <div className="hidden xl:grid xl:grid-cols-3 w-full pt-4 bg-white">
+    <div className="hidden lg:grid lg:grid-cols-3 w-full py-3 bg-white">
       <div
         id="custom-scrollbar-thin"
         className="flex flex-col text-sm border-r border-gray-200 max-h-[500px] overflow-y-auto"

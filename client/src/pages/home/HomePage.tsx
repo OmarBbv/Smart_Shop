@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import {
   FiChevronRight,
-  FiChevronLeft,
   FiStar,
   FiShoppingCart,
   FiHeart,
   FiArrowRight,
 } from 'react-icons/fi';
+import HeroBanner from '@/components/ui/home/HeroBanner';
 
 const PRODUCT_CATEGORIES = [
   {
@@ -90,81 +89,11 @@ const FEATURED_PRODUCTS = [
   },
 ];
 
-const BANNER_IMAGES = [
-  'https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1601944179066-29786cb9d32a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
-];
-
 export default function HomePage() {
-  const [currentBanner, setCurrentBanner] = useState(0);
-
-  const nextBanner = () => {
-    setCurrentBanner((prev) => (prev + 1) % BANNER_IMAGES.length);
-  };
-
-  const prevBanner = () => {
-    setCurrentBanner(
-      (prev) => (prev - 1 + BANNER_IMAGES.length) % BANNER_IMAGES.length
-    );
-  };
-
   return (
     <div className="space-y-12">
       {/* Banner Slider */}
-      <div className="relative rounded-2xl overflow-hidden">
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentBanner * 100}%)` }}
-        >
-          {BANNER_IMAGES.map((image, index) => (
-            <div key={index} className="relative w-full flex-shrink-0">
-              <img
-                src={image}
-                alt={`Banner ${index + 1}`}
-                className="w-full h-[300px] md:h-[400px] object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex items-center">
-                <div className="text-white p-8 md:p-12 max-w-lg">
-                  <h2 className="text-2xl md:text-4xl font-bold mb-4">
-                    Yeni Teknoloji, Yeni Fırsatlar
-                  </h2>
-                  <p className="text-sm md:text-base mb-6">
-                    En son teknoloji ürünlerini keşfedin ve avantajlı fiyatlarla
-                    satın alın.
-                  </p>
-                  <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full flex items-center gap-2">
-                    Keşfet <FiArrowRight />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <button
-          onClick={prevBanner}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md"
-        >
-          <FiChevronLeft size={24} />
-        </button>
-        <button
-          onClick={nextBanner}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md"
-        >
-          <FiChevronRight size={24} />
-        </button>
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {BANNER_IMAGES.map((_, index) => (
-            <button
-              key={index}
-              className={`w-2 h-2 rounded-full ${
-                currentBanner === index ? 'bg-red-500' : 'bg-white/60'
-              }`}
-              onClick={() => setCurrentBanner(index)}
-            />
-          ))}
-        </div>
-      </div>
+      <HeroBanner />
 
       {/* Kategoriler */}
       <section>
