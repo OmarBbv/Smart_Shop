@@ -1,12 +1,14 @@
 import { FiMenu } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
-import MultiLevelCategory from '@/components/MultiLevelCategory';
-import { useState, useEffect } from 'react';
+import MultiLevelCategory from '@/components/ui/home/MultiLevelCategory';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CategoryNav() {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
+  const categoryRef = useRef<HTMLDivElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const header = document.querySelector('header');
@@ -15,16 +17,30 @@ export default function CategoryNav() {
     }
   }, [isOpenMenu]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <>
       <nav
-        className={`hidden md:flex items-center h-14 relative my-1 transition-all duration-300
-        px-4 rounded-lg z-50`}
+        ref={wrapperRef}
+        className={`hidden md:flex items-center h-14 relative my-1 transition-all duration-300 rounded-lg z-50`}
       >
         <button
           onClick={() => setIsOpenMenu(!isOpenMenu)}
           className={`flex items-center gap-2 hover:text-[var(--color-netflix-red)] xl:text-[17px] h-full
-          cursor-pointer transition-all duration-300 px-3 font-medium
+          cursor-pointer transition-all duration-300 pr-3 font-medium
           ${
             isOpenMenu
               ? 'text-[var(--color-netflix-red)] border-b-2 border-[var(--color-netflix-red)]'
@@ -70,7 +86,10 @@ export default function CategoryNav() {
         <AnimatePresence>
           {isOpenMenu && (
             <motion.div
-              className="absolute top-full left-0 w-full mt-1 bg-white  shadow-xl overflow-hidden z-50"
+              ref={categoryRef}
+              className={`${
+                isOpenMenu ? 'block' : 'hidden'
+              } absolute top-full left-0 w-full mt-1 bg-white  shadow-xl overflow-hidden z-50`}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}

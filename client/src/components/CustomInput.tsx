@@ -7,6 +7,9 @@ interface Props {
   value?: string;
   classNames?: string;
   icon?: React.ReactNode;
+  autoComplete?: string;
+  onClick?: () => void;
+  ref?: React.RefObject<HTMLInputElement>;
 }
 
 export default function CustomInput({
@@ -15,6 +18,9 @@ export default function CustomInput({
   placeholder = '',
   value = '',
   classNames = '',
+  autoComplete,
+  onClick,
+  ref,
 }: Props) {
   const withOutSearch = type === 'search' ? 'search' : 'normal';
 
@@ -22,7 +28,14 @@ export default function CustomInput({
     case 'search':
       return (
         <div className="flex-1 max-w-2xl relative hidden md:block">
-          <input type="text" placeholder="Axtarış..." className={classNames} />
+          <input
+            ref={ref}
+            type="text"
+            placeholder="Axtarış..."
+            className={classNames}
+            autoComplete={autoComplete || 'off'}
+            onClick={onClick}
+          />
           <FiSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
       );
@@ -39,6 +52,7 @@ export default function CustomInput({
             placeholder={placeholder}
             value={value}
             className={classNames}
+            autoComplete={autoComplete}
           />
         </div>
       );

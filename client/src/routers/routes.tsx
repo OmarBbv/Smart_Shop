@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import HomePage from '../pages/home/HomePage';
 import Main from '../layouts/Main';
+import { HomePage, ProductDetail, ProductPage, WislhistPage } from '@/pages';
 
 const router = createBrowserRouter([
   {
@@ -10,6 +10,18 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: '/mehsullar',
+        element: <ProductPage />,
+      },
+      {
+        path: '/mehsullar/:id',
+        element: <ProductDetail />,
+      },
+      {
+        path: '/istek-siyahim',
+        element: <WislhistPage />,
       },
     ],
   },

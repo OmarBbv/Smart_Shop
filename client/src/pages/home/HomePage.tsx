@@ -6,88 +6,8 @@ import {
   FiArrowRight,
 } from 'react-icons/fi';
 import HeroBanner from '@/components/ui/home/HeroBanner';
-
-const PRODUCT_CATEGORIES = [
-  {
-    id: 1,
-    name: 'Telefonlar',
-    image:
-      'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    id: 2,
-    name: 'Laptoplar',
-    image:
-      'https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    id: 3,
-    name: 'Televizorlar',
-    image:
-      'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    id: 4,
-    name: 'Akıllı Saatler',
-    image:
-      'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    id: 5,
-    name: 'Tabletler',
-    image:
-      'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    id: 6,
-    name: 'Kulaklıklar',
-    image:
-      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
-  },
-];
-
-const FEATURED_PRODUCTS = [
-  {
-    id: 1,
-    name: 'iPhone 15 Pro Max',
-    price: 2499.99,
-    oldPrice: 2799.99,
-    image:
-      'https://images.unsplash.com/photo-1695048133142-1a20484bce71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&q=80',
-    rating: 4.5,
-    installment: '83.33 AZN/ay',
-  },
-  {
-    id: 2,
-    name: 'Samsung Galaxy S23 Ultra',
-    price: 1999.99,
-    oldPrice: 2299.99,
-    image:
-      'https://images.unsplash.com/photo-1675785931264-f93d35bcb5b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&q=80',
-    rating: 4.7,
-    installment: '66.67 AZN/ay',
-  },
-  {
-    id: 3,
-    name: 'MacBook Pro 16',
-    price: 3499.99,
-    oldPrice: 3899.99,
-    image:
-      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&q=80',
-    rating: 4.9,
-    installment: '116.67 AZN/ay',
-  },
-  {
-    id: 4,
-    name: 'iPad Pro 12.9',
-    price: 1299.99,
-    oldPrice: 1499.99,
-    image:
-      'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&q=80',
-    rating: 4.6,
-    installment: '43.33 AZN/ay',
-  },
-];
+import { Link } from 'react-router-dom';
+import { PRODUCT_CATEGORIES, FEATURED_PRODUCTS } from '@/data/data';
 
 export default function HomePage() {
   return (
@@ -132,17 +52,18 @@ export default function HomePage() {
       <section>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Öne Çıkan Ürünler</h2>
-          <a
-            href="#"
+          <Link
+            to="/mehsullar"
             className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm"
           >
             Tümünü Gör <FiChevronRight />
-          </a>
+          </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {FEATURED_PRODUCTS.map((product) => (
-            <div
+            <Link
               key={product.id}
+              to={`/mehsullar/${product.id}`}
               className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group"
             >
               <div className="relative">
@@ -152,7 +73,13 @@ export default function HomePage() {
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-2 right-2 flex flex-col gap-2">
-                  <button className="bg-white/80 hover:bg-white p-2 rounded-full shadow-sm">
+                  <button
+                    className="bg-white/80 hover:bg-white p-2 rounded-full shadow-sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // Favorilere ekleme işlemi burada yapılabilir
+                    }}
+                  >
                     <FiHeart className="text-gray-600" />
                   </button>
                 </div>
@@ -197,12 +124,18 @@ export default function HomePage() {
                   <span className="text-green-600 text-sm">
                     {product.installment}
                   </span>
-                  <button className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full">
+                  <button
+                    className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // Sepete ekleme işlemi burada yapılabilir
+                    }}
+                  >
                     <FiShoppingCart />
                   </button>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
