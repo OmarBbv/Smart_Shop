@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Main from '../layouts/Main';
-import { HomePage, ProductDetail, ProductPage, WislhistPage } from '@/pages';
+import { AuthPage, HomePage, ProductDetail, ProductPage, WislhistPage } from '@/pages';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +25,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/giris',
+    element: <AuthPage />
+  }
 ]);
 
 export default router;

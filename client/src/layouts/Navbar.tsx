@@ -58,9 +58,8 @@ export default function Navbar() {
             <ul
               id="custom-scrollbar-thin"
               ref={searchRef}
-              className={`max-h-[300px] overflow-y-auto absolute z-[60] mt-2 top-full left-0 w-full bg-white border border-gray-300 rounded-md ${
-                isOpenSearch ? 'block' : 'hidden'
-              }`}
+              className={`max-h-[300px] overflow-y-auto absolute z-[60] mt-2 top-full left-0 w-full bg-white border border-gray-300 rounded-md ${isOpenSearch ? 'block' : 'hidden'
+                }`}
             >
               {Array.from({ length: 10 }).map((_, index) => (
                 <li key={index}>
