@@ -23,6 +23,10 @@ const Product = sequelize.define(
       allowNull: false,
       references: { model: 'categories', key: 'id' },
     },
+    images: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+    },
 
     /* ---- Dinamik özellikler (Map) ---- */
     features: {

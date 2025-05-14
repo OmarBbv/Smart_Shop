@@ -93,7 +93,6 @@ const categoryController = {
         let category;
 
         try {
-            // Check if identifier is a number (ID) or string (slug)
             if (!isNaN(identifier)) {
                 category = await Category.findByPk(identifier, {
                     include: [
@@ -101,9 +100,9 @@ const categoryController = {
                         {
                             model: Category,
                             as: 'subcategories',
-                            include: [{ model: Product, as: 'products' }] // Include products of subcategories
+                            include: [{ model: Product, as: 'products' }] 
                         },
-                        { model: Product, as: 'products' } // Include products of the main category
+                        { model: Product, as: 'products' } 
                     ]
                 });
             } else {

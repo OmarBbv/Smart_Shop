@@ -4,6 +4,7 @@ const sequelize = new Sequelize('smart_shop', 'postgres', 'metroboomin2425', {
   host: 'localhost',
   dialect: 'postgres',
   logging: false,
+  // logging: console.log,
 });
 
 const connectDB = async () => {
@@ -15,7 +16,7 @@ const connectDB = async () => {
     console.log('✅ Veritabanı tabloları oluşturuldu veya güncellendi');
   } catch (error) {
     console.error('❌ Veritabanı bağlantı hatası:', error);
-    process.exit(1); 
+    process.exit(1);
   }
 };
 

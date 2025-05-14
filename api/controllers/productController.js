@@ -9,18 +9,33 @@ const productController = {
    * @access  Private/Admin
    */
     createProduct: asyncHandler(async (req, res) => {
-        const { name, price, categoryId, features } = req.body;
+        const { name, price, categoryId } = req.body;
 
         if (!name || !price || !categoryId) {
             res.status(400);
-            throw new Error("Zorunlu alanlar eksik");
+            throw new Error("Məcburi sahələr yoxdur");
         }
 
+        const imagesFile = req.files ? req.files.map(file => file.path) : [];
+
+        let parsedFeatures = {};
+        try {
+            parsedFeatures =
+                typeof req.body.features === 'string'
+                    ? JSON.parse(req.body.features)
+                    : req.body.features || {};
+        } catch (err) {
+            res.status(400);
+            throw new Error("Features JSON formatında deyil");
+        }
+
+        // veritabanına kaydet
         const newProduct = await Product.create({
             name,
             price,
             categoryId,
-            features: features || {}, // boş geçilirse boş obje
+            features: parsedFeatures,
+            images: imagesFile,
         });
 
         res.status(201).json({
@@ -30,37 +45,72 @@ const productController = {
         });
     }),
 
+
     /**
      * @desc Məhsulu yeniləmək
      * @route PUT /api/v1/products/{identity}
      * @access Private/Admin
      */
+    /**
+  * @desc Məhsulu yeniləmək
+  * @route PUT /api/v1/products/{identity}
+  * @access Private/Admin
+  */
     updateProduct: asyncHandler(async (req, res) => {
-        const { id } = req.params
+        const { id } = req.params;
         const { name, price, categoryId, features } = req.body;
 
-        const product = await Product.findByPk(id);
+        const product = await Product.findByPk(id, {
+            include: [{ model: Category, as: 'category' }]
+        });
 
         if (!product) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: 'Məhsul tapılmadı',
-            })
-        };
+            });
+        }
 
+        // Handle features update
+        if (features) {
+            let parsedFeatures = {};
+            try {
+                parsedFeatures =
+                    typeof features === 'string'
+                        ? JSON.parse(features)
+                        : features || {};
+
+                product.features = {
+                    ...product.features,
+                    ...parsedFeatures,
+                };
+            } catch (err) {
+                res.status(400);
+                throw new Error("Features JSON formatında deyil");
+            }
+        }
+
+        // Handle image updates
+        if (req.files && req.files.length > 0) {
+            const newImagePaths = req.files.map(file => file.path);
+
+            product.images = newImagePaths;
+        }
+
+        // Update other fields
         product.name = name || product.name;
         product.price = price || product.price;
         product.categoryId = categoryId || product.categoryId;
-        product.features = features || product.features;
 
-        const updatedProduct = await Product.save();
+        const updatedProduct = await product.save();
 
         res.status(200).json({
             success: true,
             message: 'Məhsul uğurla yeniləndi.',
             data: updatedProduct,
-        })
+        });
     }),
+
 
     /**
     * @desc Məhsulu silmək

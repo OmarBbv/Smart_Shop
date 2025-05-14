@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from 'body-parser';
 import { connectDB } from "./configs/connectDB.js";
 import authRouter from './routers/autRouter.js';
 import productRouter from './routers/productRouter.js';
@@ -6,8 +7,8 @@ import categoryRouter from "./routers/categoryRouter.js";
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = 4000;
 connectDB();
