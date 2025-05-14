@@ -75,7 +75,6 @@ function LoginForm() {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
 
-    // Clear error when typing
     if (errors[name as keyof typeof errors]) {
       setErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -84,7 +83,6 @@ function LoginForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Simple validation
     const newErrors = {
       email: !formData.email ? "Email gerekli" : !formData.email.includes("@") ? "Geçerli bir email adresi girin" : "",
       password: !formData.password
@@ -97,7 +95,6 @@ function LoginForm() {
     setErrors(newErrors)
 
     if (!newErrors.email && !newErrors.password) {
-      // Submit form logic would go here
       console.log("Login form submitted", formData)
     }
   }

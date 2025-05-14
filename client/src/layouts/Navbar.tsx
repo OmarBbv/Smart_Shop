@@ -9,6 +9,7 @@ export default function Navbar() {
   const [isOpenSearch, setIsOpenSearch] = useState<boolean>(false);
   const searchRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null!);
+  const lastScrollY = useRef(0);
 
   const handleSearchButton = () => {
     setIsOpenSearch(true);
@@ -29,6 +30,19 @@ export default function Navbar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpenSearch]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (Math.abs(currentScrollY - lastScrollY.current) > 50) {
+        setIsOpenSearch(false);
+        setIsMenuOpen(false);
+      }
+      lastScrollY.current = currentScrollY;
+    }
+    document.addEventListener('scroll', handleScroll);
+    return () => document.removeEventListener('scroll', handleScroll);
+  }, [])
 
   return (
     <header className="sticky top-0 z-50 bg-white">
@@ -136,9 +150,11 @@ export default function Navbar() {
               <button className="text-gray-700 hover:text-[var(--color-netflix-red)] md:hidden">
                 <FiSearch size={22} />
               </button>
-              <button className="text-gray-700 hover:text-[var(--color-netflix-red)]">
+              <Link
+                to='/giris'
+                className="text-gray-700 hover:text-[var(--color-netflix-red)]">
                 <FiUser size={22} />
-              </button>
+              </Link>
               <button
                 className="text-gray-700 hover:text-[var(--color-netflix-red)] md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}

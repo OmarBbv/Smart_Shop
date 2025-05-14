@@ -1,13 +1,10 @@
 import {
   FiChevronRight,
-  FiStar,
-  FiShoppingCart,
-  FiHeart,
-  FiArrowRight,
 } from 'react-icons/fi';
 import HeroBanner from '@/components/ui/home/HeroBanner';
 import { Link } from 'react-router-dom';
-import { PRODUCT_CATEGORIES, FEATURED_PRODUCTS } from '@/data/data';
+import { PRODUCT_CATEGORIES, } from '@/data/data';
+import FeaturedProduct from '@/components/ui/home/FeaturedProduct';
 
 export default function HomePage() {
   return (
@@ -28,9 +25,9 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
           {PRODUCT_CATEGORIES.map((category) => (
-            <a
+            <Link
               key={category.id}
-              href={`/category/${category.id}`}
+              to={`/category/${category.id}`}
               className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col items-center text-center"
             >
               <div className="w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden mb-3">
@@ -43,105 +40,16 @@ export default function HomePage() {
               <h3 className="font-medium text-sm md:text-base">
                 {category.name}
               </h3>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* Öne Çıkan Ürünler */}
-      <section>
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Öne Çıkan Ürünler</h2>
-          <Link
-            to="/mehsullar"
-            className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm"
-          >
-            Tümünü Gör <FiChevronRight />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {FEATURED_PRODUCTS.map((product) => (
-            <Link
-              key={product.id}
-              to={`/mehsullar/${product.id}`}
-              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group"
-            >
-              <div className="relative">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute top-2 right-2 flex flex-col gap-2">
-                  <button
-                    className="bg-white/80 hover:bg-white p-2 rounded-full shadow-sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // Favorilere ekleme işlemi burada yapılabilir
-                    }}
-                  >
-                    <FiHeart className="text-gray-600" />
-                  </button>
-                </div>
-                {product.oldPrice > product.price && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    {Math.round((1 - product.price / product.oldPrice) * 100)}%
-                    İndirim
-                  </div>
-                )}
-              </div>
-              <div className="p-4">
-                <h3 className="font-medium mb-1 text-lg line-clamp-2 group-hover:text-red-500">
-                  {product.name}
-                </h3>
-                <div className="flex items-center gap-1 mb-2">
-                  <div className="flex text-amber-400">
-                    <FiStar className="fill-current" />
-                    <FiStar className="fill-current" />
-                    <FiStar className="fill-current" />
-                    <FiStar className="fill-current" />
-                    <FiStar
-                      className={
-                        product.rating >= 4.8
-                          ? 'fill-current'
-                          : 'fill-current opacity-30'
-                      }
-                    />
-                  </div>
-                  <span className="text-sm text-gray-500">
-                    {product.rating}
-                  </span>
-                </div>
-                <div className="flex items-baseline gap-2 mb-3">
-                  <span className="text-xl font-bold">{product.price} AZN</span>
-                  {product.oldPrice > product.price && (
-                    <span className="text-sm text-gray-500 line-through">
-                      {product.oldPrice} AZN
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-green-600 text-sm">
-                    {product.installment}
-                  </span>
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // Sepete ekleme işlemi burada yapılabilir
-                    }}
-                  >
-                    <FiShoppingCart />
-                  </button>
-                </div>
-              </div>
             </Link>
           ))}
         </div>
       </section>
 
+      {/* Öne Çıkan Ürünler */}
+      <FeaturedProduct />
+
       {/* Avantajlar Bölümü */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-blue-50 rounded-xl p-6 flex items-center gap-4">
           <div className="bg-blue-500 p-3 rounded-full text-white">
             <svg
@@ -216,10 +124,10 @@ export default function HomePage() {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Alt Banner */}
-      <section className="relative rounded-2xl overflow-hidden">
+      {/* <section className="relative rounded-2xl overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1588200908342-23b585c03e26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
           alt="Kampanya"
@@ -238,7 +146,7 @@ export default function HomePage() {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

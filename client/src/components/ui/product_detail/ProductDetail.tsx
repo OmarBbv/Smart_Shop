@@ -5,7 +5,6 @@ import { FiHeart, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { FEATURED_PRODUCTS } from '@/data/data';
 
-// Demo ürün verileri - Gerçek uygulamada API'den alınacak
 const demoProduct: Product = {
   id: 1,
   name: 'iPhone 16 Pro Max 256GB',

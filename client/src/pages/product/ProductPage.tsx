@@ -15,7 +15,6 @@ export default function ProductPage() {
   const [sortOption, setSortOption] = useState("featured")
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false)
 
-  // Apply filters and sorting
   useEffect(() => {
     let result = [...products]
 
