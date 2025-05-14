@@ -1,12 +1,14 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
 import Category from '../models/categoryModel.js';
+import { Op } from 'sequelize';
 
 const productController = {
     /**
    * @desc    Yeni məhsul əlavə et
    * @route   POST /api/v1/products
    * @access  Private/Admin
+   * @info    form-data upload.array('images')
    */
     createProduct: asyncHandler(async (req, res) => {
         const { name, price, categoryId } = req.body;
@@ -45,16 +47,11 @@ const productController = {
         });
     }),
 
-
     /**
-     * @desc Məhsulu yeniləmək
-     * @route PUT /api/v1/products/{identity}
-     * @access Private/Admin
-     */
-    /**
-  * @desc Məhsulu yeniləmək
-  * @route PUT /api/v1/products/{identity}
-  * @access Private/Admin
+  * @desc    Məhsulu yeniləmək
+  * @route   PUT /api/v1/products/{identity}
+  * @access  Private/Admin
+  * @info    form-data upload.array('images')
   */
     updateProduct: asyncHandler(async (req, res) => {
         const { id } = req.params;
@@ -113,8 +110,8 @@ const productController = {
 
 
     /**
-    * @desc Məhsulu silmək
-    * @route DELETE /api/v1/products/{identity}
+    * @desc   Məhsulu silmək
+    * @route  DELETE /api/v1/products/{identity}
     * @access Private/Admin
     */
     deleteProduct: asyncHandler(async (req, res) => {
@@ -142,7 +139,7 @@ const productController = {
      * @access  Public
      */
     getAllProducts: asyncHandler(async (req, res) => {
-        const { categoryId, minPrice, maxPrice, features } = req.query;
+        const { categoryId, minPrice, maxPrice, features, page = 1 } = req.query;
 
         const where = {};
 
@@ -151,34 +148,60 @@ const productController = {
         }
 
         if (minPrice) {
-            where.price = { [Op.gte]: minPrice };
-        }
-
-        if (maxPrice) {
-            where.price = { [Op.lte]: maxPrice };
-        }
-
-        if (features) {
-            where.features = {
-                [Op.contains]: JSON.parse(features),
+            where.price = {
+                ...(where.price || {}),
+                [Op.gte]: minPrice,
             };
         }
 
-        const products = await Product.findAll({
+        if (maxPrice) {
+            where.price = {
+                ...(where.price || {}),
+                [Op.lte]: maxPrice,
+            };
+        }
+
+        if (features) {
+            try {
+                where.features = {
+                    [Op.contains]: JSON.parse(features),
+                };
+            } catch (error) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Geçersiz features formatı',
+                });
+            }
+        }
+
+        const limit = 20;
+        const offset = (Number(page) - 1) * limit;
+
+        const { rows: products, count: total } = await Product.findAndCountAll({
             where,
-            include: [{
-                model: Category,
-                as: 'category',
-                attributes: ['name'],
-            }],
+            include: [
+                {
+                    model: Category,
+                    as: 'category',
+                    attributes: ['name'],
+                },
+            ],
+            limit,
+            offset,
         });
 
         res.status(200).json({
             success: true,
-            message: 'Bütün Məhusllar gətirildi',
+            message: 'Bütün məhsullar gətirildi',
             data: products,
+            pagination: {
+                currentPage: Number(page),
+                totalPages: Math.ceil(total / limit),
+                totalItems: total,
+            },
         });
     }),
+
 
     /**
     * @desc    Bir məhsulları gətir
