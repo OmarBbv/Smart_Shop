@@ -1,17 +1,21 @@
-import { createRoot } from 'react-dom/client';
-import '@/index.css';
-import App from '@/App';
-import { store } from '@/stores/store';
-import { Provider } from 'react-redux';
+import { createRoot } from "react-dom/client";
+import "@/index.css";
+import { store } from "@/stores/store";
+import { Provider } from "react-redux";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import router from "@/routers/routes";
+import { RouterProvider } from "react-router-dom";
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 
 if (container) {
   const root = createRoot(container);
 
   root.render(
     <Provider store={store}>
-      <App />
+      <ErrorBoundary>
+        <RouterProvider router={router} />
+      </ErrorBoundary>
     </Provider>
   );
 } else {
