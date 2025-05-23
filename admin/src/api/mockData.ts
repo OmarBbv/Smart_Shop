@@ -112,3 +112,93 @@ export function mockProductData(): Product[] {
         }
     ]
 }
+
+export interface CategoryType {
+    id: number;
+    name: string;
+    slug: string;
+    parentId: number | null;
+    createdAt: string;
+    updatedAt: string;
+    parent?: CategoryType | null;
+    subcategories?: CategoryType[];
+}
+
+
+export const mockCategories: CategoryType[] = [
+    {
+        id: 1,
+        name: "Elektronik",
+        slug: "elektronik",
+        parentId: null,
+        createdAt: "2024-01-01T00:00:00.000Z",
+        updatedAt: "2024-01-01T00:00:00.000Z",
+        subcategories: [
+            {
+                id: 2,
+                name: "Bilgisayar",
+                slug: "bilgisayar",
+                parentId: 1,
+                createdAt: "2024-01-02T00:00:00.000Z",
+                updatedAt: "2024-01-02T00:00:00.000Z",
+                subcategories: [
+                    {
+                        id: 3,
+                        name: "Laptop",
+                        slug: "laptop",
+                        parentId: 2,
+                        createdAt: "2024-01-03T00:00:00.000Z",
+                        updatedAt: "2024-01-03T00:00:00.000Z",
+                        subcategories: [],
+                    },
+                    {
+                        id: 4,
+                        name: "Masaüstü",
+                        slug: "masaustu",
+                        parentId: 2,
+                        createdAt: "2024-01-03T00:00:00.000Z",
+                        updatedAt: "2024-01-03T00:00:00.000Z",
+                        subcategories: [],
+                    },
+                ],
+            },
+            {
+                id: 5,
+                name: "Telefon",
+                slug: "telefon",
+                parentId: 1,
+                createdAt: "2024-01-02T00:00:00.000Z",
+                updatedAt: "2024-01-02T00:00:00.000Z",
+                subcategories: [],
+            },
+        ],
+    },
+    {
+        id: 6,
+        name: "Moda",
+        slug: "moda",
+        parentId: null,
+        createdAt: "2024-01-01T00:00:00.000Z",
+        updatedAt: "2024-01-01T00:00:00.000Z",
+        subcategories: [
+            {
+                id: 7,
+                name: "Kadın Giyim",
+                slug: "kadin-giyim",
+                parentId: 6,
+                createdAt: "2024-01-02T00:00:00.000Z",
+                updatedAt: "2024-01-02T00:00:00.000Z",
+                subcategories: [],
+            },
+            {
+                id: 8,
+                name: "Erkek Giyim",
+                slug: "erkek-giyim",
+                parentId: 6,
+                createdAt: "2024-01-02T00:00:00.000Z",
+                updatedAt: "2024-01-02T00:00:00.000Z",
+                subcategories: [],
+            },
+        ],
+    },
+];

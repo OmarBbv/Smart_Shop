@@ -7,7 +7,7 @@ export default function MainLayout() {
   return (
     <Box className="flex flex-1">
       <Box
-        className="hidden xl:block w-[300px] h-screen border-r border-r-gray-200  px-5 pt-5"
+        className="hidden xl:block w-[300px] min-h-screen border-r border-r-gray-200  px-5 pt-5"
         component="aside"
       >
         <Sidebar />
