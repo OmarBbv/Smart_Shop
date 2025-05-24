@@ -8,6 +8,7 @@ import userRouter from "./routers/userRouter.js";
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { seedCategories } from "./seed/seedCategories.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,9 +27,14 @@ app.use('/api/v1/products', productRouter);
 app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/users', userRouter);
 
-// Statik dosyaları servis et
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.listen(PORT, () => {
     console.log(`Server ${PORT} portunda çalışıyor`);
 });
+
+
+async function startApp() {
+    await seedCategories();
+}
+startApp();

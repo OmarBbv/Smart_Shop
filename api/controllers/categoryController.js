@@ -100,9 +100,9 @@ const categoryController = {
                         {
                             model: Category,
                             as: 'subcategories',
-                            include: [{ model: Product, as: 'products' }] 
+                            include: [{ model: Product, as: 'products' }]
                         },
-                        { model: Product, as: 'products' } 
+                        { model: Product, as: 'products' }
                     ]
                 });
             } else {

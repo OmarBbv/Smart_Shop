@@ -6,9 +6,9 @@ function slugify(text) {
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-') 
-    .replace(/[^\w\-]+/g, '') 
-    .replace(/\-\-+/g, '-');     
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
 }
 
 const Category = sequelize.define('Category', {

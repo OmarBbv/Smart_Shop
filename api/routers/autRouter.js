@@ -7,7 +7,7 @@ const router = express.Router();
  * @route  /api/v1/auth
  */
 
-router.post('/signIn', authController.signIn)
-router.post('/signUp', authController.signUp)
+router.post('/signin', authController.signIn)
+router.post('/signup', authController.signUp)
 
 export default router
