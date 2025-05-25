@@ -27,7 +27,15 @@ const Product = sequelize.define(
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
     },
-
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    credit_available: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     /* ---- Dinamik özellikler (Map) ---- */
     features: {
       /**

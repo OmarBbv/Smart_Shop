@@ -20,8 +20,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = 4000;
-connectDB();
 
+// Router'ları tanımla
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/categories', categoryRouter);
@@ -29,12 +29,23 @@ app.use('/api/v1/users', userRouter);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.listen(PORT, () => {
-    console.log(`Server ${PORT} portunda çalışıyor`);
-});
-
-
+// Ana başlatma fonksiyonu
 async function startApp() {
-    await seedCategories();
+    try {
+        // Önce veritabanını bağla ve tabloları oluştur
+        await connectDB();
+
+        // Sonra seed işlemlerini yap
+        await seedCategories();
+
+        // En son server'ı başlat
+        app.listen(PORT, () => {
+            console.log(`✅ Server ${PORT} portunda çalışıyor`);
+        });
+    } catch (error) {
+        console.error('❌ Uygulama başlatma hatası:', error);
+        process.exit(1);
+    }
 }
+
 startApp();

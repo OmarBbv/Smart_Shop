@@ -9,14 +9,20 @@ const sequelize = new Sequelize('smart_shop', 'postgres', 'metroboomin2425', {
 
 const connectDB = async () => {
   try {
+    // Önce bağlantıyı test et
     await sequelize.authenticate();
     console.log('✅ PostgreSQL bağlantısı başarılı!');
 
-    await sequelize.sync({ alter: true });
+    // Sonra tabloları oluştur/güncelle
+    // UYARI: force: true tüm verileri siler!
+    await sequelize.sync({ force: true }); // Geliştirme ortamı için
+    await sequelize.sync({ alter: true }); // Üretim ortamı için
     console.log('✅ Veritabanı tabloları oluşturuldu veya güncellendi');
+
+    return sequelize; // Başarılı olduğunu belirtmek için sequelize'i döndür
   } catch (error) {
     console.error('❌ Veritabanı bağlantı hatası:', error);
-    process.exit(1);
+    throw error; // Hata fırlat ki yukarıdaki fonksiyon yakalasın
   }
 };
 

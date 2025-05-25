@@ -6,6 +6,7 @@ interface BoxProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   sx?: SxProps;
   component?: React.ElementType;
   children?: React.ReactNode;
+  htmlFor?: string
 }
 
 export const Typography = forwardRef<HTMLElement, BoxProps>(

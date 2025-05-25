@@ -1,14 +1,15 @@
-import Category from "../models/categoryModel.js";  // uzantı da önemli, bazen lazım
+import Category from "../models/categoryModel.js";
 
 export async function seedCategories() {
-    const existingCategories = await Category.count();
+    console.log('🌱 Kategori seed işlemi başlatılıyor...');
 
-    if (existingCategories > 0) {
-        console.log('Kategoriler zaten mevcut, seed işlemi atlanıyor...');
+    // Önce mevcut kategori sayısını kontrol et
+    const existingCount = await Category.count();
+
+    if (existingCount > 0) {
+        console.log(`✅ Zaten ${existingCount} kategori mevcut. Seed işlemi atlanıyor.`);
         return;
     }
-
-    await Category.sync({ force: false });
 
     const categories = [
         { id: 1, name: 'Mobil telefon və aksesuarlar', parentId: null },
@@ -40,7 +41,6 @@ export async function seedCategories() {
         { id: 10124, name: 'Google', parentId: 101 },
         { id: 10125, name: 'Inoi', parentId: 101 },
         { id: 10126, name: 'Fly', parentId: 101 },
-        // { id: 10127, name: 'Asus', parentId: 101 },
         { id: 10128, name: 'Caterpillar', parentId: 101 },
         { id: 10129, name: 'Sagem', parentId: 101 },
         { id: 10130, name: 'Sprint', parentId: 101 },
@@ -79,20 +79,20 @@ export async function seedCategories() {
         { id: 20202, name: 'Apple MacBook', parentId: 202 },
         { id: 20203, name: 'Acer', parentId: 202 },
         { id: 20204, name: 'ASUS', parentId: 202 },
-        { id: 20205, name: 'Lenovo', parentId: 202 },
+        { id: 20205, name: 'Lenovo Noutbuk', parentId: 202 },
         { id: 20206, name: 'Dell', parentId: 202 },
         { id: 20207, name: 'Toshiba', parentId: 202 },
-        { id: 20208, name: 'Samsung', parentId: 202 },
+        { id: 20208, name: 'Samsung Noutbuk', parentId: 202 },
         { id: 20209, name: 'MSI', parentId: 202 },
-        { id: 20210, name: 'Huawei', parentId: 202 },
-        { id: 20211, name: 'Sony', parentId: 202 },
+        { id: 20210, name: 'Huawei Noutbuk', parentId: 202 },
+        { id: 20211, name: 'Sony Noutbuk', parentId: 202 },
         { id: 20212, name: 'Nexus', parentId: 202 },
         { id: 20213, name: 'Noutbukların alışı', parentId: 202 },
         { id: 20214, name: 'Digər noutbuklar ve netbuklar', parentId: 202 },
         // Planşetler
         { id: 203, name: 'Planşetler', parentId: 2 },
         { id: 20301, name: 'Apple iPad', parentId: 203 },
-        { id: 20302, name: 'Samsung', parentId: 203 },
+        { id: 20302, name: 'Samsung Planşet', parentId: 203 },
         { id: 20303, name: 'Xiaomi', parentId: 203 },
         { id: 20304, name: 'Lenovo', parentId: 203 },
         { id: 20305, name: 'Modio', parentId: 203 },
@@ -183,24 +183,34 @@ export async function seedCategories() {
         { id: 50407, name: "Digər foto və video aksesuarları", parentId: 504 }
     ]
 
-    for (const category of categories) {
-        await Category.findOrCreate({
-            where: { name: category.name },
-            defaults: category
-        });
-    }
+    for (const categoryData of categories) {
+        try {
+            // Önce bu kategori zaten var mı kontrol et
+            const existingCategory = await Category.findOne({
+                where: { id: categoryData.id }
+            });
 
-    for (const category of categories) {
-        const existing = await Category.findByPk(category.id);
-        if (!existing) {
-            await Category.create(category);
+            if (existingCategory) {
+                console.log(`⚠️ ${categoryData.name} kategorisi zaten mevcut, atlanıyor`);
+                continue;
+            }
+            await Category.create(categoryData);
+        } catch (error) {
+
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                console.log(`⚠️ ${categoryData.name} kategorisi zaten mevcut (slug duplicate), atlanıyor`);
+                continue;
+            }
+
+            console.error('❌ Seed işlemi sırasında hata:', error);
+            throw error;
         }
     }
 
+    console.log('🎉 Kategori seed işlemi tamamlandı!');
     console.log('Seed data eklendi');
 }
 
-// Eğer scripti hem doğrudan çalıştırmak hem de dışa açmak istiyorsan:
 if (import.meta.url === process.argv[1] || process.argv[1].endsWith('seedCategories.js')) {
     seedCategories()
         .then(() => process.exit())

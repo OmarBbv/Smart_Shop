@@ -1,7 +1,6 @@
-import { useProductPopUp } from '@/store/productDetailPopupStore';
+import { useProductPopUp } from '@/stores/productDetailPopupStore';
 import { Box } from '../ui/Box';
 import { CustomButton } from '../ui/CustomButton';
-import { Product } from '@/api/mockData';
 import { Datum } from '@/types/productTypes';
 
 interface ActionButtonProps {
@@ -11,7 +10,8 @@ interface ActionButtonProps {
 export default function ActionButton({ product }: ActionButtonProps) {
     const openPopUp = useProductPopUp((state) => state.openPopUp);
 
-    const handleOpen = () => {
+    const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
         openPopUp(product)
     }
 

@@ -1,6 +1,6 @@
 import { Box } from "@/components/ui/Box";
 import { NavLink } from "react-router-dom";
-import { Home, LayoutGrid, Users, Package } from "lucide-react";
+import { Home, LayoutGrid, Users, Package, PackagePlus } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 
 interface NavProps {
@@ -19,18 +19,23 @@ const navItems: NavProps[] = [
   {
     name: "Kategoriyalar",
     icon: LayoutGrid,
-    href: "kategoriyalar",
+    href: "/kategoriyalar",
   },
   {
     name: "Istifadəçilər",
     icon: Users,
-    href: "istifadeciler",
+    href: "/istifadeciler",
   },
   {
     name: "Məhsullar",
     icon: Package,
-    href: "mehsullar",
+    href: "/mehsullar",
     count: 5,
+  },
+  {
+    name: "Yeni Məhsul Əlavə Et",
+    icon: PackagePlus,
+    href: "/mehsullar/yeni",
   },
 ] as const;
 
@@ -60,6 +65,7 @@ export default function Sidebar() {
           >
             <NavLink
               to={item.href}
+              end={item.href === '/mehsullar'}
               className={({ isActive }) =>
                 [
                   "flex items-center p-[8px_12px_8px_16px] flex-1 h-[44px] gap-2 cursor-pointer space-x-2 rounded-sm transition-all duration-200 justify-between",

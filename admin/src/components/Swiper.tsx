@@ -1,6 +1,6 @@
 // Swiper.tsx
 import { cn } from '@/lib/utils';
-import { useImageSelectionStore } from '@/store/imageSelectStore';
+import { useImageSelectionStore } from '@/stores/imageSelectStore';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useShallow } from 'zustand/shallow';

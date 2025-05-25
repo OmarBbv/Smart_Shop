@@ -11,7 +11,7 @@ const productController = {
    * @info    form-data upload.array('images')
    */
     createProduct: asyncHandler(async (req, res) => {
-        const { name, price, categoryId } = req.body;
+        const { name, price, categoryId, description, credit_available } = req.body;
 
         if (!name || !price || !categoryId) {
             return res.status(400).json({ success: false, message: "Məcburi sahələr yoxdur" });
@@ -32,7 +32,9 @@ const productController = {
         const newProduct = await Product.create({
             name,
             price,
+            description,
             categoryId,
+            credit_available,
             features: parsedFeatures,
             images: imagesFile,
         });
@@ -53,7 +55,7 @@ const productController = {
   */
     updateProduct: asyncHandler(async (req, res) => {
         const { id } = req.params;
-        const { name, price, categoryId, features } = req.body;
+        const { name, price, categoryId, features, description, credit_available } = req.body;
 
         const product = await Product.findByPk(id, {
             include: [{ model: Category, as: 'category' }]
@@ -96,6 +98,8 @@ const productController = {
         product.name = name || product.name;
         product.price = price || product.price;
         product.categoryId = categoryId || product.categoryId;
+        product.description = description || product.description;
+        product.credit_available = credit_available || product.credit_available
 
         const updatedProduct = await product.save();
 

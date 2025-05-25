@@ -5,6 +5,7 @@ import UserPage from "@/pages/UserPage";
 import ProductPage from "@/pages/ProductPage";
 import { createBrowserRouter } from "react-router-dom";
 import ProductDetail from "@/pages/ProductDetail";
+import NewProductPage from "@/pages/NewProductPage";
 
 export const router = createBrowserRouter([
   {
@@ -28,8 +29,12 @@ export const router = createBrowserRouter([
         element: <ProductPage />
       },
       {
-        path: 'mehsullar/:id', // Yeni route
+        path: 'mehsullar/:id',
         element: <ProductDetail />
+      },
+      {
+        path: '/mehsullar/yeni',
+        element: <NewProductPage />
       }
     ],
   },

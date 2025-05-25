@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { useProductPopUp } from "@/store/productDetailPopupStore"
+import { useProductPopUp } from "@/stores/productDetailPopupStore"
 import { X, ChevronLeft, ChevronRight, Edit, Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Box } from "../ui/Box"
@@ -75,6 +75,7 @@ export default function ProductDetailPopUp() {
     }
 
     function handleOverlayClick(e: React.MouseEvent<HTMLDivElement>) {
+        e.stopPropagation();
         if (e.target === e.currentTarget) {
             handleClose()
         }
@@ -120,6 +121,7 @@ export default function ProductDetailPopUp() {
             )}
         >
             <Box
+                onClick={(e: any) => e.stopPropagation()}
                 className={cn(
                     "relative max-w-6xl w-full max-h-[90vh] overflow-hidden rounded-xl bg-white shadow-lg transition-transform duration-300",
                     isOpen && !isClosing ? "scale-100 opacity-100" : "scale-95 opacity-0"

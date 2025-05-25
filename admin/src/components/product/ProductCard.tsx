@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import ActionButton from "./ActionButton";
 import ProductDetailPopUp from "./ProductDetailPopup";
 import { Datum } from "@/types/productTypes";
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
     prod: Datum;
@@ -11,9 +12,15 @@ interface Props {
 }
 
 export default function ProductCard({ prod, grid }: Props) {
+    const navigate = useNavigate();
+
+    function handleNavigate() {
+        navigate(`/mehsullar/${prod.id}`)
+    }
 
     return (
         <Box
+            onClick={handleNavigate}
             className={cn(
                 "group hover:outline-2 cursor-pointer outline-blue-500 h-auto border border-gray-200 rounded-sm text-gray-600",
                 grid ? "w-full flex flex-row" : "w-full xl:w-[260px] flex flex-col"

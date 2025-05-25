@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { Loading } from "@/components/loading";
 import { Error } from "../components/error";
 import CustomSwiper from "../components/Swiper";
-import { useImageSelectionStore } from "@/store/imageSelectStore";
+import { useImageSelectionStore } from "@/stores/imageSelectStore";
 import { Box } from "../components/ui/Box";
 import { Typography } from "../components/ui/Typography";
 import { formatISOToReadable } from "@/lib/dateTime";
