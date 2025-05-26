@@ -1,19 +1,16 @@
 import { TemplateProps } from "@/types/temaplate"
-import { Box } from "lucide-react"
 import { CustomField } from "./CustomField"
+import { Box } from "./ui/Box"
 
 export const Templates = ({ temp }: TemplateProps) => {
     switch (temp) {
         case 'Mobil telefonlar':
             return (
-                <Box className="max-w-[440px] grid grid-cols-2">
+                <Box className="max-w-[440px] grid grid-cols-1 gap-3 my-10">
                     <div className="flex justify-between items-center gap-3">
-                        <CustomField type="input" label="Props" name="Endirim" value="name" onChange={() => console.log('')} />
+                        <CustomField type="template" label="Props" name="Endirim" value="name" onChange={() => console.log('Endirim')} />
+                        <CustomField type="template" label="Props" name="Model" value="Model" onChange={() => console.log('Model')} />
                     </div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
                 </Box>
             )
         case 'Smart saatlar':

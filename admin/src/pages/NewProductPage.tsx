@@ -4,10 +4,13 @@ import { Box } from "@/components/ui/Box";
 import { categoryService } from "@/services/categoryService";
 import { useQuery } from "@tanstack/react-query";
 import { Typography } from "@/components/ui/Typography";
-import { Camera } from "lucide-react";
+import { Camera, X } from "lucide-react";
 import { CustomButton } from "@/components/ui/CustomButton";
 import Modal from 'react-modal';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { CustomField } from "@/components/CustomField";
+import { RenderCategory } from "@/components/new_products/RenderCategory";
+import { Templates } from "@/components/Templates";
 
 const customStyles = {
     content: {
@@ -18,25 +21,50 @@ const customStyles = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         width: '650px',
-        height: '540px',
+        height: '500px',
+        paddingTop: '0px'
     },
 };
 
 Modal.setAppElement('#root');
 
 export default function NewProductPage() {
-
+    const [categoryPathUrl, setCategoryPathUrl] = useState<string[]>([]);
+    const [categoryName, setCategoryName] = useState<string>("");
     const [modalIsOpen, setIsOpen] = useState(false);
-    function openModal() {
-        setIsOpen(prev => !prev);
-    }
+    const [lastCat, setLastCat] = useState('');
 
     const { data: allCategory, isLoading, isError } = useQuery({
         queryKey: ["/all-category"],
         queryFn: () => categoryService.getAllCategory(),
     });
 
-    console.log(allCategory)
+    useEffect(() => {
+        console.log('categoryPathUrl', categoryPathUrl)
+        const lastCategory = categoryPathUrl[categoryPathUrl.length - 2];
+        setLastCat(lastCategory);
+    }, [categoryPathUrl])
+
+    useEffect(() => {
+        console.log('lastCat', lastCat)
+    }, [lastCat])
+
+    function openModal() {
+        setIsOpen(prev => {
+            const nextState = !prev;
+            document.body.style.overflow = nextState ? 'hidden' : '';
+            if (nextState) {
+
+                setCategoryPathUrl([]);
+                setCategoryName("");
+            } else {
+                setCategoryPathUrl([]);
+                setCategoryName("");
+            }
+            return nextState;
+        });
+    }
+
 
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
@@ -82,10 +110,26 @@ export default function NewProductPage() {
                     <Typography>Kateqoriya *</Typography>
                     <CustomButton
                         onClick={openModal}
-                        type="button" className="rounded border border-gray-400 px-2 py-2 font-medium leading-3 cursor-pointer">
+                        type="button"
+                        className="rounded border border-gray-400 px-2 py-2 font-medium leading-3 cursor-pointer"
+                    >
                         Seçmək
                     </CustomButton>
+
+                    {categoryPathUrl.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            {categoryPathUrl.map((name, i) => (
+                                <span
+                                    key={i}
+                                    className="bg-gray-200 px-2 py-1 rounded text-sm font-medium"
+                                >
+                                    {name}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </Box>
+
 
                 <Box className="space-y-2">
                     <Typography>Qiymət *</Typography>
@@ -101,18 +145,36 @@ export default function NewProductPage() {
                 contentLabel="Example Modal"
                 style={customStyles}
             >
-                <h2>Hello</h2>
-                <button onClick={openModal}>close</button>
-                <div>I am a modal</div>
-                <form>
-                    <input />
-                    <button>tab navigation</button>
-                    <button>stays</button>
-                    <button>inside</button>
-                    <button>the modal</button>
-                </form>
+                <Box className="flex flex-col gap-3">
+                    <Box className="sticky top-0 left-0 w-full flex items-center justify-between bg-white z-40 py-4">
+                        <div className="flex-1 flex justify-center">
+                            <Typography className="text-center text-lg font-medium">
+                                {categoryName && categoryName.length > 0 ? categoryName : 'Kateqoriya seçin'}
+                            </Typography>
+
+                        </div>
+                        <CustomButton className="absolute right-4" onClick={openModal}>
+                            <X />
+                        </CustomButton>
+                    </Box>
+                    <Box className="mt-2">
+                        <CustomField type="search-input" onChange={() => console.log('change input')} name="category search" value="name" />
+                    </Box>
+                    <RenderCategory
+                        data={allCategory!}
+                        setCategoryName={setCategoryName}
+                        setCategoryPathUrl={setCategoryPathUrl}
+                        onLastCategorySelected={() => {
+                            setIsOpen(false);
+                            document.body.style.overflow = '';
+                        }}
+                    />
+
+                </Box>
+
             </Modal>
+
+            <Templates temp="Mobil telefonlar" />
         </Box>
     );
 }
-
