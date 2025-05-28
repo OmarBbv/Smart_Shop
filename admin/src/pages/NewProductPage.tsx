@@ -10,8 +10,7 @@ import Modal from 'react-modal';
 import { useEffect, useState } from "react";
 import { CustomField } from "@/components/CustomField";
 import { RenderCategory } from "@/components/new_products/RenderCategory";
-import Template from "@/components/templates/Template";
-import { TemplateProps } from "@/types/temaplate";
+import TemplatesConfig from "@/components/templates/TemplatesConfig";
 
 const customStyles = {
     content: {
@@ -33,7 +32,7 @@ export default function NewProductPage() {
     const [categoryPathUrl, setCategoryPathUrl] = useState<string[]>([]);
     const [categoryName, setCategoryName] = useState<string>("");
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [lastCat, setLastCat] = useState<TemplateProps | null>(null);
+    const [lastCat, setLastCat] = useState<any>(null);
 
     const { data: allCategory, isLoading, isError } = useQuery({
         queryKey: ["/all-category"],
@@ -41,7 +40,7 @@ export default function NewProductPage() {
     });
 
     useEffect(() => {
-        const lastCategory = categoryPathUrl[categoryPathUrl.length - 1];
+        const lastCategory = categoryPathUrl[categoryPathUrl.length - 2];
         if (lastCategory) setLastCat(lastCategory);
     }, [categoryPathUrl])
 
@@ -194,7 +193,7 @@ export default function NewProductPage() {
                 </Box>
             </Modal>
 
-            <Template selectedCategory={lastCat} />
+            <TemplatesConfig selectedCategory={lastCat} />
         </Box>
     );
 
