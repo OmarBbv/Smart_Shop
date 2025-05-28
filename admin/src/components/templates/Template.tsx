@@ -1,10 +1,13 @@
-interface Props {
-    selectedCategory: 'Mobil telefonlar' | 'Audio' | 'Foto və videokameralar' | 'Kompüter, noutbuk və planşetlər' | 'Noutbuk və netbuklar' | 'SSD diskləri'
-    | 'Dinamiklər və kolonkalar' | 'Səs gücləndiriciləri' | 'Musiqi mərkəzləri' | 'Maqnitofonlar' | 'Diktofonlar' | 'Mikrofonlar'
+export interface TemplateProps {
+    selectedCategory: 'Mobil telefonlar' | 'Foto və videokameralar' | 'Kompüter, noutbuk və planşetlər' | 'Noutbuk və netbuklar' | 'SSD diskləri'
+    | 'Dinamiklər və kolonkalar' | 'Səs gücləndiriciləri' | 'Musiqi mərkəzləri' | 'Maqnitofonlar' | 'Diktofonlar' | 'Mikrofonlar' | 'Minidisk və disk pleyerlər'
+    | 'Digər auditexnika' | 'iPod və MP3 pleyerlər' | 'Qulaqcıqlar' | 'Radio' | 'Karaoke' | 'Videokameralar' | 'Fotokameralar' | 'Yaddaş kartları'
+    | 'Obyektivlər və filtrləri' | 'Çanta və çexollar' | 'İşıqlandırma' | 'Enerji qurğuları' | 'Obyektivlər və filtrləri' | 'Kabellər və adapterlər'
+    | 'Digər foto və video aksesuarları' | 'Videomüşahidə' | 'Korpuslar' | 'Digər ehtiyat hissələri' | 'Skanerlər' | 'Seriya'
     ;
 }
 
-export default function Template({ selectedCategory }: Props) {
+export default function Template({ selectedCategory }: TemplateProps) {
     switch (selectedCategory) {
         case 'Mobil telefonlar':
             return (
@@ -52,44 +55,6 @@ export default function Template({ selectedCategory }: Props) {
                     </div>
                 </div>
             );
-        case "Audio":
-            return <div className="grid grid-cols-2 gap-4 max-w-sm">
-                {/* Brend */}
-                <div>
-                    <label className="block font-semibold">Brend</label>
-                    <input type="text" className="w-full border rounded p-2" />
-                </div>
-
-                {/* Qoşulma növü* */}
-                <div>
-                    <label className="block font-semibold">Qoşulma növü*</label>
-                    <input type="text" className="w-full border rounded p-2" />
-                </div>
-
-                {/* Vəziyyəti */}
-                <div>
-                    <label className="block font-semibold">Vəziyyəti</label>
-                    <input type="text" className="w-full border rounded p-2" />
-                </div>
-
-                {/* Rəng */}
-                <div>
-                    <label className="block font-semibold">Rəng</label>
-                    <input type="text" className="w-full border rounded p-2" />
-                </div>
-
-                {/* Çatdırılma */}
-                <div>
-                    <label className="block font-semibold">Çatdırılma</label>
-                    <input type="text" className="w-full border rounded p-2" />
-                </div>
-
-                {/* Konstruksiyasının növü */}
-                <div>
-                    <label className="block font-semibold">Konstruksiyasının növü</label>
-                    <input type="text" className="w-full border rounded p-2" />
-                </div>
-            </div>
         case "Foto və videokameralar":
             return <div className="grid grid-cols-2 gap-4 max-w-sm">
                 {/* Brend */}
@@ -310,6 +275,227 @@ export default function Template({ selectedCategory }: Props) {
                     <input type="text" className="w-full border rounded p-2" />
                 </div>
 
+            </div>
+        case 'Minidisk və disk pleyerlər':
+        case 'Digər auditexnika':
+        case 'iPod və MP3 pleyerlər':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Qulaqcıqlar':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Brend</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Qoşulma növü*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Növü</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Rəng</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Konstruksiyasının növü</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Təyinatı</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Radio':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Brend</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Karaoke':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Brend</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Videokameralar':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Brend</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Fotokameralar':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Brend</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Yaddaş kartları':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Obyektivlər və filtrləri':
+        case 'Çanta və çexollar':
+        case 'İşıqlandırma':
+        case 'Enerji qurğuları':
+        case 'Obyektivlər və filtrləri':
+        case 'Kabellər və adapterlər':
+        case 'Digər foto və video aksesuarları':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Videomüşahidə':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Brend</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+
+        // Kompüter ehtiyyat hissələri
+        case 'Korpuslar':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Brend *</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Rəng</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Zəmanət</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Digər ehtiyat hissələri':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Zəmanət</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Skanerlər':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Zəmanət</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
             </div>
     }
 }

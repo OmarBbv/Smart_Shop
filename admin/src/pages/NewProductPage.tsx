@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { CustomField } from "@/components/CustomField";
 import { RenderCategory } from "@/components/new_products/RenderCategory";
 import Template from "@/components/templates/Template";
+import { TemplateProps } from "@/types/temaplate";
 
 const customStyles = {
     content: {
@@ -32,7 +33,7 @@ export default function NewProductPage() {
     const [categoryPathUrl, setCategoryPathUrl] = useState<string[]>([]);
     const [categoryName, setCategoryName] = useState<string>("");
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [lastCat, setLastCat] = useState('');
+    const [lastCat, setLastCat] = useState<TemplateProps | null>(null);
 
     const { data: allCategory, isLoading, isError } = useQuery({
         queryKey: ["/all-category"],
@@ -41,7 +42,7 @@ export default function NewProductPage() {
 
     useEffect(() => {
         const lastCategory = categoryPathUrl[categoryPathUrl.length - 1];
-        setLastCat(lastCategory);
+        if (lastCategory) setLastCat(lastCategory);
     }, [categoryPathUrl])
 
     useEffect(() => {
