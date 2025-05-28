@@ -3,7 +3,8 @@ export interface TemplateProps {
     | 'Dinamiklər və kolonkalar' | 'Səs gücləndiriciləri' | 'Musiqi mərkəzləri' | 'Maqnitofonlar' | 'Diktofonlar' | 'Mikrofonlar' | 'Minidisk və disk pleyerlər'
     | 'Digər auditexnika' | 'iPod və MP3 pleyerlər' | 'Qulaqcıqlar' | 'Radio' | 'Karaoke' | 'Videokameralar' | 'Fotokameralar' | 'Yaddaş kartları'
     | 'Obyektivlər və filtrləri' | 'Çanta və çexollar' | 'İşıqlandırma' | 'Enerji qurğuları' | 'Obyektivlər və filtrləri' | 'Kabellər və adapterlər'
-    | 'Digər foto və video aksesuarları' | 'Videomüşahidə' | 'Korpuslar' | 'Digər ehtiyat hissələri' | 'Skanerlər' | 'Seriya'
+    | 'Digər foto və video aksesuarları' | 'Videomüşahidə' | 'Korpuslar' | 'Digər ehtiyat hissələri' | 'Skanerlər' | 'Prosessorlar' | 'Qida blokları'
+    | 'Videokartlar' | 'Ana platalar' | 'Printerlər' | 'Elektron kitablar'
     ;
 }
 
@@ -486,6 +487,174 @@ export default function Template({ selectedCategory }: TemplateProps) {
             return <div className="grid grid-cols-2 gap-4 max-w-sm">
                 <div>
                     <label className="block font-semibold">Zəmanət</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Prosessorlar':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Seriya*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Model*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Tezlik</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Nüvələrin sayı</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Zəmanət</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Kredit</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Qida blokları':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Brend*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Güc*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Zəmanət</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Videokartlar':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Brend*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Qrafik prosessor*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Yaddaş*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Zəmanət</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Kredit</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+            </div>
+        case 'Ana platalar':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Brend*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Model*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Model*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Zəmanət</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+                <div>
+                    <label className="block font-semibold">Vəziyyəti</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+
+            </div>
+        case 'Printerlər':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Vəziyyəti*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Rəng</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Çatdırılma</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+            </div>
+        case 'Elektron kitablar':
+            return <div className="grid grid-cols-2 gap-4 max-w-sm">
+                <div>
+                    <label className="block font-semibold">Brend*</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Rəng</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Ekranın diaqonalı (düym)</label>
+                    <input type="text" className="w-full border rounded p-2" />
+                </div>
+                <div>
+                    <label className="block font-semibold">Əlaqə</label>
                     <input type="text" className="w-full border rounded p-2" />
                 </div>
                 <div>
