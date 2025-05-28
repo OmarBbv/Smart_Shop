@@ -1,17 +1,265 @@
 export interface TemplateProps {
-    selectedCategory: 'Mobil telefonlar' | 'Foto və videokameralar' | 'Kompüter, noutbuk və planşetlər' | 'Noutbuk və netbuklar' | 'SSD diskləri'
+    selectedCategory: 'Mobil telefonlar' | 'Foto və videokameralar' | 'Kompüter, noutbuk və planşetlər' | 'Noutbuk və netbuklar' | 'Video oyunlar və konsollar'
+    // bura umumi olanlar
+    | 'SSD diskləri'
     | 'Dinamiklər və kolonkalar' | 'Səs gücləndiriciləri' | 'Musiqi mərkəzləri' | 'Maqnitofonlar' | 'Diktofonlar' | 'Mikrofonlar' | 'Minidisk və disk pleyerlər'
     | 'Digər auditexnika' | 'iPod və MP3 pleyerlər' | 'Qulaqcıqlar' | 'Radio' | 'Karaoke' | 'Videokameralar' | 'Fotokameralar' | 'Yaddaş kartları'
-    | 'Obyektivlər və filtrləri' | 'Çanta və çexollar' | 'İşıqlandırma' | 'Enerji qurğuları' | 'Obyektivlər və filtrləri' | 'Kabellər və adapterlər'
+    | 'Obyektivlər və filtrləri' | 'Çanta və çexollar' | 'İşıqlandırma' | 'Enerji qurğuları' | 'Kabellər və adapterlər'
     | 'Digər foto və video aksesuarları' | 'Videomüşahidə' | 'Korpuslar' | 'Digər ehtiyat hissələri' | 'Skanerlər' | 'Prosessorlar' | 'Qida blokları'
     | 'Videokartlar' | 'Ana platalar' | 'Printerlər' | 'Elektron kitablar' | 'Monitorlar' | 'Sərt disklər (HDD)' | 'Termopasta' | 'Fasiləsiz enerji təchizatı (UPS)'
     | 'Soyutma sistemləri' | 'Noutbuklar üçün adapterlər' | 'Digər kompüter aksesuarları' | 'Noutbuklar üçün batareyalar' | 'Dok-stansiya' | 'Klaviaturalar' | 'Mauslar' | 'Flash kartlar'
-    | 'Səsgücləndiricilər, qulaqlıqlar и mikrofonlar' | 'Noutbuklar üçün örtük və çantalar' | 'Modemlər və şəbəkə avadanlıqları'
+    | 'Səsgücləndiricilər, qulaqlıqlar и mikrofonlar' | 'Noutbuklar üçün örtük və çantalar' | 'Modemlər və şəbəkə avadanlıqları' | 'Kabellər' | 'Selfi çubuqları' | 'Telefon ehtiyat hissələri'
+    | 'Smart qolbaqlar' | 'Telefon üçün stabilizatorlar' | 'Telefon üçün gamepadlar, triggerlər' | 'Powerbanklar' | 'Smart saatlar' | 'SİM-kartlar' | 'Mobil telefonlar üçün digər aksesuarlar'
     ;
 }
 
 export default function Template({ selectedCategory }: TemplateProps) {
     switch (selectedCategory) {
+        case 'Mobil telefonlar üçün digər aksesuarlar':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                </div>
+            );
+        case 'SİM-kartlar':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Kod*</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Nömrə*</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                </div>
+            );
+        case 'Smart saatlar':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Cins</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Brend*</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Funksiyalar</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Xüsusiyyətlər</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+
+                    <div>
+                        <label className="block font-semibold">Ekran</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Daxili yaddaş</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Ekran ölçüsü,düym</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Korpusun materialı</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+
+                    <div>
+                        <label className="block font-semibold">Rəng</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                </div>
+            );
+        case 'Powerbanklar':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Batareyanın həcmi*</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Brend*</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                </div>
+            );
+        case 'Telefon üçün gamepadlar, triggerlər':
+        case 'Telefon üçün stabilizatorlar':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                </div>
+            );
+        case 'Smart qolbaqlar':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Korpusun materialı</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Korpusun materialı</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+
+                    <div>
+                        <label className="block font-semibold">Ekran</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Xüsusiyyətlər</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Funksiyalar</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Cins</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                </div>
+            );
+
+        case 'Telefon ehtiyat hissələri':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+
+                    <div>
+                        <label className="block font-semibold">Model*</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                </div>
+            );
+
+        case 'Selfi çubuqları':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                </div>
+            );
+
+        case 'Video oyunlar və konsollar':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                </div>
+            );
+        case 'Kabellər':
+            return (
+                <div className="grid grid-cols-2 gap-4 max-w-sm">
+                    <div>
+                        <label className="block font-semibold">Brend*</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Növ*</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Vəziyyəti</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+                    <div>
+                        <label className="block font-semibold">Çatdırılma</label>
+                        <input type="text" className="w-full border rounded p-2" />
+                    </div>
+
+                </div>
+            );
         case 'Modemlər və şəbəkə avadanlıqları':
             return (
                 <div className="grid grid-cols-2 gap-4 max-w-sm">
@@ -30,7 +278,6 @@ export default function Template({ selectedCategory }: TemplateProps) {
 
                 </div>
             );
-
 
         case 'Noutbuklar üçün örtük və çantalar':
         case 'Səsgücləndiricilər, qulaqlıqlar и mikrofonlar':
@@ -497,7 +744,6 @@ export default function Template({ selectedCategory }: TemplateProps) {
                     <input type="text" className="w-full border rounded p-2" />
                 </div>
             </div>
-        case 'Obyektivlər və filtrləri':
         case 'Çanta və çexollar':
         case 'İşıqlandırma':
         case 'Enerji qurğuları':
