@@ -40,27 +40,31 @@ export function RenderCategory({ data, setCategoryName, setCategoryPathUrl, onLa
     }
 
     const currentCategories = getCurrentCategories();
-    return <div className="p-4 flex flex-col gap-2 items-center">
-        {categoryPath.length > 0 && (
-            <button
-                onClick={handleGoBack}
-                className="mb-4 text-blue-500 underline"
-            >
-                Geri
-            </button>
-        )}
 
-        <ul className="space-y-2 flex items-center gap-2 flex-wrap justify-center">
-            {currentCategories.map((cat) => (
-                <li
-                    key={cat.id}
-                    onClick={() => handleCategoryClick(cat)}
-                    className="cursor-pointer bg-gray-100 hover:bg-gray-200 p-2 rounded"
-                >
-                    {cat.name}
-                </li>
-            ))}
-        </ul>
-    </div>
+    return (
+        <div className="p-4 flex flex-col gap-2">
+            {categoryPath.length > 0 && (
+                <div>
+                    <button
+                        onClick={handleGoBack}
+                        className="mb-4 text-blue-500 underline"
+                    >
+                        Geri
+                    </button>
+                </div>
+            )}
 
+            <ul className="grid grid-cols-2 gap-4 w-full">
+                {currentCategories.map((cat) => (
+                    <li
+                        key={cat.id}
+                        onClick={() => handleCategoryClick(cat)}
+                        className="cursor-pointer text-gray-800 hover:underline transition"
+                    >
+                        {cat.name}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
