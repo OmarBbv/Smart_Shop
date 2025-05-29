@@ -40,7 +40,7 @@ export default function NewProductPage() {
     });
 
     useEffect(() => {
-        const lastCategory = categoryPathUrl[categoryPathUrl.length - 2];
+        const lastCategory = categoryPathUrl[categoryPathUrl.length - 1];
         if (lastCategory) setLastCat(lastCategory);
     }, [categoryPathUrl])
 
