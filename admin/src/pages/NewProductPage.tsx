@@ -7,7 +7,7 @@ import { Typography } from "@/components/ui/Typography";
 import { Camera, X } from "lucide-react";
 import { CustomButton } from "@/components/ui/CustomButton";
 import Modal from 'react-modal';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CustomField } from "@/components/CustomField";
 import { RenderCategory } from "@/components/new_products/RenderCategory";
 import TemplatesConfig from "@/components/templates/TemplatesConfig";
@@ -29,27 +29,25 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export default function NewProductPage() {
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [selectedImages, setSelectedImages] = useState<File[]>([]);
+
     const [categoryPathUrl, setCategoryPathUrl] = useState<string[]>([]);
     const [categoryName, setCategoryName] = useState<string>("");
-    const [modalIsOpen, setIsOpen] = useState(false);
-    const [lastCat, setLastCat] = useState<any>(null);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [lastCat, setLastCat] = useState<{ lastCategory: string, lastCatIndex: number | null }>({
+        lastCategory: '',
+        lastCatIndex: null
+    });
 
     const { data: allCategory, isLoading, isError } = useQuery({
         queryKey: ["/all-category"],
         queryFn: () => categoryService.getAllCategory(),
     });
 
-    useEffect(() => {
-        const lastCategory = categoryPathUrl[categoryPathUrl.length - 1];
-        if (lastCategory) setLastCat(lastCategory);
-    }, [categoryPathUrl])
-
-    useEffect(() => {
-        console.log('lastCat', lastCat)
-    }, [lastCat])
 
     function openModal() {
-        setIsOpen(prev => {
+        setModalIsOpen(prev => {
             const nextState = !prev;
             document.body.style.overflow = nextState ? 'hidden' : '';
             if (nextState) {
@@ -64,6 +62,25 @@ export default function NewProductPage() {
         });
     }
 
+    useEffect(() => {
+        console.log(lastCat);
+    }, [lastCat])
+
+    useEffect(() => {
+        const last = categoryPathUrl[categoryPathUrl.length - 1];
+        const secondLast = categoryPathUrl[categoryPathUrl.length - 2];
+
+        if (secondLast === "Mobil telefonlar" || secondLast === "Noutbuk və netbuklar") {
+            if (secondLast) {
+                setLastCat(prev => ({ ...prev, lastCategory: secondLast }));
+            } else {
+                setLastCat(prev => ({ ...prev, lastCategory: last }));
+            }
+        } else {
+            setLastCat(prev => ({ ...prev, lastCategory: last }));
+        }
+    }, [categoryPathUrl]);
+
 
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
@@ -75,10 +92,7 @@ export default function NewProductPage() {
             </Typography>
 
             <Box component="form" className="space-y-6 w-full">
-                {/* Ad (name) */}
-                {/* Məhsul Adı və Qiymət (yan yana) */}
-                <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6">
-                    {/* Məhsul Adı */}
+                {/* <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6">
                     <div className="flex-1 space-y-2">
                         <Typography>Məhsul Adı *</Typography>
                         <input
@@ -88,7 +102,6 @@ export default function NewProductPage() {
                         />
                     </div>
 
-                    {/* Qiymət */}
                     <div className="w-full sm:w-60 space-y-2 mt-4 sm:mt-0">
                         <Typography>Qiymət *</Typography>
                         <div className="flex items-center gap-3">
@@ -100,19 +113,49 @@ export default function NewProductPage() {
                             <Typography className="text-sm font-medium">AZN</Typography>
                         </div>
                     </div>
-                </div>
+                </div>*/}
 
-
-                {/* Şəkillər */}
                 <div>
                     <Typography component="label" className="text-sm font-medium">
                         Şəkilləri yükləyin* (30 şəkilə qədər)
                     </Typography>
                     <Box className="flex flex-col sm:flex-row justify-between gap-4 mt-3">
-                        <Box className="flex flex-col items-center justify-center gap-2 w-full sm:max-w-xs border-2 border-dashed border-gray-400 py-10 px-4 text-center rounded-md">
+                        <Box
+                            onClick={() => fileInputRef.current?.click()}
+                            className="cursor-pointer flex flex-col items-center justify-center gap-2 w-full sm:max-w-xs border-2 border-dashed border-gray-400 py-10 px-4 text-center rounded-md"
+                        >
                             <Camera className="size-6 text-gray-600" />
                             <span className="font-medium text-sm">Fotoşəkil əlavə edin</span>
                             <span className="text-xs text-gray-500">Əsas şəkil axtarış nəticələrində əks olunacaq</span>
+
+                            {/* Gizli input */}
+                            <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                className="hidden"
+                                ref={fileInputRef}
+                                onChange={(e) => {
+                                    if (e.target.files) {
+                                        setSelectedImages(Array.from(e.target.files));
+                                    }
+                                }}
+                            />
+                        </Box>
+
+                        <Box className="max-w-sm flex flex-wrap">
+                            {selectedImages.length > 0 && (
+                                <div className="flex flex-wrap gap-2 mt-4">
+                                    {selectedImages.map((file, index) => (
+                                        <img
+                                            key={index}
+                                            src={URL.createObjectURL(file)}
+                                            alt={`selected-${index}`}
+                                            className="w-20 h-20 object-cover rounded border"
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </Box>
 
                         <Box className="flex-1 border border-gray-300 rounded-md p-4 text-sm text-gray-600">
@@ -123,7 +166,6 @@ export default function NewProductPage() {
                     </Box>
                 </div>
 
-                {/* Təsvir */}
                 <div className="space-y-2">
                     <Typography>Təsvir *</Typography>
                     <textarea
@@ -133,7 +175,6 @@ export default function NewProductPage() {
                     <p className="text-end text-xs text-gray-500">0/6000</p>
                 </div>
 
-                {/* Kateqoriya */}
                 <div className="space-y-2">
                     <Typography>Kateqoriya *</Typography>
                     <CustomButton
@@ -158,7 +199,6 @@ export default function NewProductPage() {
                 </div>
             </Box>
 
-            {/* Modal */}
             <Modal
                 isOpen={modalIsOpen}
                 contentLabel="Kateqoriya Seçimi"
@@ -183,17 +223,18 @@ export default function NewProductPage() {
                     </Box>
                     <RenderCategory
                         data={allCategory!}
+                        setLastCat={setLastCat}
                         setCategoryName={setCategoryName}
                         setCategoryPathUrl={setCategoryPathUrl}
                         onLastCategorySelected={() => {
-                            setIsOpen(false);
+                            setModalIsOpen(false);
                             document.body.style.overflow = "";
                         }}
                     />
                 </Box>
             </Modal>
 
-            <TemplatesConfig selectedCategory={lastCat} />
+            <TemplatesConfig selectedCategory={lastCat} categoryPathUrl={categoryPathUrl} />
         </Box>
     );
 
