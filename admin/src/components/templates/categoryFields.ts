@@ -342,7 +342,16 @@ export const categoryFields: Record<string, FieldConfig[] | null> = {
         { type: "text", label: "Displeyi (düym)", name: "display" },
         { type: "text", label: "Yığıcı növü", name: "assemblyType" },
         { type: "text", label: "Kompüterin növü", name: "computerType" },
-        { type: "text", label: "ƏS", name: "os" },
+        {
+            type: "dropdown", label: "ƏS", name: "os", options: [
+                'Windows',
+                'macOS',
+                'Ubuntu',
+                'Debian',
+                'Linux',
+                'Chrome OS',
+            ]
+        },
         { type: "text", label: "Videokartı", name: "videoCard" },
         { type: "text", label: "Yaddaş növü", name: "memoryType" },
     ],
@@ -400,7 +409,16 @@ export const categoryFields: Record<string, FieldConfig[] | null> = {
         { type: "text", label: "Displeyi (düym)", name: "display" },
         { type: "text", label: "Yığıcı növü", name: "assemblyType" },
         { type: "text", label: "Kompüterin növü", name: "computerType" },
-        { type: "text", label: "ƏS", name: "os" },
+        {
+            type: "text", label: "ƏS", name: "os", options: [
+                'Windows',
+                'macOS',
+                'Ubuntu',
+                'Debian',
+                'Linux',
+                'Chrome OS',
+            ]
+        },
         { type: "text", label: "Videokartı", name: "videoCard" },
         { type: "text", label: "Yaddaş növü", name: "memoryType" },
     ],
