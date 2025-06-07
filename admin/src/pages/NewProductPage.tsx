@@ -2,15 +2,18 @@ import { Error } from "@/components/error";
 import { Loading } from "@/components/loading";
 import { Box } from "@/components/ui/Box";
 import { categoryService } from "@/services/categoryService";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Typography } from "@/components/ui/Typography";
 import { Camera, X } from "lucide-react";
 import { CustomButton } from "@/components/ui/CustomButton";
 import Modal from 'react-modal';
 import { useEffect, useRef, useState } from "react";
-import { CustomField } from "@/components/CustomField";
+import { CustomField } from "@/components/ui/CustomField";
 import { RenderCategory } from "@/components/new_products/RenderCategory";
 import TemplatesConfig from "@/components/templates/TemplatesConfig";
+import { usePostStore } from "@/stores/productPostStore";
+import { useShallow } from "zustand/shallow";
+import { productService } from "@/services/productService";
 
 const customStyles = {
     content: {
@@ -29,6 +32,13 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export default function NewProductPage() {
+    const { setCurrentPost, currentPost } = usePostStore(
+        useShallow((state) => ({
+            setCurrentPost: state.setCurrentPost,
+            currentPost: state.currentPost
+        }))
+    );
+    const [searchCat, setSearchCat] = useState('');
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
@@ -45,13 +55,11 @@ export default function NewProductPage() {
         queryFn: () => categoryService.getAllCategory(),
     });
 
-
     function openModal() {
         setModalIsOpen(prev => {
             const nextState = !prev;
             document.body.style.overflow = nextState ? 'hidden' : '';
             if (nextState) {
-
                 setCategoryPathUrl([]);
                 setCategoryName("");
             } else {
@@ -62,14 +70,36 @@ export default function NewProductPage() {
         });
     }
 
+    const handleSearchCategory = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const value = e.target.value;
+        setSearchCat(value);
+
+        const searchCategory = allCategory?.filter(cat =>
+            cat.name.toLowerCase().includes(value.toLowerCase()) ||
+            cat.slug.toLowerCase().includes(value.toLowerCase())
+        );
+
+        return searchCategory
+    }
+
+
+
     useEffect(() => {
-        console.log(lastCat);
-    }, [lastCat])
+        const last = categoryPathUrl[categoryPathUrl.length - 1];
+        if (lastCat.lastCatIndex !== null && last) {
+            setCurrentPost({
+                name: last,
+                categoryId: lastCat.lastCatIndex,
+            });
+        }
+
+
+        setCurrentPost({ images: selectedImages })
+    }, [lastCat, selectedImages]);
 
     useEffect(() => {
         const last = categoryPathUrl[categoryPathUrl.length - 1];
         const secondLast = categoryPathUrl[categoryPathUrl.length - 2];
-
         if (secondLast === "Mobil telefonlar" || secondLast === "Noutbuk və netbuklar") {
             if (secondLast) {
                 setLastCat(prev => ({ ...prev, lastCategory: secondLast }));
@@ -92,29 +122,6 @@ export default function NewProductPage() {
             </Typography>
 
             <Box component="form" className="space-y-6 w-full">
-                {/* <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6">
-                    <div className="flex-1 space-y-2">
-                        <Typography>Məhsul Adı *</Typography>
-                        <input
-                            type="text"
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm outline-none"
-                            placeholder="Məhsulun adı"
-                        />
-                    </div>
-
-                    <div className="w-full sm:w-60 space-y-2 mt-4 sm:mt-0">
-                        <Typography>Qiymət *</Typography>
-                        <div className="flex items-center gap-3">
-                            <input
-                                type="text"
-                                className="border border-gray-300 rounded-md px-3 py-2 text-sm w-full outline-none"
-                                placeholder="100.10"
-                            />
-                            <Typography className="text-sm font-medium">AZN</Typography>
-                        </div>
-                    </div>
-                </div>*/}
-
                 <div>
                     <Typography component="label" className="text-sm font-medium">
                         Şəkilləri yükləyin* (30 şəkilə qədər)
@@ -145,7 +152,7 @@ export default function NewProductPage() {
 
                         <Box className="max-w-sm flex flex-wrap">
                             {selectedImages.length > 0 && (
-                                <div className="flex flex-wrap gap-2 mt-4">
+                                <div className="flex flex-wrap gap-2">
                                     {selectedImages.map((file, index) => (
                                         <img
                                             key={index}
@@ -169,6 +176,7 @@ export default function NewProductPage() {
                 <div className="space-y-2">
                     <Typography>Təsvir *</Typography>
                     <textarea
+                        onChange={(e) => setCurrentPost({ description: e.target.value })}
                         className="w-full min-h-[100px] border border-gray-300 rounded-md p-3 text-sm resize-none outline-none"
                         placeholder="İdeal vəziyyətdə Samsung Galaxy S9 satıram. 1 il əvvəl alınıb. Satılma səbəbi: yeni telefon almaq istəyirəm"
                     />
@@ -185,17 +193,18 @@ export default function NewProductPage() {
                         Seçmək
                     </CustomButton>
                     {categoryPathUrl.length > 0 && (
-                        <div className="mt-2 flex flex-wrap gap-2">
+                        <div className="mt-2 flex flex-wrap items-center text-sm text-gray-600">
                             {categoryPathUrl.map((name, i) => (
-                                <span
-                                    key={i}
-                                    className="bg-gray-200 px-3 py-1 rounded-md text-sm font-medium"
-                                >
-                                    {name}
+                                <span key={i} className="flex items-center">
+                                    <span className="font-medium">{name}</span>
+                                    {i < categoryPathUrl.length - 1 && (
+                                        <span className="mx-2 text-gray-400">{'>'}</span>
+                                    )}
                                 </span>
                             ))}
                         </div>
                     )}
+
                 </div>
             </Box>
 
@@ -216,10 +225,12 @@ export default function NewProductPage() {
                     <Box className="mt-2">
                         <CustomField
                             type="search-input"
-                            onChange={() => console.log("change input")}
+                            onChange={handleSearchCategory}
                             name="category search"
-                            value="name"
+                            value={searchCat}
                         />
+
+
                     </Box>
                     <RenderCategory
                         data={allCategory!}
@@ -235,7 +246,47 @@ export default function NewProductPage() {
             </Modal>
 
             <TemplatesConfig selectedCategory={lastCat} categoryPathUrl={categoryPathUrl} />
+
+            <ProductShare />
         </Box>
     );
 
+}
+
+function ProductShare() {
+
+    const { currentPost } = usePostStore(
+        useShallow((s) => ({
+            currentPost: s.currentPost
+        }))
+    );
+
+
+    const { mutate } = useMutation({
+        mutationKey: ['post/products'],
+        mutationFn: async () => {
+            if (currentPost.categoryId !== undefined) {
+                return productService.getCreateProduct(currentPost)
+            }
+        },
+        onSuccess: () => {
+            alert('Mehsul gonderildi')
+        },
+        onError: () => {
+            alert('mehsul gonderilmedi!')
+        }
+    })
+
+    const handlePostProduct = () => {
+        mutate();
+    }
+
+    return <Box className="mt-4">
+        <CustomButton
+            onClick={handlePostProduct}
+            className="cursor-pointer bg-green-500 p-2 rounded-sm text-white text-sm"
+        >
+            Məhsulu Paylaş
+        </CustomButton>
+    </Box>
 }

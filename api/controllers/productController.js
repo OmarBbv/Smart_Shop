@@ -91,8 +91,12 @@ const productController = {
         if (req.files && req.files.length > 0) {
             const newImagePaths = req.files.map(file => file.path);
 
-            product.images = newImagePaths;
+            product.images = [
+                ...(product.images || []),
+                ...newImagePaths
+            ];
         }
+
 
         // Update other fields
         product.name = name || product.name;

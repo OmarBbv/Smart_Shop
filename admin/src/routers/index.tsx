@@ -1,5 +1,4 @@
 import MainLayout from "@/layouts/MainLayout";
-import CategoryPage from "@/pages/CategoryPage";
 import DashboardPage from "@/pages/DashboardPage";
 import UserPage from "@/pages/UserPage";
 import ProductPage from "@/pages/ProductPage";
@@ -15,10 +14,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <DashboardPage />,
-      },
-      {
-        path: "kategoriyalar",
-        element: <CategoryPage />,
       },
       {
         path: "istifadeciler",

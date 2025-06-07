@@ -5,6 +5,8 @@ import ActionButton from "./ActionButton";
 import ProductDetailPopUp from "./ProductDetailPopup";
 import { Datum } from "@/types/productTypes";
 import { useNavigate } from 'react-router-dom'
+import UpdateBottomSheet from "./UpdateBottomSheet";
+import { useProductPopUp } from "@/stores/productDetailPopupStore";
 
 interface Props {
     prod: Datum;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 export default function ProductCard({ prod, grid }: Props) {
+    const isUpdate = useProductPopUp(state => state.isUpdate);
+
     const navigate = useNavigate();
 
     function handleNavigate() {
@@ -70,6 +74,7 @@ export default function ProductCard({ prod, grid }: Props) {
                 <ActionButton product={prod} />
 
                 <ProductDetailPopUp />
+                {isUpdate && <UpdateBottomSheet product={prod} />}
             </Box>
         </Box>
     );

@@ -9,7 +9,6 @@ class CategoryService implements CategoryServiceType {
     async getAllCategory(): Promise<CategoryType[]> {
         try {
             const res = await httpClient.get('/categories');
-            console.log('res', res.data);
             return res.data
         } catch (error: any) {
             throw new Error(error);

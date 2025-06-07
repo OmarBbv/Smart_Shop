@@ -1,10 +1,23 @@
-import { UserType } from "@/types/usserTypes"
+import { userService } from "@/services/userService"
+import { useQuery } from "@tanstack/react-query"
+import { Loading } from "../loading"
+import { Error } from "../error"
 
 interface Props {
-    allUser: UserType[]
+    refresh: number
 }
 
-export function UserTable({ allUser }: Props) {
+export function UserTable({ refresh }: Props) {
+
+    const { data: allUser, isLoading, isError } = useQuery({
+        queryKey: ['all/users', refresh],
+        queryFn: () => userService.handleAllUser()
+    })
+
+    if (isLoading) return <Loading />
+    if (isError) return <Error />
+
+
     return (
         <div className="w-full overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
             <table className="w-full divide-y divide-gray-200">

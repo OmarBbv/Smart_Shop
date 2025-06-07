@@ -1,6 +1,6 @@
 import { Box } from "@/components/ui/Box";
 import { NavLink } from "react-router-dom";
-import { Home, LayoutGrid, Users, Package, PackagePlus } from "lucide-react";
+import { Home, Users, Package, PackagePlus } from "lucide-react";
 import { Typography } from "@/components/ui/Typography";
 
 interface NavProps {
@@ -15,11 +15,6 @@ const navItems: NavProps[] = [
     name: "Ana səhifə",
     icon: Home,
     href: "/",
-  },
-  {
-    name: "Kategoriyalar",
-    icon: LayoutGrid,
-    href: "/kategoriyalar",
   },
   {
     name: "Istifadəçilər",

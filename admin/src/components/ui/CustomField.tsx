@@ -1,12 +1,12 @@
 import { Search } from "lucide-react";
-import { Box } from "./ui/Box";
+import { Box } from "./Box";
 
 interface Props {
     type: 'input' | 'select' | 'default' | 'search-input';
     label?: string;
     name: string;
     value: string;
-    onChange: () => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
     options?: Array<{ value: string | number, label: string }>;
 }
 
@@ -71,7 +71,7 @@ export const CustomField = ({ type, label, name, value, onChange, options = [] }
                         type="text"
                         value={value}
                         onChange={onChange}
-                        className="block w-full sm:text-sm outline-none border-0"
+                        className="block w-full sm:text-sm outline-none border-0 bg-white"
                     />
                 </Box>
             );

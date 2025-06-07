@@ -1,4 +1,6 @@
+import { usePostStore } from "@/stores/productPostStore";
 import { useState } from "react";
+import { useShallow } from "zustand/shallow";
 
 interface MultiSelectDropdownProps {
     label: string;
@@ -7,35 +9,51 @@ interface MultiSelectDropdownProps {
 }
 
 export function MultiSelectDropdown({ label, name, options }: MultiSelectDropdownProps) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [search, setSearch] = useState("");
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const { setCurrentPost } = usePostStore(useShallow((state) => ({
+        setCurrentPost: state.setCurrentPost,
+    })));
+
+    const [state, setState] = useState({
+        isOpen: false,
+        search: "",
+        selectedOptions: [] as string[],
+    });
 
     const toggleOption = (option: string) => {
-        setSelectedOptions((prev) =>
-            prev.includes(option)
-                ? prev.filter((opt) => opt !== option)
-                : [...prev, option]
-        );
+        const newSelected = state.selectedOptions.includes(option)
+            ? state.selectedOptions.filter((opt) => opt !== option)
+            : [...state.selectedOptions, option];
+
+        setState(prev => ({
+            ...prev,
+            selectedOptions: newSelected
+        }));
+
+        setCurrentPost({
+            features: {
+                ...(usePostStore.getState().currentPost.features || {}),
+                [name]: newSelected,
+            }
+        });
     };
 
     const filteredOptions = options.filter((opt) =>
-        opt.toLowerCase().includes(search.toLowerCase())
+        opt.toLowerCase().includes(state.search.toLowerCase())
     );
 
     return (
         <div className="relative w-full">
             <label className="block text-sm font-medium mb-1">{label}</label>
             <div
-                className={`border p-2 rounded-md cursor-pointer flex justify-between items-center ${isOpen ? "border-green-500" : "border-gray-300"
+                className={`border p-2 rounded-md cursor-pointer flex justify-between items-center ${state.isOpen ? "border-green-500" : "border-gray-300"
                     }`}
-                onClick={() => setIsOpen((prev) => !prev)}
+                onClick={() => setState(prev => ({ ...prev, isOpen: !prev.isOpen }))}
             >
                 <span className="text-gray-700 text-sm">
-                    {selectedOptions.length > 0 ? selectedOptions.join(", ") : "Seçmək"}
+                    {state.selectedOptions.length > 0 ? state.selectedOptions.join(", ") : "Seçmək"}
                 </span>
                 <svg
-                    className={`w-4 h-4 transform transition-transform ${isOpen ? "rotate-180" : ""
+                    className={`w-4 h-4 transform transition-transform ${state.isOpen ? "rotate-180" : ""
                         }`}
                     fill="none"
                     stroke="currentColor"
@@ -45,14 +63,14 @@ export function MultiSelectDropdown({ label, name, options }: MultiSelectDropdow
                 </svg>
             </div>
 
-            {isOpen && (
+            {state.isOpen && (
                 <div className="absolute z-10 mt-2 w-full bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto">
                     <input
                         type="text"
                         placeholder="Axtar..."
                         className="w-full border-b p-2 text-sm outline-none"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        value={state.search}
+                        onChange={(e) => setState(prev => ({ ...prev, search: e.target.value }))}
                     />
                     <div className="max-h-48 overflow-y-auto">
                         {filteredOptions.map((opt, idx) => (
@@ -62,7 +80,7 @@ export function MultiSelectDropdown({ label, name, options }: MultiSelectDropdow
                             >
                                 <input
                                     type="checkbox"
-                                    checked={selectedOptions.includes(opt)}
+                                    checked={state.selectedOptions.includes(opt)}
                                     onChange={() => toggleOption(opt)}
                                     className="mr-2"
                                 />

@@ -6,8 +6,11 @@ import { cn } from "@/lib/utils"
 import { Box } from "../ui/Box"
 import { CustomButton } from "../ui/CustomButton"
 import { useShallow } from "zustand/shallow"
+import { productService } from "@/services/productService"
+import { useRefresh } from "@/stores/refreshStore"
 
 interface Product {
+    id: number
     name: string
     price: number
     category?: { name: string }
@@ -23,6 +26,7 @@ export default function ProductDetailPopUp() {
             selectedProduct: state.selectedProduct,
         }))
     )
+    const prodRefresh = useRefresh(state => state.refreshProduct);
 
     const product = selectedProduct as Product | null
 
@@ -109,6 +113,16 @@ export default function ProductDetailPopUp() {
             );
         }
         return null;
+    }
+
+    function handleRemoveProduct() {
+        const id = product?.id;
+
+        if (!id) return;
+
+        productService.removeProduct(String(id));
+        closePopUp();
+        prodRefresh();
     }
 
     const modalContent = (
@@ -236,7 +250,9 @@ export default function ProductDetailPopUp() {
                                 <Edit className="h-4 w-4" />
                                 Düzenle
                             </CustomButton>
-                            <CustomButton className="flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-red-500 text-red-500 hover:bg-red-50 transition-colors duration-200 font-medium flex-1">
+                            <CustomButton
+                                onClick={handleRemoveProduct}
+                                className="flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-red-500 text-red-500 hover:bg-red-50 transition-colors duration-200 font-medium flex-1">
                                 <Trash2 className="h-4 w-4" />
                                 Sil
                             </CustomButton>

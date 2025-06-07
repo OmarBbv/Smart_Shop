@@ -1,4 +1,3 @@
-// Mövcud type-lar
 export interface CategoryType {
     id: number;
     name: string;

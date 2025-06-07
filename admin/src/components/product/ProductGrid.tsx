@@ -6,13 +6,13 @@ interface Props {
     grid: boolean;
 }
 
-export default function ProductGrid({ children, grid }: Props) {
+export default function ProductGrid({ children, grid = false }: Props) {
     return (
         <Box
             className={
                 grid
                     ? "grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
-                    : "flex flex-wrap gap-4 w-full"
+                    : "flex flex-1 flex-wrap gap-4"
             }
         >
             {children}

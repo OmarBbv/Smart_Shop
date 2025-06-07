@@ -19,7 +19,7 @@ export default function TemplatesConfig({
   const fields = categoryFields[selectedCategory.lastCategory];
 
   return (
-    <div className="max-w-md grid grid-cols-2 gap-4">
+    <div className="max-w-md grid grid-cols-2 gap-4 my-4">
       {categoryPathUrl.length > 0 && !fields ? (
         <StaticDropdowns />
       ) : (

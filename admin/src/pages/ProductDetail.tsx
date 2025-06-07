@@ -49,6 +49,7 @@ export default function ProductDetail() {
                 </section>
             </Box>
             <Box className="text-lg font-semibold">
+                <Typography component='h2'>{data?.description}</Typography>
                 <Typography component='h2' className="text-xl">Texniki xüsusiyyətləri:</Typography>
                 <FeatureRenderer data={data?.features} />
             </Box>

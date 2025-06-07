@@ -1,3 +1,4 @@
+import NotFoundElement from "@/components/NotFoundElement";
 import ProductCard from "@/components/product/ProductCard";
 import ProductGrid from "@/components/product/ProductGrid";
 import { Box } from "@/components/ui/Box";
@@ -5,11 +6,13 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { Typography } from "@/components/ui/Typography";
 import { cn } from "@/lib/utils";
 import { productService } from "@/services/productService";
+import { useRefresh } from "@/stores/refreshStore";
 import { useQuery } from "@tanstack/react-query";
 import { LayoutGrid, List } from 'lucide-react'
 import { useEffect, useState } from "react";
 
 export default function ProductPage() {
+    const prodIndex = useRefresh(set => set.prodRefIndex);
     const [isGrid, setIsGrid] = useState<boolean>(false);
 
     function handleGrid(str: string) {
@@ -19,13 +22,12 @@ export default function ProductPage() {
     }
 
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ['get/products'],
+        queryKey: ['get/products', prodIndex],
         queryFn: () => productService.getAllProducts(),
     });
 
     const productData = data?.data;
-
-    console.log(productData)
+    const dataGrid = !!productData && productData.length < 0;
 
     useEffect(() => {
         const stored = localStorage.getItem('grid');
@@ -60,10 +62,13 @@ export default function ProductPage() {
                     </CustomButton>
                 </ul>
             </Box>
-            <ProductGrid grid={isGrid}>
-                {productData?.map(prod => {
-                    return <ProductCard key={prod.id} prod={prod} grid={isGrid} />
-                })}
+            <ProductGrid grid={dataGrid}>
+                {productData && productData.length > 0 ?
+                    productData?.map(prod => {
+                        return <ProductCard key={prod.id} prod={prod} grid={isGrid} />
+                    })
+                    : <NotFoundElement url="/mehsullar/yeni" title="Məhsul tapılmadı" desc="Sistemdə heç bir məhsul tapılmadı. Yeni məhsul əlavə etmək istəyirsiniz?" buttonContent="Yeni Məhsul Əlavə Et" />
+                }
             </ProductGrid>
         </Box>
     )
