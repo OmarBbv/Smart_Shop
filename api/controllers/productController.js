@@ -68,7 +68,6 @@ const productController = {
             });
         }
 
-        // Handle features update
         if (features) {
             let parsedFeatures = {};
             try {
@@ -87,18 +86,9 @@ const productController = {
             }
         }
 
-        // Handle image updates
-        if (req.files && req.files.length > 0) {
-            const newImagePaths = req.files.map(file => file.path);
-
-            product.images = [
-                ...(product.images || []),
-                ...newImagePaths
-            ];
-        }
 
 
-        // Update other fields
+
         product.name = name || product.name;
         product.price = price || product.price;
         product.categoryId = categoryId || product.categoryId;
@@ -113,7 +103,6 @@ const productController = {
             data: updatedProduct,
         });
     }),
-
 
     /**
     * @desc   Məhsulu silmək

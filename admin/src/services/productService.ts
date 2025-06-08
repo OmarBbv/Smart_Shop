@@ -46,7 +46,7 @@ class ProductService implements ProductServiceInterface {
         formData.append('features', JSON.stringify(features));
 
         formData.append('price', price?.toString() ?? '')
-        images.forEach((image, _) => {
+        images.forEach((image) => {
             formData.append('images', image);
         });
 
@@ -58,8 +58,11 @@ class ProductService implements ProductServiceInterface {
             });
 
             console.log(res);
-        } catch (error: any) {
-            throw new Error(error.message || "Bilinməyən xəta baş verdi");
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                    throw new Error(error.message || "Bilinməyən xəta baş verdi");
+            }
+            throw new Error("Bilinməyən xəta baş verdi");
         }
     }
 
@@ -69,8 +72,11 @@ class ProductService implements ProductServiceInterface {
             const res = await httpClient.delete(`/products/${id}`)
             console.log(res.data);
             return res.data
-        } catch (error: any) {
-            throw new Error(error.message || "Bilinməyən xəta baş verdi");
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new Error(error.message || "Bilinməyən xəta baş verdi");
+            }
+            throw new Error("Bilinməyən xəta baş verdi");
         }
     }
 

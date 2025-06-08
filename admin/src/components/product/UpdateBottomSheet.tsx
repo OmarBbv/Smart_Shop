@@ -15,16 +15,21 @@ interface Props {
 
 export default function UpdateBottomSheet({ product }: Props) {
     const isUpdateClose = useProductPopUp((state) => state.isCloseUpdateProd)
-    const [productUpdateState, setProductUpdateState] = useState<Datum>(product ?? {})
+    const [existingImages, setExistingImages] = useState<string[]>(product?.images || [])
     const [animate, setAnimate] = useState(false)
     const [show, setShow] = useState(true)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const [images, setImages] = useState<File[]>([])
     const [dragActive, setDragActive] = useState(false)
 
+
     const { register, handleSubmit } = useForm({
         defaultValues: product,
     })
+    useEffect(() => {
+        // Mevcut resimleri başlangıçta ayarla
+        setExistingImages(product.images || [])
+    }, [product.images])
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const files = e.target.files
@@ -59,12 +64,9 @@ export default function UpdateBottomSheet({ product }: Props) {
         inputRef?.current?.click()
     }
 
+    // Mevcut resimleri silmek için düzeltilmiş fonksiyon
     function handleRemoveImage(index: number) {
-        const deleteImg = [...productUpdateState.images!.filter((_, i) => i !== index)]
-        setProductUpdateState((prev) => ({
-            ...prev,
-            images: deleteImg,
-        }))
+        setExistingImages((prev) => prev.filter((_, i) => i !== index))
     }
 
     function handleRemoveNewImage(index: number) {
@@ -82,7 +84,7 @@ export default function UpdateBottomSheet({ product }: Props) {
         const id = product.id;
         if (!id) return;
 
-        const imgs = [...data.images!, ...images];
+        const imgs = [...existingImages, ...images];
 
         const newData: UpdateServiceType = {
             name: data.name,
@@ -104,10 +106,6 @@ export default function UpdateBottomSheet({ product }: Props) {
             isUpdateClose()
         }, 300)
     }
-
-    useEffect(() => {
-        console.log(productUpdateState)
-    }, [productUpdateState])
 
     useEffect(() => {
         const timeout = setTimeout(() => setAnimate(true), 10)
@@ -183,22 +181,11 @@ export default function UpdateBottomSheet({ product }: Props) {
                                         Qiymət
                                     </label>
                                     <input
-                                        {...register("price")}
-                                        type="text"
+                                        {...register("price", { valueAsNumber: true })} type="number" step="0.01"
                                         placeholder="0.00"
                                         className="w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200"
                                     />
                                 </div>
-
-                                {/* <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Kateqoriya</label>
-                                    <input
-                                        {...register("category.name")}
-                                        type="text"
-                                        placeholder="Kateqoriya seçin"
-                                        className="w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200"
-                                    />
-                                </div> */}
 
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Təsvir</label>
@@ -279,14 +266,15 @@ export default function UpdateBottomSheet({ product }: Props) {
                                 </div>
                             )}
 
-                            {productUpdateState.images && productUpdateState.images.length > 0 && (
+                            {/* Existing Images Preview - Artık existingImages state'ini kullanıyor */}
+                            {existingImages.length > 0 && (
                                 <div className="mt-6">
                                     <h4 className="text-sm font-medium text-gray-700 mb-3">Mövcud Şəkillər</h4>
                                     <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-                                        {productUpdateState.images.map((imgUrl, index) => (
+                                        {existingImages.map((imgUrl, index) => (
                                             <div key={index} className="relative group">
                                                 <img
-                                                    src={typeof imgUrl === "string" ? imgUrl : "/placeholder.svg"}
+                                                    src={imgUrl || "/placeholder.svg"}
                                                     alt="Mövcud şəkil"
                                                     className="w-full h-24 object-cover rounded-md border border-gray-200"
                                                 />

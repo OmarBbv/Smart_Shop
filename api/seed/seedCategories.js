@@ -1,9 +1,8 @@
 import Category from "../models/categoryModel.js";
 
 export async function seedCategories() {
-    console.log('🌱 Kategori seed işlemi başlatılıyor...');
+    console.log("🌱 Kategori seed işlemi başlatılıyor...");
 
-    // Önce mevcut kategori sayısını kontrol et
     const existingCount = await Category.count();
 
     if (existingCount > 0) {
