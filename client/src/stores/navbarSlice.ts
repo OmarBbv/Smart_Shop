@@ -18,8 +18,6 @@ export const navbarSlice = createSlice({
   },
 });
 
-// Action creator:
 export const { toggleCategory } = navbarSlice.actions;
 
-// Reducer:
 export default navbarSlice.reducer;

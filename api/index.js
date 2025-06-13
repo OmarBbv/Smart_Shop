@@ -9,13 +9,17 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { seedCategories } from "./seed/seedCategories.js";
+import wishListRouter from "./routers/wishlistRouter.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -25,6 +29,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/wishlist', wishListRouter);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

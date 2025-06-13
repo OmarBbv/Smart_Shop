@@ -21,7 +21,7 @@ const UserTable = sequelize.define('User', {
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     role: {
         type: DataTypes.INTEGER,

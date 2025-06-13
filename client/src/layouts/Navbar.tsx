@@ -1,15 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiSearch, FiHeart, FiMenu, FiUser } from 'react-icons/fi';
 import CustomInput from '@/components/CustomInput';
 import CategoryNav from '@/components/ui/home/CategoryNav';
+import { authController } from '@/hooks/useAuthController';
+import { LogOut, UserPen } from 'lucide-react';
 
 export default function Navbar() {
+  const { token, user } = authController();
+
+  const navigate = useNavigate();
+
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isOpenSearch, setIsOpenSearch] = useState<boolean>(false);
   const searchRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null!);
   const lastScrollY = useRef(0);
+
+  const handleLogin = () => {
+    if (token) {
+      return;
+    }
+
+    navigate('/giris');
+  }
 
   const handleSearchButton = () => {
     setIsOpenSearch(true);
@@ -150,11 +164,38 @@ export default function Navbar() {
               <button className="text-gray-700 hover:text-[var(--color-netflix-red)] md:hidden">
                 <FiSearch size={22} />
               </button>
-              <Link
-                to='/giris'
-                className="text-gray-700 hover:text-[var(--color-netflix-red)]">
-                <FiUser size={22} />
-              </Link>
+              <div className="relative">
+                {user ? (
+                  <div className="relative group"
+                  // onMouseEnter={() => }
+                  >
+                    <button
+                      className="w-9 h-9 rounded-full border border-gray-300 bg-white text-green-600 font-semibold text-xs flex items-center justify-center shadow hover:shadow-md transition duration-300"
+                    >
+                      {user.name.slice(0, 3)}
+                    </button>
+
+                    <div className="absolute z-50 left-0 mt-2 min-w-[120px] bg-white border border-gray-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100 transition-all duration-200 ease-in-out pointer-events-none group-hover:pointer-events-auto">
+                      <button className="w-full text-left px-4 py-2 text-sm text-nowrap hover:bg-gray-100 flex justify-between items-center gap-2">
+                        <span>Profil</span>
+                        <UserPen className='size-3' />
+                      </button>
+                      <button className="w-full text-left px-4 py-2 text-sm text-nowrap hover:bg-gray-100 flex justify-between items-center gap-2">
+                        <span>Hesabdan çıx</span>
+                        <LogOut className='size-3' />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleLogin}
+                    className="text-gray-700 hover:text-[var(--color-netflix-red)] transition-colors duration-200"
+                  >
+                    <FiUser size={22} />
+                  </button>
+                )}
+              </div>
+
               <button
                 className="text-gray-700 hover:text-[var(--color-netflix-red)] md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}

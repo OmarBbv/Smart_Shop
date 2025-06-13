@@ -10,7 +10,6 @@ class UserService implements userServiceProps {
     async handleAllUser(): Promise<UserType[]> {
         try {
             const res = await httpClient.get('/users');
-            console.log('all user', res.data)
             return res.data.data
         } catch (error: any) {
             throw new Error(error);

@@ -27,7 +27,6 @@ export default function UpdateBottomSheet({ product }: Props) {
         defaultValues: product,
     })
     useEffect(() => {
-        // Mevcut resimleri başlangıçta ayarla
         setExistingImages(product.images || [])
     }, [product.images])
 

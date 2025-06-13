@@ -86,8 +86,10 @@ const productController = {
             }
         }
 
-
-
+        if (req.files && req.files.length > 0) {
+            const imagesFile = req.files.map(file => file.path);
+            product.images = imagesFile;
+        }
 
         product.name = name || product.name;
         product.price = price || product.price;
@@ -247,7 +249,8 @@ const productController = {
             message: 'Məhsul gətirildi',
             data: productWithFullUrls
         })
-    })
+    }),
+
 };
 
 export default productController;

@@ -5,6 +5,9 @@ import { Provider } from "react-redux";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import router from "@/routers/routes";
 import { RouterProvider } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./config/queryClient";
+import { Toaster } from "react-hot-toast";
 
 const container = document.getElementById("root");
 
@@ -13,9 +16,12 @@ if (container) {
 
   root.render(
     <Provider store={store}>
-      <ErrorBoundary>
-        <RouterProvider router={router} />
-      </ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <Toaster position="top-center" />
+        <ErrorBoundary>
+          <RouterProvider router={router} />
+        </ErrorBoundary>
+      </QueryClientProvider>
     </Provider>
   );
 } else {

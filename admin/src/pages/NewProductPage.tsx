@@ -32,12 +32,7 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export default function NewProductPage() {
-    const { setCurrentPost, currentPost } = usePostStore(
-        useShallow((state) => ({
-            setCurrentPost: state.setCurrentPost,
-            currentPost: state.currentPost
-        }))
-    );
+    const setCurrentPost = usePostStore(state => state.setCurrentPost);
     const [searchCat, setSearchCat] = useState('');
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -124,7 +119,7 @@ export default function NewProductPage() {
             <Box component="form" className="space-y-6 w-full">
                 <div>
                     <Typography component="label" className="text-sm font-medium">
-                        Şəkilləri yükləyin* (30 şəkilə qədər)
+                        Şəkilləri yükləyin* (10 şəkilə qədər)
                     </Typography>
                     <Box className="flex flex-col sm:flex-row justify-between gap-4 mt-3">
                         <Box

@@ -1,87 +1,79 @@
-import { FEATURED_PRODUCTS } from "@/types/featuredProduct";
-import { FiHeart, FiStar } from "react-icons/fi";
+import { wishlistService } from "@/services/wishList-service";
+import { ProductSeriveType } from "@/types/productServiceType";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+import toast from "react-hot-toast";
+import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 interface Props {
-    product: FEATURED_PRODUCTS
-    id?: number
+    product: ProductSeriveType;
+    // refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<ProductResponse, Error>>;
 }
 
 export default function FeaturedProductCard({ product }: Props) {
+    const { data: wishData, refetch: refetchWishlist } = useQuery({
+        queryKey: ['get/wishlist'],
+        queryFn: () => wishlistService.allWishlist(),
+    });
+
+    const isInWishlist = useMemo(() => {
+        return wishData?.some(w => w.product.id === product.id);
+    }, [wishData, product.id]);
+
+    const mutateWish = useMutation({
+        mutationKey: ['add-to-wishlist'],
+        mutationFn: (id: number) => {
+            if (isInWishlist) {
+                return wishlistService.removeItemFromWishlist(id)
+            } else {
+                return wishlistService.addItemToWishlist(id)
+            }
+        },
+        onSuccess: () => {
+            refetchWishlist();
+        },
+        onError: () => {
+            toast.error("Favorilere eklenirken bir hata oluştu");
+        }
+    });
+
+    const handleToggleWishlist = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        mutateWish.mutate(product.id)
+    };
+
     return (
         <Link
-            key={product.id}
             to={`/mehsullar/${product.id}`}
-            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group"
+            className="relative flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md hover:shadow-lg transition-shadow"
         >
-            <div className="relative">
+            <div className="relative mx-3 mt-3 h-48 overflow-hidden rounded-xl">
                 <img
-                    src={product.image}
+                    src={product.images?.[0] || "https://via.placeholder.com/150"}
                     alt={product.name}
-                    className="w-full h-48 object-cover"
+                    className="object-cover w-full h-full"
                 />
-                <div className="absolute top-2 right-2 flex flex-col gap-2">
-                    <button
-                        className="bg-white/80 hover:bg-white p-2 rounded-full shadow-sm"
-                        onClick={(e) => {
-                            e.preventDefault();
-                        }}
-                    >
-                        <FiHeart className="text-gray-600" />
-                    </button>
-                </div>
-                {product.oldPrice > product.price && (
-                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                        {Math.round((1 - product.price / product.oldPrice) * 100)}%
-                        İndirim
-                    </div>
-                )}
+                <button
+                    className={`absolute top-0 right-0 m-2 p-2 rounded-full shadow ${isInWishlist ? 'bg-red-500 text-white' : 'bg-white/80 hover:bg-white'}`}
+                    onClick={handleToggleWishlist}
+                >
+                    <FiHeart />
+                </button>
             </div>
-            <div className="p-4">
-                <h3 className="font-medium mb-1 text-lg line-clamp-2 group-hover:text-red-500">
-                    {product.name}
-                </h3>
-                <div className="flex items-center gap-1 mb-2">
-                    <div className="flex text-amber-400">
-                        <FiStar className="fill-current" />
-                        <FiStar className="fill-current" />
-                        <FiStar className="fill-current" />
-                        <FiStar className="fill-current" />
-                        <FiStar
-                            className={
-                                product.rating >= 4.8
-                                    ? 'fill-current'
-                                    : 'fill-current opacity-30'
-                            }
-                        />
-                    </div>
-                    <span className="text-sm text-gray-500">
-                        {product.rating}
-                    </span>
-                </div>
-                <div className="flex items-baseline gap-2 mb-3">
-                    <span className="text-xl font-bold">{product.price} AZN</span>
-                    {product.oldPrice > product.price && (
-                        <span className="text-sm text-gray-500 line-through">
-                            {product.oldPrice} AZN
+
+            <div className="mt-3 px-4 pb-4">
+                <h5 className="text-base font-medium text-slate-900 line-clamp-2 leading-5 h-8 capitalize">{product.name}</h5>
+                <div className="my-2 flex items-center justify-between">
+                    <p>
+                        <span className="text-lg font-bold text-slate-900">{product.price} AZN</span>
+                        <span className="ml-1 text-xs text-slate-500 line-through">
+                            {product.price} AZN
                         </span>
-                    )}
+                    </p>
                 </div>
-                <div className="flex items-center justify-between">
-                    <span className="text-green-600 text-sm line-clamp-1">
-                        {/* {product.installment}  */}
-                        {product.description}
-                    </span>
-                    {/* <button
-                        className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
-                        onClick={(e) => {
-                            e.preventDefault();
-                        }}
-                    >
-                        <FiShoppingCart />
-                    </button> */}
-                </div>
+                <p className="text-xs text-green-600 line-clamp-1">{product.description}</p>
             </div>
         </Link>
-    )
+    );
 }

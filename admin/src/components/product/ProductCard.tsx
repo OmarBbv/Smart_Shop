@@ -46,6 +46,7 @@ export default function ProductCard({ prod, grid }: Props) {
                     className="h-full w-full object-cover group-hover:scale-105 transition-all duration-300"
                     src={prod?.images?.[0]}
                     alt={prod?.name}
+                    loading="lazy"
                 />
             </Box>
 
