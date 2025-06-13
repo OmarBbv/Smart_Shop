@@ -51,6 +51,22 @@ const authController = {
         console.log(user);
 
         res.status(201).json({ message: 'Kayıt başarılı', data: user });
+    }),
+
+    logout: asyncHandler(async (req, res) => {
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+        });
+
+        res.clearCookie('accessToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+        });
+
+        res.status(200).json({ message: 'Çıkış başarılı' });
     })
 };
 

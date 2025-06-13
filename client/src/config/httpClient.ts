@@ -21,38 +21,38 @@ httpClient.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-httpClient.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
+// httpClient.interceptors.response.use(
+//     (response) => response,
+//     async (error) => {
+//         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+//         if (error.response?.status === 401 && !originalRequest._retry) {
+//             originalRequest._retry = true;
 
-            try {
-                const res = await axios.post(
-                    `${API_BASE_URL}/auth/refresh-token`,
-                    {},
-                    {
-                        withCredentials: true,
-                    }
-                );
+//             try {
+//                 const res = await axios.post(
+//                     `${API_BASE_URL}/auth/refresh-token`,
+//                     {},
+//                     {
+//                         withCredentials: true,
+//                     }
+//                 );
 
 
-                const newAccessToken = res.data.token;
-                localStorage.setItem('token', newAccessToken);
+//                 const newAccessToken = res.data.token;
+//                 localStorage.setItem('token', newAccessToken);
 
-                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+//                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
-                return httpClient(originalRequest);
-            } catch (refreshError) {
-                console.error("Token yenileme başarısız:", refreshError);
-                localStorage.removeItem('token');
-                window.location.href = '/giris';
-                return Promise.reject(refreshError);
-            }
-        }
+//                 return httpClient(originalRequest);
+//             } catch (refreshError) {
+//                 console.error("Token yenileme başarısız:", refreshError);
+//                 localStorage.removeItem('token');
+//                 window.location.href = '/giris';
+//                 return Promise.reject(refreshError);
+//             }
+//         }
 
-        return Promise.reject(error);
-    }
-);
+//         return Promise.reject(error);
+//     }
+// );

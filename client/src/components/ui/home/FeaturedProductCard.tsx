@@ -1,3 +1,4 @@
+import { useAuthController } from "@/hooks/useAuthController";
 import { wishlistService } from "@/services/wishList-service";
 import { ProductSeriveType } from "@/types/productServiceType";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -12,6 +13,8 @@ interface Props {
 }
 
 export default function FeaturedProductCard({ product }: Props) {
+    const { token } = useAuthController();
+
     const { data: wishData, refetch: refetchWishlist } = useQuery({
         queryKey: ['get/wishlist'],
         queryFn: () => wishlistService.allWishlist(),
@@ -40,7 +43,8 @@ export default function FeaturedProductCard({ product }: Props) {
 
     const handleToggleWishlist = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        mutateWish.mutate(product.id)
+        if (token) mutateWish.mutate(product.id)
+        else toast.error("Bu məhsulu Seçilmişlərə əlavə etmək üçün əvvəlcə daxil olun.");
     };
 
     return (

@@ -1,13 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiSearch, FiHeart, FiMenu, FiUser } from 'react-icons/fi';
 import CustomInput from '@/components/CustomInput';
 import CategoryNav from '@/components/ui/home/CategoryNav';
-import { authController } from '@/hooks/useAuthController';
+import { useAuthController } from '@/hooks/useAuthController';
 import { LogOut, UserPen } from 'lucide-react';
+import { authService } from '@/services/auth-service';
 
 export default function Navbar() {
-  const { token, user } = authController();
+  const [isShow, setIsShow] = useState(false);
+  const { token, user } = useAuthController();
 
   const navigate = useNavigate();
 
@@ -17,11 +19,22 @@ export default function Navbar() {
   const inputRef = useRef<HTMLInputElement>(null!);
   const lastScrollY = useRef(0);
 
+  const handleRouteButton = (e: React.MouseEvent<HTMLButtonElement>, str: 'profile' | 'exit') => {
+    e.stopPropagation();
+    if (str === 'profile') {
+      navigate('/profile')
+    } else {
+      authService.logout();
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      navigate('/giris');
+    }
+  }
+
   const handleLogin = () => {
     if (token) {
       return;
     }
-
     navigate('/giris');
   }
 
@@ -167,20 +180,24 @@ export default function Navbar() {
               <div className="relative">
                 {user ? (
                   <div className="relative group"
-                  // onMouseEnter={() => }
+                    onClick={() => setIsShow(prev => !prev)}
                   >
                     <button
-                      className="w-9 h-9 rounded-full border border-gray-300 bg-white text-green-600 font-semibold text-xs flex items-center justify-center shadow hover:shadow-md transition duration-300"
+                      className="w-9 h-9 rounded-full border border-gray-300 bg-white text-green-600 font-semibold text-xs flex items-center justify-center shadow"
                     >
                       {user.name.slice(0, 3)}
                     </button>
 
-                    <div className="absolute z-50 left-0 mt-2 min-w-[120px] bg-white border border-gray-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100 transition-all duration-200 ease-in-out pointer-events-none group-hover:pointer-events-auto">
-                      <button className="w-full text-left px-4 py-2 text-sm text-nowrap hover:bg-gray-100 flex justify-between items-center gap-2">
+                    <div className={`${isShow ? 'block' : 'hidden'} absolute z-50 left-0 mt-2 min-w-[120px] bg-white border border-gray-300 rounded-lg shadow-`}>
+                      <button
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleRouteButton(e, 'profile')}
+                        className="w-full text-left px-4 py-2 text-sm text-nowrap hover:bg-gray-100 flex justify-between items-center gap-2">
                         <span>Profil</span>
                         <UserPen className='size-3' />
                       </button>
-                      <button className="w-full text-left px-4 py-2 text-sm text-nowrap hover:bg-gray-100 flex justify-between items-center gap-2">
+                      <button
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleRouteButton(e, 'exit')}
+                        className="w-full text-left px-4 py-2 text-sm text-nowrap hover:bg-gray-100 flex justify-between items-center gap-2">
                         <span>Hesabdan çıx</span>
                         <LogOut className='size-3' />
                       </button>

@@ -37,7 +37,7 @@ export default function ProductDetail() {
   // const { id } = useParams<{ id: string }>();
   const [product] = useState<Product>(demoProduct);
   const [activeImage, setActiveImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || '');
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || '');
 
@@ -77,8 +77,8 @@ export default function ProductDetail() {
               <button
                 key={index}
                 className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all ${activeImage === index
-                    ? 'border-blue-500 shadow-md'
-                    : 'border-gray-200'
+                  ? 'border-blue-500 shadow-md'
+                  : 'border-gray-200'
                   }`}
                 onClick={() => setActiveImage(index)}
               >
@@ -102,8 +102,8 @@ export default function ProductDetail() {
               <div className="flex items-center space-x-2">
                 <span
                   className={`px-2 py-1 text-xs font-semibold rounded-full ${product.stock <= 5
-                      ? 'bg-yellow-100 text-yellow-800'
-                      : 'bg-green-100 text-green-800'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-green-100 text-green-800'
                     }`}
                 >
                   {product.stock <= 5
@@ -185,8 +185,8 @@ export default function ProductDetail() {
                   <button
                     key={color}
                     className={`px-3 py-1 border rounded-full text-sm transition-all ${selectedColor === color
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-300 text-gray-600 hover:border-gray-400'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-gray-300 text-gray-600 hover:border-gray-400'
                       }`}
                     onClick={() => setSelectedColor(color)}
                   >
@@ -208,8 +208,8 @@ export default function ProductDetail() {
                   <button
                     key={size}
                     className={`px-3 py-1 border rounded-md text-sm transition-all ${selectedSize === size
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-300 text-gray-600 hover:border-gray-400'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-gray-300 text-gray-600 hover:border-gray-400'
                       }`}
                     onClick={() => setSelectedSize(size)}
                   >

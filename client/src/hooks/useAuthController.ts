@@ -4,7 +4,7 @@ export interface AuthUser {
     email: string;
 }
 
-export const authController = (): {
+export const useAuthController = (): {
     isAuthenticated: boolean;
     token: string | null;
     user: AuthUser | null;
