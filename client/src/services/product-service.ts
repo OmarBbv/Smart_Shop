@@ -1,8 +1,10 @@
 import { httpClient } from "@/config/httpClient";
-import { ProductResponse } from "@/types/productServiceType";
+import { ProductResponse, ProductSeriveType } from "@/types/productServiceType";
+import toast from "react-hot-toast";
 
 interface ProductTypes {
     getAllProducts: () => Promise<ProductResponse>;
+    getProduct: (id: string) => Promise<ProductSeriveType>;
 }
 
 class ProductService implements ProductTypes {
@@ -16,6 +18,20 @@ class ProductService implements ProductTypes {
             throw new Error("Failed to fetch products");
         }
     };
+    async getProduct(id: string): Promise<ProductSeriveType> {
+        try {
+            const res = await httpClient.get(`products/${id}`,)
+            console.log(res.data)
+            return res.data.data
+        } catch (error: any) {
+            const errorMessage =
+                error?.response?.data?.message ||
+                error?.message ||
+                'Beklenmeyen bir hata oluştu.';
+            toast.error(errorMessage);
+            throw new Error(error)
+        }
+    }
 
 }
 

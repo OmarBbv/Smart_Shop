@@ -62,7 +62,7 @@ export default function WislhistPage() {
                 <FiTrash2 />
               </button>
 
-              <Link to={`/mehsullar/${product.id}`} className="flex-grow">
+              <Link to={`/mehsullar/${product.productId}`} className="flex-grow">
                 <div className="relative">
                   <img
                     src={product.product.images[0] || 'placeholder'}
