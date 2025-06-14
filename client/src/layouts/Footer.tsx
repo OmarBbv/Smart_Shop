@@ -1,11 +1,5 @@
-import {
-  FiPhone,
-  FiMail,
-  FiInstagram,
-  FiTwitter,
-  FiFacebook,
-  FiYoutube,
-} from 'react-icons/fi';
+import { FiPhone, FiMail, FiInstagram, FiTwitter, FiFacebook, FiYoutube } from "react-icons/fi"
+import { Link } from "react-router-dom"
 
 export default function Footer() {
   return (
@@ -19,79 +13,67 @@ export default function Footer() {
               </div>
               <span className="font-bold text-xl text-white">SMART STORE</span>
             </div>
-            <p className="text-sm mb-4">
-              Teknoloji ürünleri için en güvenilir adres.
-            </p>
+            <p className="text-sm mb-4">Texnologiya məhsulları üçün ən etibarlı ünvan.</p>
             <div className="flex gap-4 mt-4">
-              <a href="#" className="text-gray-400 hover:text-white">
+              <Link to="#" className="text-gray-400 hover:text-white">
                 <FiInstagram size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              </Link>
+              <Link to="#" className="text-gray-400 hover:text-white">
                 <FiFacebook size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              </Link>
+              <Link to="#" className="text-gray-400 hover:text-white">
                 <FiTwitter size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              </Link>
+              <Link to="#" className="text-gray-400 hover:text-white">
                 <FiYoutube size={20} />
-              </a>
+              </Link>
             </div>
           </div>
 
           <div>
-            <h3 className="font-bold text-white mb-4">Müşteri Hizmetleri</h3>
+            <h3 className="font-bold text-white mb-4">Müştəri Xidmətləri</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm hover:text-white">
-                  İletişim
-                </a>
+                <Link to="/elaqe" className="text-sm hover:text-white">
+                  Əlaqə
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm hover:text-white">
-                  Sıkça Sorulan Sorular
-                </a>
+                <Link to="/suallar" className="text-sm hover:text-white">
+                  Tez-tez Verilən Suallar
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm hover:text-white">
-                  İade ve Değişim
-                </a>
+                <Link to="/qaytarma-ve-deyisdirme" className="text-sm hover:text-white">
+                  Qaytarma və Dəyişdirmə
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm hover:text-white">
-                  Kargo ve Teslimat
-                </a>
+                <Link to="/catdirilma" className="text-sm hover:text-white">
+                  Kargo və Çatdırılma
+                </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-bold text-white mb-4">Kurumsal</h3>
+            <h3 className="font-bold text-white mb-4">Korporativ</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm hover:text-white">
-                  Hakkımızda
-                </a>
+                <Link to="/haqqimizda" className="text-sm hover:text-white">
+                  Haqqımızda
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm hover:text-white">
-                  Kariyer
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm hover:text-white">
+                <Link to="/magazalar" className="text-sm hover:text-white">
                   Mağazalarımız
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm hover:text-white">
-                  Kurumsal Satış
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-bold text-white mb-4">İletişim</h3>
+            <h3 className="font-bold text-white mb-4">Əlaqə</h3>
             <ul className="space-y-3">
               <li className="flex items-center gap-2">
                 <FiPhone className="text-red-500" />
@@ -106,17 +88,17 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-6 text-sm text-center md:text-left md:flex justify-between items-center">
-          <p>© 2023 Smart Store. Tüm hakları saklıdır.</p>
-          <div className="flex gap-4 mt-4 md:mt-0 justify-center md:justify-start">
-            <a href="#" className="hover:text-white">
-              Gizlilik Politikası
-            </a>
-            <a href="#" className="hover:text-white">
-              Kullanım Koşulları
-            </a>
-          </div>
+          <p>© 2023 Smart Store. Bütün hüquqlar qorunur.</p>
+          {/* <div className="flex gap-4 mt-4 md:mt-0 justify-center md:justify-start">
+            <Link to="/mexfilik-siyaseti" className="hover:text-white">
+              Məxfilik Siyasəti
+            </Link>
+            <Link to="/istifade-sertleri" className="hover:text-white">
+              İstifadə Şərtləri
+            </Link>
+          </div> */}
         </div>
       </div>
     </footer>
-  );
+  )
 }

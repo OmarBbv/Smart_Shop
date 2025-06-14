@@ -74,7 +74,6 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white">
       <div className="container max-w-7xl mx-auto px-4 xl:pt-3 py-3 xl:py-0">
-        {/* Üst kısım - Logo, Arama, Profil */}
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
@@ -115,20 +114,7 @@ export default function Navbar() {
             </ul>
           </div>
 
-          {/* Sağ kısım - Butonlar */}
           <div className="flex items-center gap-3 md:gap-6">
-            {/* <Link
-              to="/magazalar"
-              className="hidden md:block text-sm  hover:text-[var(--color-netflix-red)]"
-            >
-              Mağazalar
-            </Link>
-            <Link
-              to="/korporation"
-              className="hidden md:block text-sm  hover:text-[var(--color-netflix-red)]"
-            >
-              Korporativ satışlar
-            </Link> */}
             <div className="flex items-center gap-6">
               <a
                 href="https://wa.me/994518888888"
@@ -188,7 +174,7 @@ export default function Navbar() {
                       {user.name.slice(0, 3)}
                     </button>
 
-                    <div className={`${isShow ? 'block' : 'hidden'} absolute z-50 left-0 mt-2 min-w-[120px] bg-white border border-gray-300 rounded-lg shadow-`}>
+                    <div className={`${isShow ? 'block' : 'hidden'} absolute z-[9999] overflow-hidden left-0 mt-2 min-w-[120px] bg-white border border-gray-300 rounded-lg shadow-`}>
                       <button
                         onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleRouteButton(e, 'profile')}
                         className="w-full text-left px-4 py-2 text-sm text-nowrap hover:bg-gray-100 flex justify-between items-center gap-2">
@@ -222,9 +208,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        {/* Alt kısım - Kategori ve Menü */}
         <CategoryNav />
-        {/* Mobil Menü */}
         {isMenuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-200 py-4 px-4 z-50">
             <div className="flex flex-col gap-4">

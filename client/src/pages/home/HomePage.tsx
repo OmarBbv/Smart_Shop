@@ -15,12 +15,12 @@ export default function HomePage() {
       {/* Kategoriler */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Kategoriler</h2>
+          <h2 className="text-2xl font-bold">Kategoriyalar</h2>
           <a
             href="#"
             className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm"
           >
-            Tümünü Gör <FiChevronRight />
+            Daha çox <FiChevronRight />
           </a>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">

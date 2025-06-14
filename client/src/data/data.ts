@@ -710,7 +710,7 @@ export const PRODUCT_CATEGORIES = [
   },
   {
     id: 2,
-    name: 'Laptoplar',
+    name: 'Notebooklar',
     image:
       'https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
   },
@@ -722,19 +722,19 @@ export const PRODUCT_CATEGORIES = [
   },
   {
     id: 4,
-    name: 'Akıllı Saatler',
+    name: 'Ağıllı Saatlar',
     image:
       'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
   },
   {
     id: 5,
-    name: 'Tabletler',
+    name: 'Planşet',
     image:
       'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
   },
   {
     id: 6,
-    name: 'Kulaklıklar',
+    name: 'Qulaqcıqlar',
     image:
       'https://images.unsplash.com/photo-1546435770-a3e426bf472b?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80',
   },

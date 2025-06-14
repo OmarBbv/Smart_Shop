@@ -1,4 +1,5 @@
 import { productService } from "@/services/product-service";
+import { formatDate } from "@/utils/date-time";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -21,13 +22,13 @@ export default function ProductDetail() {
     });
   }
 
-
-
   const { data: product } = useQuery({
     queryKey: ['get/product_detail', id],
     queryFn: () => productService.getProduct(String(id)),
     enabled: !!id
   });
+
+  const productShareTime = formatDate(product?.createdAt!);
 
   useEffect(() => {
     console.log(product)
@@ -86,25 +87,15 @@ export default function ProductDetail() {
         <div className="space-y-6">
           <div>
             <div className="flex justify-between items-start">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-                {product?.name}
-              </h1>
+              <div className="flex justify-between items-center flex-1">
+                <div className="text-2xl sm:text-3xl font-bold text-gray-800">{product?.name}</div>
+                <span className="text-xs font-medium text-gray-600" >paylaşıldı: {productShareTime}</span>
+              </div>
+
               <div className="flex items-center space-x-2">
-                {/* <span
-                  className={`px-2 py-1 text-xs font-semibold rounded-full ${product.stock <= 5
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-green-100 text-green-800'
-                    }`}
-                >
-                  {product.stock <= 5
-                    ? `Son ${product.stock} Ürün`
-                    : 'Stokta Var'}
+                <span className="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">
+                  Yeni
                 </span>
-                {product.isNew && (
-                  <span className="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">
-                    Yeni
-                  </span>
-                )} */}
               </div>
             </div>
 
@@ -135,36 +126,20 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          <div className="border-t border-b border-gray-200 py-4">
-            {/* <div className="flex items-end gap-2">
-              {product.discountPrice ? (
-                <>
-                  <span className="text-3xl font-bold text-gray-800">
-                    {product.discountPrice.toLocaleString()}₺
-                  </span>
-                  <span className="text-lg text-gray-500 line-through">
-                    {product.price.toLocaleString()}₺
-                  </span>
-                  <span className="ml-2 text-sm font-medium text-red-600">
-                    %{discountPercentage} indirim
-                  </span>
-                </>
-              ) : (
-                <span className="text-3xl font-bold text-gray-800">
-                  {product.price.toLocaleString()}₺
-                </span>
-              )}
-            </div> */}
-            <p className="text-sm text-gray-500 mt-1">Tüm vergiler dahil</p>
+          <div className="border-t border-b border-gray-200 py-4 flex items-center">
+            <span className="flex items-end gap-2 text text-3xl font-semibold">
+              {product?.price} AZN
+            </span>
+
           </div>
 
           {/* Ürün Açıklaması */}
           <div>
             <h2 className="text-lg font-semibold text-gray-800 mb-2">
-              Ürün Açıklaması
+              Məhsul haqqında
             </h2>
             <p className="text-gray-600">
-              {/* {product.description} */}
+              {product?.description}
             </p>
           </div>
 
@@ -323,154 +298,93 @@ export default function ProductDetail() {
       </div>
 
       {/* Ürün Özellikleri ve Sekmeler */}
-      <div className="mt-16">
-        <div className="border-b border-gray-200">
-          <nav className="flex space-x-8">
-            <button className="border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600">
-              Ürün Özellikleri
-            </button>
-          </nav>
-        </div>
+      <div className="py-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-16">
+          {/* Sol Kolon */}
+          <div className="sm:col-span-1">
+            <div className="flex justify-between py-3 border-b border-gray-200">
+              <dt className="text-sm font-medium text-gray-500">Marka</dt>
+              <dd className="text-sm text-gray-900">{product?.name}</dd>
+            </div>
 
-        <div className="py-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-16">
-            <div className="sm:col-span-1">
-              <div className="flex justify-between py-3 border-b border-gray-200">
-                <dt className="text-sm font-medium text-gray-500">Marka</dt>
-                <dd className="text-sm text-gray-900">
-                  {/* {product.brand} */}
-                </dd>
-              </div>
-              <div className="flex justify-between py-3 border-b border-gray-200">
-                <dt className="text-sm font-medium text-gray-500">Model</dt>
-                <dd className="text-sm text-gray-900">iPhone 16 Pro Max</dd>
-              </div>
-              <div className="flex justify-between py-3 border-b border-gray-200">
-                <dt className="text-sm font-medium text-gray-500">
-                  İşletim Sistemi
-                </dt>
-                <dd className="text-sm text-gray-900">iOS 18</dd>
-              </div>
-              <div className="flex justify-between py-3 border-b border-gray-200">
-                <dt className="text-sm font-medium text-gray-500">
-                  Ekran Boyutu
-                </dt>
-                <dd className="text-sm text-gray-900">6.7 inç</dd>
-              </div>
-            </div>
-            <div className="sm:col-span-1">
-              <div className="flex justify-between py-3 border-b border-gray-200">
-                <dt className="text-sm font-medium text-gray-500">
-                  Dahili Depolama
-                </dt>
-                <dd className="text-sm text-gray-900">
-                  {/* {selectedSize} */}
-                </dd>
-              </div>
-              <div className="flex justify-between py-3 border-b border-gray-200">
-                <dt className="text-sm font-medium text-gray-500">Kamera</dt>
-                <dd className="text-sm text-gray-900">48 MP Fusion</dd>
-              </div>
-              <div className="flex justify-between py-3 border-b border-gray-200">
-                <dt className="text-sm font-medium text-gray-500">İşlemci</dt>
-                <dd className="text-sm text-gray-900">A18 Pro</dd>
-              </div>
-              <div className="flex justify-between py-3 border-b border-gray-200">
-                <dt className="text-sm font-medium text-gray-500">Renk</dt>
-                <dd className="text-sm text-gray-900">
-                  {/* {selectedColor} */}
-                </dd>
-              </div>
-            </div>
+            {product?.features &&
+              Object.entries(product.features)
+                .slice(0, Math.ceil(Object.entries(product.features).length / 2))
+                .map(([key, value], i) => (
+                  <div key={i} className="flex justify-between py-3 border-b border-gray-200">
+                    <dt className="text-sm font-medium text-gray-500 capitalize">
+                      {key.replace(/_/g, ' ')}
+                    </dt>
+                    <dd className="text-sm text-gray-900 text-right">
+                      {typeof value === 'string' || typeof value === 'number' ? (
+                        value
+                      ) : Array.isArray(value) ? (
+                        <ul className="list-disc list-inside space-y-1">
+                          {value.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : typeof value === 'object' ? (
+                        <ul className="space-y-1">
+                          {Object.entries(value).map(([subKey, subValue], idx) => (
+                            <li key={idx}>
+                              <span className="font-medium text-gray-600">{subKey.replace(/_/g, ' ')}:</span>{' '}
+                              {typeof subValue === 'string' || typeof subValue === 'number'
+                                ? subValue
+                                : JSON.stringify(subValue)}
+                            </li>
+                          ))}
+                        </ul>
+
+                      ) : (
+                        '-'
+                      )}
+                    </dd>
+                  </div>
+                ))}
+          </div>
+
+          {/* Sağ Kolon */}
+          <div className="sm:col-span-1">
+            {product?.features &&
+              Object.entries(product.features)
+                .slice(Math.ceil(Object.entries(product.features).length / 2))
+                .map(([key, value], i) => (
+                  <div key={i} className="flex justify-between py-3 border-b border-gray-200">
+                    <dt className="text-sm font-medium text-gray-500 capitalize">
+                      {key.replace(/_/g, ' ')}
+                    </dt>
+                    <dd className="text-sm text-gray-900 text-right">
+                      {typeof value === 'string' || typeof value === 'number' ? (
+                        value
+                      ) : Array.isArray(value) ? (
+                        <ul className="list-disc list-inside space-y-1">
+                          {value.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : typeof value === 'object' ? (
+                        <ul className="space-y-1">
+                          {Object.entries(value).map(([subKey, subValue], idx) => (
+                            <li key={idx}>
+                              <span className="font-medium text-gray-600">{subKey.replace(/_/g, ' ')}:</span>{' '}
+                              {subValue as any}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        '-'
+                      )}
+                    </dd>
+                  </div>
+                ))}
           </div>
         </div>
       </div>
 
-      {/* Benzer Ürünler */}
-      {/* <div className="mt-16">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Benzer Ürünler
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {FEATURED_PRODUCTS.map((product) => (
-            <Link
-              key={product.id}
-              to={`/mehsullar/${product.id}`}
-              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group"
-            >
-              <div className="relative">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute top-2 right-2 flex flex-col gap-2">
-                  <button
-                    className="bg-white/80 hover:bg-white p-2 rounded-full shadow-sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // Favorilere ekleme işlemi burada yapılabilir
-                    }}
-                  >
-                    <FiHeart className="text-gray-600" />
-                  </button>
-                </div>
-                {product.oldPrice > product.price && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    {Math.round((1 - product.price / product.oldPrice) * 100)}%
-                    İndirim
-                  </div>
-                )}
-              </div>
-              <div className="p-4">
-                <h3 className="font-medium mb-1 text-lg line-clamp-2 group-hover:text-red-500">
-                  {product.name}
-                </h3>
-                <div className="flex items-center gap-1 mb-2">
-                  <div className="flex text-amber-400">
-                    <FiStar className="fill-current" />
-                    <FiStar className="fill-current" />
-                    <FiStar className="fill-current" />
-                    <FiStar className="fill-current" />
-                    <FiStar
-                      className={
-                        product.rating >= 4.8
-                          ? 'fill-current'
-                          : 'fill-current opacity-30'
-                      }
-                    />
-                  </div>
-                  <span className="text-sm text-gray-500">
-                    {product.rating}
-                  </span>
-                </div>
-                <div className="flex items-baseline gap-2 mb-3">
-                  <span className="text-xl font-bold">{product.price} AZN</span>
-                  {product.oldPrice > product.price && (
-                    <span className="text-sm text-gray-500 line-through">
-                      {product.oldPrice} AZN
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-green-600 text-sm">
-                    {product.installment}
-                  </span>
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // Sepete ekleme işlemi burada yapılabilir
-                    }}
-                  >
-                    <FiShoppingCart />
-                  </button>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div> */}
+
+
+
     </div >
   );
 }

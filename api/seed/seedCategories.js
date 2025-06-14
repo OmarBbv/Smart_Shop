@@ -184,7 +184,6 @@ export async function seedCategories() {
 
     for (const categoryData of categories) {
         try {
-            // Önce bu kategori zaten var mı kontrol et
             const existingCategory = await Category.findOne({
                 where: { id: categoryData.id }
             });

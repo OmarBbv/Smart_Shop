@@ -59,7 +59,6 @@ const Category = sequelize.define('Category', {
   underscored: true
 });
 
-// 🔥 Slug yaratmaq üçün hook
 Category.addHook('beforeValidate', async (category) => {
   if (!category.slug && category.name) {
     category.slug = slugify(category.name);
@@ -67,7 +66,6 @@ Category.addHook('beforeValidate', async (category) => {
 });
 
 
-// İlişkilər
 Category.belongsTo(Category, {
   as: 'parent',
   foreignKey: 'parentId'

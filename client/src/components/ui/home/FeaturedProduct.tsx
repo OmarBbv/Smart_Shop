@@ -22,7 +22,7 @@ export default function FeaturedProduct() {
                     to="/mehsullar"
                     className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm"
                 >
-                    Tümünü Gör <FiChevronRight />
+                    Daha çox <FiChevronRight />
                 </Link>
             </div>
             <WindowVirtualizer>
