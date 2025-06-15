@@ -1,3 +1,4 @@
+import { LoadingImage } from "@/components/LoadingImage";
 import { productService } from "@/services/product-service";
 import { formatDate } from "@/utils/date-time";
 import { useQuery } from "@tanstack/react-query";
@@ -31,10 +32,6 @@ export default function ProductDetail() {
   const productShareTime = formatDate(product?.createdAt!);
 
   useEffect(() => {
-    console.log(product)
-  }, [product])
-
-  useEffect(() => {
     setImageIndex(0)
   }, [])
 
@@ -44,11 +41,14 @@ export default function ProductDetail() {
         {/* Ürün Görselleri */}
         <div className="space-y-4">
           <div className="bg-white rounded-lg overflow-hidden flex h-[400px] relative">
-            <img
-              src={product?.images[imgIndex]}
-              alt={product?.name}
-              className="w-full h-auto object-contain"
-            />
+            {product?.images ?
+              <img
+                src={product?.images[imgIndex]}
+                alt={product?.name}
+                className="w-full h-auto object-contain"
+              />
+              : <LoadingImage />
+            }
 
             <button
               onClick={() => handleChangeImage('left')}
@@ -63,23 +63,23 @@ export default function ProductDetail() {
             </button>
           </div>
 
-
-
-          {/* Küçük Resimler */}
           <div className="flex space-x-2 overflow-x-auto p-3">
-            {product?.images?.map((image, index) => (
-              <button
-                onClick={() => setImageIndex(index)}
-                key={index}
-                className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden ring-2 ring-offset-2 transition-all ${index === imgIndex ? 'ring-blue-500' : 'ring-transparent'}`}
-              >
-                <img
-                  src={image}
-                  alt={`${product.name} - Görsel ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
+            {product?.images ?
+              product?.images?.map((image, index) => (
+                <button
+                  onClick={() => setImageIndex(index)}
+                  key={index}
+                  className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden ring-2 ring-offset-2 transition-all ${index === imgIndex ? 'ring-blue-500' : 'ring-transparent'}`}
+                >
+                  <img
+                    src={image}
+                    alt={`${product.name} - Görsel ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))
+              : <LoadingImage />
+            }
           </div>
         </div>
 

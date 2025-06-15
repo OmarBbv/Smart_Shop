@@ -1,6 +1,7 @@
+import { LazyImage } from "@/components/LazyImage";
 import { useAuthController } from "@/hooks/useAuthController";
 import { wishlistService } from "@/services/wishList-service";
-import { ProductSeriveType } from "@/types/productServiceType";
+import { ProductServiceType } from "@/types/productServiceType";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import toast from "react-hot-toast";
@@ -8,8 +9,7 @@ import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 interface Props {
-    product: ProductSeriveType;
-    // refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<ProductResponse, Error>>;
+    product: ProductServiceType;
 }
 
 export default function FeaturedProductCard({ product }: Props) {
@@ -53,10 +53,10 @@ export default function FeaturedProductCard({ product }: Props) {
             className="relative flex flex-1 flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md hover:shadow-lg transition-shadow"
         >
             <div className="relative mx-3 mt-3 h-48 overflow-hidden rounded-xl">
-                <img
+                <LazyImage
                     src={product.images?.[0] || "https://via.placeholder.com/150"}
                     alt={product.name}
-                    className="object-cover w-full h-full"
+                    containerClassName="h-48"
                 />
                 <button
                     className={`absolute top-0 right-0 m-2 p-2 rounded-full shadow ${isInWishlist ? 'bg-red-500 text-white' : 'bg-white/80 hover:bg-white'}`}
@@ -67,7 +67,7 @@ export default function FeaturedProductCard({ product }: Props) {
             </div>
 
             <div className="mt-3 px-4 pb-4">
-                <h5 className="text-base font-medium text-slate-900 line-clamp-2 leading-5 h-8 capitalize">{product.name}</h5>
+                <h5 className="text-base font-medium text-slate-900 leading-5 h-8 capitalize line-clamp-1">{product.name}</h5>
                 <div className="my-2 flex items-center justify-between">
                     <p>
                         <span className="text-lg font-bold text-slate-900">{product.price} AZN</span>

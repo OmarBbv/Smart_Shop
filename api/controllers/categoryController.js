@@ -239,6 +239,8 @@ const categoryController = {
      */
     getProductsForCategoryAndSubcategories: asyncHandler(async (req, res) => {
         const { identifier } = req.params;
+        const { minPrice, maxPrice, sort = 'asc', page = 1, limit = 10 } = req.query;
+
         let targetCategory;
 
         if (!isNaN(identifier)) {
@@ -267,23 +269,67 @@ const categoryController = {
 
         try {
             const categoryIds = await getAllSubcategoryIds(targetCategory.id);
+            const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
 
+            const priceFilter = {};
+            if (minPrice) priceFilter[Op.gte] = Number(minPrice);
+            if (maxPrice) priceFilter[Op.lte] = Number(maxPrice);
+
+            const whereCondition = {
+                categoryId: {
+                    [Op.in]: categoryIds
+                }
+            };
+
+            if (minPrice || maxPrice) {
+                whereCondition.price = priceFilter;
+            }
+
+            const offset = (parseInt(page) - 1) * parseInt(limit);
+            const limitValue = parseInt(limit);
+
+            // Toplam ürün sayısını bulalım
+            const totalProducts = await Product.count({ where: whereCondition });
+
+            // Ürünleri sorgulayalım
             const products = await Product.findAll({
-                where: {
-                    categoryId: {
-                        [Op.in]: categoryIds
-                    }
-                },
-                include: [{ model: Category, as: 'category', attributes: ['id', 'name', 'slug'] }]
+                where: whereCondition,
+                include: [{
+                    model: Category,
+                    as: 'category',
+                    attributes: ['id', 'name', 'slug']
+                }],
+                order: [['price', sort.toLowerCase() === 'desc' ? 'DESC' : 'ASC']],
+                offset: offset,
+                limit: limitValue
             });
 
-            res.status(200).json(products);
+            // Ürünlerin tam URL'lerini oluşturalım
+            const productsWithFullUrls = products.map(product => {
+                const productJson = product.toJSON();
+                productJson.images = productJson.images?.map(image =>
+                    `${baseUrl}/${image.replace(/\\/g, '/')}`
+                ) || [];
+                return productJson;
+            });
+
+            // Toplam sayfa sayısını hesaplayalım
+            const totalPages = Math.ceil(totalProducts / limitValue);
+
+            // Veriyi döndürelim
+            res.status(200).json({
+                data: productsWithFullUrls,
+                pagination: {
+                    currentPage: parseInt(page),
+                    totalPages: totalPages,
+                    totalProducts: totalProducts,
+                }
+            });
         } catch (error) {
             res.status(500);
             throw new Error(`Error fetching products for category: ${error.message}`);
         }
-    })
-
+    }),
 };
 
 export default categoryController;

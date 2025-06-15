@@ -22,6 +22,10 @@ const router = createBrowserRouter([
         element: <ProductPage />,
       },
       {
+        path: '/mehsullar/kategoriya/:slug',
+        element: <ProductPage />
+      },
+      {
         path: '/mehsullar/:id',
         element: <ProductDetail />,
       },

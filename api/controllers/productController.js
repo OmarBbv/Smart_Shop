@@ -185,6 +185,7 @@ const productController = {
             ],
             limit,
             offset,
+            order: [['createdAt', 'DESC']]
         });
 
         const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
@@ -223,7 +224,7 @@ const productController = {
                 {
                     model: Category,
                     as: 'category',
-                    attributes: ['name'],
+                    attributes: ['name', 'slug'],
                 },
             ],
         });

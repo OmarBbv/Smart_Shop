@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { FiHeart, FiShoppingCart, FiTrash2 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -21,10 +20,6 @@ export default function WislhistPage() {
   const removeFromWishlist = async (id: number) => {
     mutate.mutate(id);
   }
-
-  useEffect(() => {
-    console.log('wishlistItems', wishlistItems);
-  }, [wishlistItems])
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -80,7 +75,7 @@ export default function WislhistPage() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-green-600 text-sm">
+                    <span className="text-green-600 text-sm line-clamp-2">
                       {product.product.description}
                     </span>
                     <button className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full">

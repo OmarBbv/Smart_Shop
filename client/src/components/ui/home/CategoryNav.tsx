@@ -1,121 +1,72 @@
-import { FiMenu } from 'react-icons/fi';
-import { NavLink } from 'react-router-dom';
-import MultiLevelCategory from '@/components/ui/home/MultiLevelCategory';
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from "react"
+import { ChevronDown } from "lucide-react"
+import { MultiNav } from "./MultiLevelCategory"
+
+
+const navs = ["Katalog", "Telefonlar", "Notebooklar", "Qulaqcıqlar"]
 
 export default function CategoryNav() {
-  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
-  const [headerHeight, setHeaderHeight] = useState<number>(0);
-  const categoryRef = useRef<HTMLDivElement | null>(null);
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [isMulticat, setIsMulticat] = useState(false)
+  const katalogRef = useRef<HTMLLIElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const multiNavRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const header = document.querySelector('header');
-    if (header) {
-      setHeaderHeight(header.clientHeight);
-    }
-  }, [isOpenMenu]);
+  const handleSelectNav = (index: number) => {
+    if (index === 0) setIsMulticat((prev) => !prev)
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
+        !katalogRef.current?.contains(event.target as Node) &&
+        !menuRef.current?.contains(event.target as Node) &&
+        !multiNavRef.current?.contains(event.target as Node)
       ) {
-        setIsOpenMenu(false);
+        setIsMulticat(false)
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener("click", handleClickOutside)
+    return () => document.removeEventListener("click", handleClickOutside)
+  }, [])
 
   return (
-    <>
-      <nav
-        ref={wrapperRef}
-        className={`hidden md:flex items-center h-14 relative my-1 transition-all duration-300 rounded-lg z-50`}
-      >
-        <button
-          onClick={() => setIsOpenMenu(!isOpenMenu)}
-          className={`flex items-center gap-2 hover:text-[var(--color-netflix-red)] xl:text-[17px] h-full
-          cursor-pointer transition-all duration-300 pr-3 font-medium
-          ${
-            isOpenMenu
-              ? 'text-[var(--color-netflix-red)] border-b-2 border-[var(--color-netflix-red)]'
-              : 'hover:bg-gray-50 rounded-md'
-          }`}
-        >
-          <FiMenu
-            className={`transition-transform duration-300 ${
-              isOpenMenu ? 'rotate-90' : ''
-            }`}
-          />
-          <span>Katalog</span>
-        </button>
-
-        <div className="mx-2 h-6 w-px bg-gray-200"></div>
-
-        <div className="flex space-x-1 items-center">
-          {[
-            { to: '/category/phones', label: 'Telefonlar' },
-            { to: '/category/laptops', label: 'Laptoplar' },
-            { to: '/category/tv', label: 'Televizorlar' },
-            { to: '/category/audio', label: 'Audio' },
-            { to: '/category/appliances', label: 'Ev əşyaları' },
-          ].map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `hover:text-[var(--color-netflix-red)] px-3 py-2 rounded-md xl:text-[16px]
-                font-medium transition-all duration-300 mx-1
-                ${
-                  isActive
-                    ? 'text-[var(--color-netflix-red)] bg-red-50 border-b-2 border-[var(--color-netflix-red)]'
-                    : 'hover:bg-gray-50'
-                }`
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
-
-        <AnimatePresence>
-          {isOpenMenu && (
-            <motion.div
-              ref={categoryRef}
-              className={`${
-                isOpenMenu ? 'block' : 'hidden'
-              } absolute top-full left-0 w-full mt-1 bg-white  shadow-xl overflow-hidden z-50`}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="relative">
-                <MultiLevelCategory />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <div className="relative">
+      <nav ref={menuRef} className="flex items-center w-full h-12 mt-4 bg-white border-b border-gray-100">
+        <ul className="flex items-center h-full w-full">
+          {navs.map((item, i) => {
+            const isActive = i === 0 && isMulticat
+            return (
+              <li
+                ref={i === 0 ? katalogRef : null}
+                key={i}
+                onClick={() => handleSelectNav(i)}
+                className={`cursor-pointer px-6 h-full flex items-center relative select-none transition-all
+                ${isActive ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:text-blue-600"}
+                ${i === 0 ? "font-medium" : ""}
+                group hover:bg-blue-50`}
+              >
+                <span className="flex items-center gap-2">
+                  {item}
+                  {i === 0 && (
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${isMulticat ? "rotate-180" : ""}`}
+                    />
+                  )}
+                </span>
+                <div
+                  className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600
+                  transform transition-all duration-300 ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                />
+              </li>
+            )
+          })}
+        </ul>
       </nav>
 
-      <AnimatePresence>
-        {isOpenMenu && (
-          <motion.div
-            className="fixed inset-0 bg-black/50 z-40"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setIsOpenMenu(false)}
-            style={{ top: headerHeight ? `${headerHeight}px` : '0px' }}
-          />
-        )}
-      </AnimatePresence>
-    </>
-  );
+      {isMulticat && <MultiNav ref={multiNavRef} />}
+    </div>
+  )
 }
+
+

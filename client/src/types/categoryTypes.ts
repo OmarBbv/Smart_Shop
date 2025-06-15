@@ -14,7 +14,7 @@ export interface Subcategory2 {
     parentId: number;
     createdAt: string;
     updatedAt: string;
-    subcategories: Subcategory[][];
+    subcategories: Subcategory[];
 }
 
 export interface Subcategory {

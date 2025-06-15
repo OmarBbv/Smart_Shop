@@ -12,6 +12,6 @@ router.get('/', categoryController.getAllCategories);
 router.get('/:id', categoryController.getCategoryByIdOrSlug); // not working
 router.put('/:id', categoryController.updateCategory);
 router.delete('/:id', categoryController.deleteCategory);
-router.get('/:id/products', categoryController.getProductsForCategoryAndSubcategories); // not working(test edilmedi)
+router.get('/:identifier/products', categoryController.getProductsForCategoryAndSubcategories);
 
 export default router;

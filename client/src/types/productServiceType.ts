@@ -1,4 +1,4 @@
-export interface ProductSeriveType {
+export interface ProductServiceType {
     id: number;
     name: string;
     price: string;
@@ -17,7 +17,7 @@ export interface ProductSeriveType {
 export interface ProductResponse {
     success: boolean;
     message: string;
-    data: ProductSeriveType[];
+    data: ProductServiceType[];
     pagination: {
         currentPage: number;
         totalPages: number;

@@ -1,164 +1,98 @@
-import type React from "react"
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { productPageData } from "@/data/productData"
+import { addFilter, clearFilter } from "@/stores/productFilterSlice";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom"
 
-// Get unique categories and brands from products
-const categories = [...new Set(productPageData.map((p) => p.category))]
-const brands = [...new Set(productPageData.map((p) => p.brand))]
-
-// Find min and max prices
-const minPrice = Math.min(...productPageData.map((p) => p.price))
-const maxPrice = Math.max(...productPageData.map((p) => p.price))
-
-interface FilterSidebarProps {
-  filters: {
-    category: string[]
-    brand: string[]
-    priceRange: { min: number; max: number }
-  }
-  setFilters: React.Dispatch<
-    React.SetStateAction<{
-      category: string[]
-      brand: string[]
-      priceRange: { min: number; max: number }
-    }>
-  >
-  closeMobileFilter?: () => void
+interface formType {
+  maxPrice: number | null,
+  minPrice: number | null
 }
 
-export default function ProductFilterSidebar({ filters, setFilters, closeMobileFilter }: FilterSidebarProps) {
-  const [priceRange, setPriceRange] = useState({
-    min: filters.priceRange.min,
-    max: filters.priceRange.max,
-  })
+export function FilterPanel() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // Update price range when slider changes
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPriceRange({
-      ...priceRange,
-      [e.target.name]: Number(e.target.value),
-    })
-  }
-
-  // Apply price range filter when slider stops
-  const handlePriceChangeComplete = () => {
-    setFilters({
-      ...filters,
-      priceRange,
-    })
-  }
-
-  // Toggle category filter
-  const toggleCategory = (category: string) => {
-    setFilters({
-      ...filters,
-      category: filters.category.includes(category)
-        ? filters.category.filter((c) => c !== category)
-        : [...filters.category, category],
-    })
-  }
-
-  // Toggle brand filter
-  const toggleBrand = (brand: string) => {
-    setFilters({
-      ...filters,
-      brand: filters.brand.includes(brand) ? filters.brand.filter((b) => b !== brand) : [...filters.brand, brand],
-    })
-  }
-
-  // Clear all filters
-  const clearFilters = () => {
-    setFilters({
-      category: [],
-      brand: [],
-      priceRange: { min: minPrice, max: maxPrice },
-    })
-    setPriceRange({ min: minPrice, max: maxPrice })
-    if (closeMobileFilter) {
-      closeMobileFilter()
+  const { register, handleSubmit, reset } = useForm<formType>({
+    defaultValues: {
+      maxPrice: null,
+      minPrice: null
     }
+  });
+
+  const handleClearFilter = () => {
+    const searchParams = new URLSearchParams();
+    searchParams.delete('max-qiymet');
+    searchParams.delete('min-qiymet');
+    navigate(`?${searchParams.toString()}`, { replace: true })
+    dispatch(clearFilter());
+    reset();
   }
+
+  const handleFilterSubmit = (data: formType) => {
+    const searchParams = new URLSearchParams(location.search);
+
+    if (data.minPrice) {
+      searchParams.set("min-qiymet", data.minPrice.toString());
+    } else {
+      searchParams.delete("min-qiymet");
+    }
+
+    if (data.maxPrice) {
+      searchParams.set("max-qiymet", data.maxPrice.toString());
+    } else {
+      searchParams.delete("max-qiymet");
+    }
+
+    navigate(`?${searchParams.toString()}`, { replace: true })
+
+    dispatch(addFilter({
+      min: data.minPrice?.toString() || '',
+      max: data.maxPrice?.toString() || ''
+    }));
+  };
+
+
+  const allowOnlyNumbers = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (!/^\d$/.test(e.key) && !allowedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const min = searchParams.get('min-qiymet');
+    const max = searchParams.get('max-qiymet');
+
+    if (min || max) {
+      dispatch(addFilter({
+        min: min || '',
+        max: max || ''
+      }));
+    }
+
+    reset({
+      minPrice: min ? Number(min) : null,
+      maxPrice: max ? Number(max) : null,
+    })
+
+  }, [location.search])
 
   return (
-    <div className="space-y-6">
-      {/* Categories */}
-      <div>
-        <h3 className="font-medium mb-3">Categories</h3>
-        <div className="space-y-2">
-          {categories.map((category) => (
-            <label key={category} className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={filters.category.includes(category)}
-                onChange={() => toggleCategory(category)}
-                className="rounded text-gray-800 focus:ring-gray-800"
-              />
-              <span className="text-gray-700">{category}</span>
-            </label>
-          ))}
+    <div className="bg-white shadow rounded p-4 w-[270px]">
+      <h2 className="text-lg font-semibold mb-4">Filtreler</h2>
+      <form onSubmit={handleSubmit(handleFilterSubmit)} className="w-full">
+        <div className="flex items-center gap-2 w-full">
+          <input {...register('minPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="min" className="w-1/2 outline-none border border-gray-400 p-1.5 rounded-md" />
+          <input {...register('maxPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="max" className="w-1/2 outline-none border border-gray-400 p-1.5 rounded-md" />
         </div>
-      </div>
-
-      {/* Brands */}
-      <div>
-        <h3 className="font-medium mb-3">Brands</h3>
-        <div className="space-y-2">
-          {brands.map((brand) => (
-            <label key={brand} className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={filters.brand.includes(brand)}
-                onChange={() => toggleBrand(brand)}
-                className="rounded text-gray-800 focus:ring-gray-800"
-              />
-              <span className="text-gray-700">{brand}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Price Range */}
-      <div>
-        <h3 className="font-medium mb-3">Price Range</h3>
-        <div className="space-y-4">
-          <div className="flex justify-between">
-            <span>${priceRange.min.toLocaleString()}</span>
-            <span>${priceRange.max.toLocaleString()}</span>
-          </div>
-          <input
-            type="range"
-            name="min"
-            min={minPrice}
-            max={maxPrice}
-            value={priceRange.min}
-            onChange={handlePriceChange}
-            onMouseUp={handlePriceChangeComplete}
-            onTouchEnd={handlePriceChangeComplete}
-            className="w-full"
-          />
-          <input
-            type="range"
-            name="max"
-            min={minPrice}
-            max={maxPrice}
-            value={priceRange.max}
-            onChange={handlePriceChange}
-            onMouseUp={handlePriceChangeComplete}
-            onTouchEnd={handlePriceChangeComplete}
-            className="w-full"
-          />
-        </div>
-      </div>
-
-      {/* Clear Filters */}
-      <motion.button
-        onClick={clearFilters}
-        className="w-full py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
-        whileTap={{ scale: 0.95 }}
-      >
-        Clear All Filters
-      </motion.button>
+        <button type="submit" className="p-1 w-full bg-green-500 text-white my-2 rounded-md hover:bg-green-600 duration-200">Göstər</button>
+        <button
+          onClick={handleClearFilter}
+          type="button" className="w-full text-gray-400 my-2 rounded-md duration-200 cursor-pointer">Bütün filtrləri təmizlə</button>
+      </form>
     </div>
-  )
+  );
 }

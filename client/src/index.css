@@ -7,9 +7,12 @@
   --color-bermuda: #78dcca; */
 
   /* Netflix Renkleri */
-  --color-netflix-red: #e50914; /* Netflix Red – HEX: #E50914 */
-  --color-netflix-white: #ffffff; /* Netflix White – HEX: #FFFFFF */
-  --color-netflix-black: #000000; /* Netflix Black – HEX: #000000 */
+  --color-netflix-red: #e50914;
+  /* Netflix Red – HEX: #E50914 */
+  --color-netflix-white: #ffffff;
+  /* Netflix White – HEX: #FFFFFF */
+  --color-netflix-black: #000000;
+  /* Netflix Black – HEX: #000000 */
 }
 
 @layer base {

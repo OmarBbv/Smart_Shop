@@ -60,7 +60,7 @@ function BannerImage({
   };
 
   return (
-    <div className="relative flex flex-1 rounded-2xl overflow-hidden">
+    <div className="relative flex flex-1 rounded-2xl overflow-hidden select-none">
       <div
         onClick={prev}
         className="cursor-pointer  absolute left-4 top-1/2 -translate-y-1/2 z-30 p-1 w-8 h-8 bg-white rounded-full hidden lg:flex justify-center items-center"
@@ -108,9 +108,8 @@ function BannerImage({
             <li
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`h-3 w-3 rounded-full cursor-pointer ${
-                currentIndex === index ? 'bg-red-500' : 'bg-gray-100'
-              }`}
+              className={`h-3 w-3 rounded-full cursor-pointer ${currentIndex === index ? 'bg-red-500' : 'bg-gray-100'
+                }`}
             />
           );
         })}
