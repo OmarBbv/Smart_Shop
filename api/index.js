@@ -10,6 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { seedCategories } from "./seed/seedCategories.js";
 import wishListRouter from "./routers/wishlistRouter.js";
+import seedProductsData from "./seed/seedProducts.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,7 +18,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'],
     credentials: true
 }));
 app.use(bodyParser.json());
@@ -38,6 +39,7 @@ async function startApp() {
         await connectDB();
 
         await seedCategories();
+        await seedProductsData();
 
         app.listen(PORT, () => {
             console.log(`✅ Server ${PORT} portunda çalışıyor`);

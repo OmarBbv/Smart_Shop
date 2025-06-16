@@ -11,17 +11,25 @@ export function LazyImage({
     src,
     alt = "",
     className = "",
-    containerClassName = "w-full h-48",
+    containerClassName = "w-full aspect-[3/2]",
 }: LazyImageProps) {
     const [loaded, setLoaded] = useState(false);
 
     return (
-        <div className={`relative overflow-hidden bg-gray-200 ${containerClassName}`}>
-            {!loaded && <div className="absolute inset-0 bg-gray-300 animate-pulse" />}
+        <div
+            className={`relative overflow-hidden bg-gray-200 ${containerClassName}`}
+            style={{ overflowAnchor: "none" }}
+        >
+            {!loaded && (
+                <div className="absolute inset-0 bg-gray-300 animate-pulse" />
+            )}
             <img
                 src={src}
                 alt={alt}
                 onLoad={() => setLoaded(true)}
+                width={300}
+                height={200}
+                loading="lazy"
                 className={`
           w-full h-full object-cover
           transition-opacity duration-700

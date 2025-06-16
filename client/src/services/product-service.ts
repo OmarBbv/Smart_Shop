@@ -23,7 +23,7 @@ class ProductService implements ProductTypes {
             return res.data
         } catch (error) {
             console.error("Error fetching products:", error);
-            throw new Error("Failed to fetch products");
+            throw new Error("Üzr istəyirik, məhsulları gətirə bilmədik. Xahiş edirik, internet bağlantınızı yoxlayın və yenidən cəhd edin.");
         }
     };
     async getProduct(id: string): Promise<ProductServiceType> {

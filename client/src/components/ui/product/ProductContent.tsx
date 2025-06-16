@@ -5,12 +5,18 @@ import { RootState } from "@/stores/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { WindowVirtualizer } from "virtua";
-import { useEffect, useRef } from "react";
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from "react";
 
 export const ProductContent = () => {
     const { slug } = useParams();
     const stateFilter = useSelector((state: RootState) => state.filter);
+
+    const { ref, inView } = useInView({
+        threshold: 1,
+        triggerOnce: false,
+    });
+
 
     const {
         data,
@@ -35,27 +41,14 @@ export const ProductContent = () => {
         enabled: !!slug
     });
 
-    const loadMoreRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            entries => {
-                if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-                    fetchNextPage();
-                }
-            },
-            {
-                rootMargin: '100px'
-            }
-        );
+        if (inView && hasNextPage && !isFetchingNextPage) {
+            console.log("Fetching next page...");
+            fetchNextPage();
+        }
+    }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-        const el = loadMoreRef.current;
-        if (el) observer.observe(el);
 
-        return () => {
-            if (el) observer.unobserve(el);
-        };
-    }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
     if (isLoading) return <LoadingOrError isLoading={true} />;
     if (isError) return <LoadingOrError error={(error as Error).message} />;
@@ -64,21 +57,20 @@ export const ProductContent = () => {
 
     return (
         <>
-            <WindowVirtualizer>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    {allProducts.length > 0 ? (
-                        allProducts.map((prod: any) => (
-                            <FeaturedProductCard key={prod.id} product={prod} />
-                        ))
-                    ) : (
-                        <div>mehsul yoxdur</div>
-                    )}
-                </div>
-            </WindowVirtualizer>
-
-            <div ref={loadMoreRef} className="h-10 flex justify-center items-center">
-                {isFetchingNextPage && <LoadingOrError isLoading={true} />}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 ">
+                {allProducts.length > 0 ? (
+                    allProducts.map((prod) => (
+                        <FeaturedProductCard key={prod.id} product={prod} />
+                    ))
+                ) : (
+                    <div>mehsul yoxdur</div>
+                )}
             </div>
+
+            <div ref={ref} className="h-10 flex justify-center items-center">
+                {(hasNextPage && !isFetchingNextPage) ? <LoadingOrError isLoading={true} /> : null}
+            </div>
+
         </>
     );
 };

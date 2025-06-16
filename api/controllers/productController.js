@@ -46,6 +46,52 @@ const productController = {
         });
     }),
 
+    // createProduct: asyncHandler(async (req, res) => {
+    //     try {
+    //         const { name, price, categoryId, description, credit_available } = req.body;
+
+    //         if (!name || !price || !categoryId) {
+    //             return res.status(400).json({ success: false, message: "Məcburi sahələr yoxdur" });
+    //         }
+
+    //         const imagesFile = req.files ? req.files.map(file => file.path) : [];
+
+    //         let parsedFeatures = {};
+    //         try {
+    //             parsedFeatures =
+    //                 typeof req.body.features === 'string'
+    //                     ? JSON.parse(req.body.features)
+    //                     : req.body.features || {};
+    //         } catch (err) {
+    //             return res.status(400).json({ success: false, message: "Features JSON formatında deyil" });
+    //         }
+
+    //         const newProduct = await Product.create({
+    //             name,
+    //             price,
+    //             description,
+    //             categoryId,
+    //             credit_available,
+    //             features: parsedFeatures,
+    //             images: imagesFile,
+    //         });
+
+    //         res.status(201).json({
+    //             message: 'Məhsul uğurla əlavə edildi.',
+    //             success: true,
+    //             data: newProduct,
+    //         });
+    //     } catch (error) {
+    //         console.error('Product creation error:', error);
+    //         res.status(500).json({
+    //             success: false,
+    //             message: 'Server xətası. Məhsul əlavə edilərkən xəta baş verdi.',
+    //             error: error.message,
+    //             stack: error.stack,
+    //         });
+    //     }
+    // }),
+
 
     /**
   * @desc    Məhsulu yeniləmək
@@ -171,7 +217,7 @@ const productController = {
             }
         }
 
-        const limit = 20;
+        const limit = 30;
         const offset = (Number(page) - 1) * limit;
 
         const { rows: products, count: total } = await Product.findAndCountAll({
