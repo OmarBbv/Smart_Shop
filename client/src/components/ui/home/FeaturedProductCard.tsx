@@ -67,7 +67,7 @@ export default function FeaturedProductCard({ product }: Props) {
             </div>
 
             <div className="mt-3 px-4 pb-4">
-                <h5 className="text-base font-medium text-slate-900 leading-5 h-8 capitalize line-clamp-1">{product.name}</h5>
+                <h5 className="text-base font-medium text-slate-900 h-8 capitalize line-clamp-1 leading-7">{product.name}</h5>
                 <div className="my-2 flex items-center justify-between">
                     <p>
                         <span className="text-lg font-bold text-slate-900">{product.price} AZN</span>

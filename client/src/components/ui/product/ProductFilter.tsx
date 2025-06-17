@@ -83,10 +83,13 @@ export function FilterPanel() {
   return (
     <div className="bg-white shadow rounded p-4 w-[270px]">
       <h2 className="text-lg font-semibold mb-4">Filtreler</h2>
-      <form onSubmit={handleSubmit(handleFilterSubmit)} className="w-full">
+      <form onSubmit={handleSubmit(handleFilterSubmit)} className="w-full space-y-2">
+        {/* <div className="flex items-center gap-2 w-full">
+          <FilterTemplate />
+        </div> */}
         <div className="flex items-center gap-2 w-full">
-          <input {...register('minPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="min" className="w-1/2 outline-none border border-gray-400 p-1.5 rounded-md" />
-          <input {...register('maxPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="max" className="w-1/2 outline-none border border-gray-400 p-1.5 rounded-md" />
+          <input {...register('minPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="min" className="w-1/2 outline-none border border-gray-400 p-1 rounded-md" />
+          <input {...register('maxPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="max" className="w-1/2 outline-none border border-gray-400 p-1 rounded-md" />
         </div>
         <button type="submit" className="p-1 w-full bg-green-500 text-white my-2 rounded-md hover:bg-green-600 duration-200">Göstər</button>
         <button

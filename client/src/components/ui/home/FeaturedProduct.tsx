@@ -45,7 +45,7 @@ export default function FeaturedProduct() {
     return (
         <section>
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Yeni əlavə edilən məhsullar</h2>
+                <h2 className="text-2xl font-bold">Bütün məhsullar</h2>
                 <Link to="/mehsullar" className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm">
                     Daha çox <FiChevronRight />
                 </Link>

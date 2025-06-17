@@ -60,7 +60,7 @@ class ProductService implements ProductServiceInterface {
             console.log(res);
         } catch (error: unknown) {
             if (error instanceof Error) {
-                    throw new Error(error.message || "Bilinməyən xəta baş verdi");
+                throw new Error(error.message || "Bilinməyən xəta baş verdi");
             }
             throw new Error("Bilinməyən xəta baş verdi");
         }

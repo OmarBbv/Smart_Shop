@@ -32,7 +32,7 @@ export function LoginForm() {
         mutationKey: ["post/login"],
         mutationFn: (data: LoginFormData) => authService.login(data),
         onSuccess: (data: AuthType) => {
-            toast.success("Login successful");
+            toast.success("Giriş uğurla tamamlandı");
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
             navigate("/", { replace: true });

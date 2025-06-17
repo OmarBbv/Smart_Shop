@@ -1,9 +1,4 @@
-import {
-  FiChevronRight,
-} from 'react-icons/fi';
 import HeroBanner from '@/components/ui/home/HeroBanner';
-import { Link } from 'react-router-dom';
-import { PRODUCT_CATEGORIES, } from '@/data/data';
 import FeaturedProduct from '@/components/ui/home/FeaturedProduct';
 
 export default function HomePage() {
@@ -13,9 +8,9 @@ export default function HomePage() {
       <HeroBanner />
 
       {/* Kategoriler */}
-      <section>
+      {/* <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Kategoriyalar</h2>
+          <h2 className="text-2xl font-bold">Bu gün əlavə edilən</h2>
           <a
             href="#"
             className="text-red-500 hover:text-red-600 flex items-center gap-1 text-sm"
@@ -43,7 +38,7 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Öne Çıkan Ürünler */}
       <FeaturedProduct />

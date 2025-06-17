@@ -7,62 +7,28 @@ import FAQPage from '@/pages/faq/FaqPage';
 import DeliveryPage from '@/pages/delivery/DeliveryPage';
 import ContactPage from '@/pages/contact/ContactPage';
 import StoresPage from '@/pages/stores/StoresPage';
+import { NotFoundPage } from '@/pages/not_found/NotFoundPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: '/mehsullar',
-        element: <ProductPage />,
-      },
-      {
-        path: '/mehsullar/kategoriya/:slug',
-        element: <ProductPage />
-      },
-      {
-        path: '/mehsullar/:id',
-        element: <ProductDetail />,
-      },
-      {
-        path: '/istek-siyahim',
-        element: <WislhistPage />,
-      },
-      {
-        path: '/haqqimizda',
-        element: <AboutPage />
-      },
-      {
-        path: '/qaytarma-ve-deyisdirme',
-        element: <ReturnExchangePage />
-      },
-      {
-        path: '/suallar',
-        element: <FAQPage />
-      },
-      {
-        path: '/catdirilma',
-        element: <DeliveryPage />
-      },
-      {
-        path: '/elaqe',
-        element: <ContactPage />
-      },
-      {
-        path: '/magazalar',
-        element: <StoresPage />
-      }
+      { index: true, element: <HomePage /> },
+      { path: '/mehsullar', element: <ProductPage /> },
+      { path: '/mehsullar/kategoriya/:slug', element: <ProductPage /> },
+      { path: '/mehsullar/:id', element: <ProductDetail /> },
+      { path: '/istek-siyahim', element: <WislhistPage /> },
+      { path: '/haqqimizda', element: <AboutPage /> },
+      { path: '/qaytarma-ve-deyisdirme', element: <ReturnExchangePage /> },
+      { path: '/suallar', element: <FAQPage /> },
+      { path: '/catdirilma', element: <DeliveryPage /> },
+      { path: '/elaqe', element: <ContactPage /> },
+      { path: '/magazalar', element: <StoresPage /> },
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
-  {
-    path: '/giris',
-    element: <AuthPage />
-  }
+  { path: '/giris', element: <AuthPage /> },
+  { path: '*', element: <NotFoundPage /> }
 ]);
-
 export default router;

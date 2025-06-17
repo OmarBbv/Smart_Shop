@@ -182,39 +182,22 @@ const productController = {
      * @access  Public
      */
     getAllProducts: asyncHandler(async (req, res) => {
-        const { categoryId, minPrice, maxPrice, features, page = 1 } = req.query;
+        const { minPrice, maxPrice, page = 1 } = req.query;
 
         const where = {};
-
-        if (categoryId) {
-            where.categoryId = categoryId;
-        }
 
         if (minPrice) {
             where.price = {
                 ...(where.price || {}),
-                [Op.gte]: minPrice,
+                [Op.gte]: Number(minPrice),
             };
         }
 
         if (maxPrice) {
             where.price = {
                 ...(where.price || {}),
-                [Op.lte]: maxPrice,
+                [Op.lte]: Number(maxPrice),
             };
-        }
-
-        if (features) {
-            try {
-                where.features = {
-                    [Op.contains]: JSON.parse(features),
-                };
-            } catch (error) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Geçersiz features formatı',
-                });
-            }
         }
 
         const limit = 30;
@@ -235,7 +218,6 @@ const productController = {
         });
 
         const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
-
 
         const productsWithFullUrls = products.map(product => ({
             ...product.toJSON(),

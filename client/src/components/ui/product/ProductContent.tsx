@@ -17,6 +17,9 @@ export const ProductContent = () => {
         triggerOnce: false,
     });
 
+    const queryKey = slug
+        ? ['get/all/category/product', slug, stateFilter]
+        : ['get/all/products', 'all', stateFilter];
 
     const {
         data,
@@ -27,18 +30,22 @@ export const ProductContent = () => {
         isError,
         error
     } = useInfiniteQuery({
-        queryKey: ['get/all/category/product', slug, stateFilter],
+        queryKey,
         queryFn: ({ pageParam = 1 }) => {
-            if (!slug) return Promise.resolve({ data: [], pagination: { currentPage: 1, totalPages: 1 } });
             const pr = { minPrice: stateFilter.min, maxPrice: stateFilter.max };
-            return productService.getProductsForCategoryAndSubcategories({ slug, pr, page: pageParam });
+            if (slug) {
+                if (!slug) return Promise.resolve({ data: [], pagination: { currentPage: 1, totalPages: 1 } });
+                return productService.getProductsForCategoryAndSubcategories({ slug, pr, page: pageParam });
+            } else {
+                return productService.getAllProducts(pageParam, pr);
+            }
         },
         initialPageParam: 1,
         getNextPageParam: (lastPage) => {
             const { currentPage, totalPages } = lastPage.pagination;
             return currentPage < totalPages ? currentPage + 1 : undefined;
         },
-        enabled: !!slug
+        enabled: true,
     });
 
     useEffect(() => {
@@ -47,8 +54,6 @@ export const ProductContent = () => {
             fetchNextPage();
         }
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-
 
     if (isLoading) return <LoadingOrError isLoading={true} />;
     if (isError) return <LoadingOrError error={(error as Error).message} />;
