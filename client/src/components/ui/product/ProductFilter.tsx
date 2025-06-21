@@ -1,5 +1,5 @@
 import { addFilter, clearFilter } from "@/stores/productFilterSlice";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom"
@@ -13,6 +13,7 @@ export function FilterPanel() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isFirstRender = useRef(true);
 
   const { register, handleSubmit, reset } = useForm<formType>({
     defaultValues: {
@@ -54,8 +55,9 @@ export function FilterPanel() {
   };
 
 
+
   const allowOnlyNumbers = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
     if (!/^\d$/.test(e.key) && !allowedKeys.includes(e.key)) {
       e.preventDefault();
     }
@@ -77,24 +79,40 @@ export function FilterPanel() {
       minPrice: min ? Number(min) : null,
       maxPrice: max ? Number(max) : null,
     })
+  }, [location.search]);
 
-  }, [location.search])
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    dispatch(clearFilter());
+    reset({
+      minPrice: null,
+      maxPrice: null
+    });
+  }, [location.pathname]);
 
   return (
     <div className="bg-white shadow rounded p-4 w-[270px]">
-      <h2 className="text-lg font-semibold mb-4">Filtreler</h2>
+      <h2 className="text-lg font-semibold mb-4 text-gray-800">Filterlər</h2>
       <form onSubmit={handleSubmit(handleFilterSubmit)} className="w-full space-y-2">
         {/* <div className="flex items-center gap-2 w-full">
           <FilterTemplate />
         </div> */}
         <div className="flex items-center gap-2 w-full">
-          <input {...register('minPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="min" className="w-1/2 outline-none border border-gray-400 p-1 rounded-md" />
-          <input {...register('maxPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="max" className="w-1/2 outline-none border border-gray-400 p-1 rounded-md" />
+          <input {...register('minPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="min" autoComplete="off" className="w-1/2 outline-none border border-gray-400 p-1 rounded-md" />
+          <input {...register('maxPrice')} onKeyDown={allowOnlyNumbers} min="0" inputMode="numeric" pattern="[0-9]*" type="text" placeholder="max" autoComplete="off" className="w-1/2 outline-none border border-gray-400 p-1 rounded-md" />
         </div>
         <button type="submit" className="p-1 w-full bg-green-500 text-white my-2 rounded-md hover:bg-green-600 duration-200">Göstər</button>
-        <button
-          onClick={handleClearFilter}
-          type="button" className="w-full text-gray-400 my-2 rounded-md duration-200 cursor-pointer">Bütün filtrləri təmizlə</button>
+        <div className="flex flex-1 justify-center">
+          <button
+            onClick={handleClearFilter}
+            type="button" className="text-gray-400 my-2 rounded-md duration-200 cursor-pointer hover:underline">
+            Bütün filtrləri təmizlə
+          </button>
+        </div>
       </form>
     </div>
   );

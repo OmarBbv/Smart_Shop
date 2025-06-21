@@ -1,12 +1,12 @@
 import Category from "../models/categoryModel.js";
 
 export async function seedCategories() {
-    console.log("🌱 Kategori seed işlemi başlatılıyor...");
+    // console.log("🌱 Kategori seed işlemi başlatılıyor...");
 
     const existingCount = await Category.count();
 
     if (existingCount > 0) {
-        console.log(`✅ Zaten ${existingCount} kategori mevcut. Seed işlemi atlanıyor.`);
+        // console.log(`✅ Zaten ${existingCount} kategori mevcut. Seed işlemi atlanıyor.`);
         return;
     }
 

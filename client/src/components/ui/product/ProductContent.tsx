@@ -68,9 +68,29 @@ export const ProductContent = () => {
                         <FeaturedProductCard key={prod.id} product={prod} />
                     ))
                 ) : (
-                    <div>mehsul yoxdur</div>
+                    <div className="col-span-full flex flex-col items-center justify-center p-8 text-center text-gray-500 select-none">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-16 w-16 mb-4 text-gray-300 mx-auto"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                        <p className="text-lg sm:text-xl font-semibold">Mehsul yoxdur</p>
+                        <p className="mt-2 text-sm sm:text-base text-gray-400 max-w-xs mx-auto">
+                            Üzr istəyirik, uyğun məhsul tapılmadı. Filtirlərinizi yoxlayın və ya yenidən cəhd edin.
+                        </p>
+                    </div>
                 )}
             </div>
+
 
             <div ref={ref} className="h-10 flex justify-center items-center">
                 {(hasNextPage && !isFetchingNextPage) ? <LoadingOrError isLoading={true} /> : null}

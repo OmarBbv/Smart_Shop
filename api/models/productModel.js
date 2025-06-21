@@ -55,7 +55,7 @@ const Product = sequelize.define(
 );
 
 /* İlişkiler */
-Product.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
+Product.belongsTo(Category, { foreignKey: 'categoryId', as: 'category', onDelete: 'CASCADE' });
 Category.hasMany(Product, { foreignKey: 'categoryId', as: 'products' });
 
 export default Product;

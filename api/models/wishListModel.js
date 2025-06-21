@@ -47,7 +47,6 @@ Product.belongsToMany(User, {
     as: 'wishlistedByUsers',
 });
 
-// BU İKİSİ EKLENMELİ
 Wishlist.belongsTo(Product, {
     foreignKey: 'productId',
     as: 'product',

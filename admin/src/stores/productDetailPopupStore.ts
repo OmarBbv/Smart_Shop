@@ -19,10 +19,8 @@ export const useProductPopUp = create<ProductPopUpStore>()(
         selectedProduct: null,
         isUpdateProd: () => set({ isUpdate: true }),
         isCloseUpdateProd: () => set({ isUpdate: false }),
-        openPopUp: (product: Datum) =>
-            set({ isOpen: true, selectedProduct: product }),
-        closePopUp: () =>
-            set({ isOpen: false, selectedProduct: null }),
+        openPopUp: (product) => set({ isOpen: true, selectedProduct: product }),
+        closePopUp: () => set({ isOpen: false, selectedProduct: null }),
     }))
 );
 

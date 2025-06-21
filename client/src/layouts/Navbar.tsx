@@ -1,23 +1,43 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiSearch, FiHeart, FiMenu, FiUser } from 'react-icons/fi';
-import CustomInput from '@/components/CustomInput';
 import CategoryNav from '@/components/ui/home/CategoryNav';
 import { useAuthController } from '@/hooks/useAuthController';
 import { LogOut, UserPen } from 'lucide-react';
 import { authService } from '@/services/auth-service';
+import { useQuery } from '@tanstack/react-query';
+import { productService } from '@/services/product-service';
+import { useForm } from 'react-hook-form';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [isShow, setIsShow] = useState(false);
   const { token, user } = useAuthController();
-
-  const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isOpenSearch, setIsOpenSearch] = useState<boolean>(false);
   const searchRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null!);
   const lastScrollY = useRef(0);
+
+  const { register, watch } = useForm({
+    defaultValues: {
+      query: ''
+    }
+  });
+
+  const query = watch('query');
+
+  const debouncedSearchTerm = useDebounce(query, 1000);
+
+  const { data: queryData } = useQuery({
+    queryKey: ['get/search/data', query],
+    queryFn: () => productService.getSearchedProducts(query),
+    enabled: debouncedSearchTerm.length > 0
+  })
+
+
 
   const handleRouteButton = (e: React.MouseEvent<HTMLButtonElement>, str: 'profile' | 'exit') => {
     e.stopPropagation();
@@ -75,7 +95,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white">
       <div className="container max-w-7xl mx-auto px-4 xl:pt-3 py-3 xl:py-0">
         <div className="flex items-center justify-between gap-4">
-          {/* Logo */}
+
           <Link to="/" className="flex items-center gap-2">
             <div className="bg-[var(--color-netflix-red)] rounded-full w-8 h-8 flex items-center justify-center">
               <span className="text-white font-bold">S</span>
@@ -86,32 +106,44 @@ export default function Navbar() {
           </Link>
 
           <div className="flex-1 max-w-lg relative ">
-            <CustomInput
-              onClick={handleSearchButton}
-              ref={inputRef}
-              placeholder="Axtar.."
-              type="search"
-              classNames="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-netflix-red)] focus:border-transparent text-sm"
-              autoComplete="off"
-            />
+            <div className="flex-1 max-w-2xl relative hidden md:block">
+              <input
+                {...register('query')}
+                ref={(e) => {
+                  register('query').ref(e);
+                  if (e) inputRef.current = e;
+                }}
+                onClick={handleSearchButton}
+                type="text"
+                placeholder="Axtarış..."
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-netflix-red)] focus:border-transparent text-sm"
+                autoComplete={'off'}
+              />
+              <FiSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+            </div>
 
-            <ul
-              id="custom-scrollbar-thin"
-              ref={searchRef}
-              className={`max-h-[300px] overflow-y-auto absolute z-[60] mt-2 top-full left-0 w-full bg-white border border-gray-300 rounded-md ${isOpenSearch ? 'block' : 'hidden'
-                }`}
-            >
-              {Array.from({ length: 10 }).map((_, index) => (
-                <li key={index}>
-                  <Link
-                    to="/"
-                    className="block px-2 py-4 hover:bg-gray-100 text-sm"
-                  >
-                    Telefonlar
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {queryData?.data && (
+              <ul
+                id="custom-scrollbar-thin"
+                ref={searchRef}
+                className={`max-h-[300px] overflow-y-auto absolute z-[60] mt-2 top-full left-0 w-full bg-white border border-gray-300 rounded-md ${isOpenSearch ? 'block' : 'hidden'}`}
+              >
+                {queryData.data.length > 0 ? (
+                  queryData.data.map(d => (
+                    <li key={d.id}>
+                      <Link
+                        to={`/mehsullar/${d.id}`}
+                        className="block px-2 py-4 hover:bg-gray-100 text-sm"
+                      >
+                        {d.name}
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-2 py-4 text-sm text-gray-500">Axtarış üzrə nəticə tapılmadı.</li>
+                )}
+              </ul>
+            )}
           </div>
 
           <div className="flex items-center gap-3 md:gap-6">

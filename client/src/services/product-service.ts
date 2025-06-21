@@ -7,10 +7,12 @@ interface InitialValue {
     maxPrice: string;
 }
 
+
 interface ProductTypes {
     getAllProducts: (page?: number, pr?: InitialValue) => Promise<ProductResponse>;
     getProduct: (id: string) => Promise<ProductServiceType>;
     getProductsForCategoryAndSubcategories: (args: { slug: string; pr: InitialValue, page: number }) => Promise<ProductServiceType[]>;
+    getSearchedProducts: (params: string) => Promise<ProductResponse>
 }
 
 class ProductService implements ProductTypes {
@@ -65,6 +67,20 @@ class ProductService implements ProductTypes {
                 error?.message ||
                 'Beklenmeyen bir hata oluştu.';
             toast.error(errorMessage);
+        }
+    }
+
+    async getSearchedProducts(params: string): Promise<ProductResponse> {
+        console.log('params', params)
+
+        try {
+            const res = await httpClient.get('/products/search', { params: { query: params } });
+            console.log('res.data: ', res.data);
+
+
+            return res.data
+        } catch (error: any) {
+            throw new Error(error)
         }
     }
 }

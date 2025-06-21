@@ -67,7 +67,7 @@ const authController = {
         });
 
         res.status(200).json({ message: 'Çıkış başarılı' });
-    })
+    }),
 };
 
 export default authController;

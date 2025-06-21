@@ -10,6 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { seedCategories } from "./seed/seedCategories.js";
 import wishListRouter from "./routers/wishlistRouter.js";
+import heroRouter from "./routers/heroRouter.js";
 import seedProductsData from "./seed/seedProducts.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +32,7 @@ app.use('/api/v1/products', productRouter);
 app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/wishlist', wishListRouter);
+app.use('/api/v1/heros', heroRouter);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -39,7 +41,7 @@ async function startApp() {
         await connectDB();
 
         await seedCategories();
-        await seedProductsData();
+        // await seedProductsData();
 
         app.listen(PORT, () => {
             console.log(`✅ Server ${PORT} portunda çalışıyor`);

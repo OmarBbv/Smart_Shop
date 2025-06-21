@@ -47,7 +47,26 @@ const userController = {
             message: 'İstifadəçi gətirildi',
             data: user
         })
-    })
+    }),
+
+    /**
+   * @desc    Tek bir istifadəçini getirmek
+   * @route   GET /api/v1/users/update/id
+   * @access  Private/User
+   */
+    // updateUser: asyncHandler(async (req, res) => {
+    //     const userId = req.user.id;
+    //     const {name} = req.body;
+
+    //     if (!userId) {
+    //         return res.status(401).json({
+    //             success: false,
+    //             message: 'Istifadəçi tapılmadı.'
+    //         })
+    //     }
+
+    //     const user = 
+    // })
 }
 
 export default userController;

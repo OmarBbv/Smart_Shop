@@ -83,7 +83,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Bilgilendirme Mesajları */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="lg:columns-2 space-y-2">
           {/* Sol Kolon - Sistem Durumu */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Sistem Durumu</h2>
@@ -136,55 +136,9 @@ export default function DashboardPage() {
                   <p className="text-xs text-gray-500 mt-1">15 dakika önce</p>
                 </div>
               </li>
-              <li className="flex items-start p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="bg-purple-100 p-2 rounded-full mr-3 mt-1">
-                  <TrendingUp className="h-4 w-4 text-purple-600" />
-                </div>
-                <div>
-                  <p className="font-medium text-gray-900">Satış gerçekleşti</p>
-                  <p className="text-sm text-gray-600">₺1,250 değerinde satış yapıldı</p>
-                  <p className="text-xs text-gray-500 mt-1">30 dakika önce</p>
-                </div>
-              </li>
             </Box>
           </Box>
         </div>
-
-        {/* Alt Bilgi Kartları */}
-        <Box className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Box className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div className="text-center">
-              <div className="bg-indigo-100 p-3 rounded-full w-fit mx-auto mb-3">
-                <Users className="h-6 w-6 text-indigo-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900">Aktif Kullanıcılar</h3>
-              <p className="text-2xl font-bold text-indigo-600 mt-1">324</p>
-              <p className="text-sm text-gray-600 mt-1">Şu anda online</p>
-            </div>
-          </Box>
-
-          <Box className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div className="text-center">
-              <div className="bg-orange-100 p-3 rounded-full w-fit mx-auto mb-3">
-                <Package className="h-6 w-6 text-orange-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900">Stok Durumu</h3>
-              <p className="text-2xl font-bold text-orange-600 mt-1">%87</p>
-              <p className="text-sm text-gray-600 mt-1">Stok oranı</p>
-            </div>
-          </Box>
-
-          <Box className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div className="text-center">
-              <div className="bg-teal-100 p-3 rounded-full w-fit mx-auto mb-3">
-                <TrendingUp className="h-6 w-6 text-teal-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900">Günlük Hedef</h3>
-              <p className="text-2xl font-bold text-teal-600 mt-1">%73</p>
-              <p className="text-sm text-gray-600 mt-1">Hedefe ulaşım</p>
-            </div>
-          </Box>
-        </Box>
       </div>
     </div>
   )

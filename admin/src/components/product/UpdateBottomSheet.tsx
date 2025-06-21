@@ -63,7 +63,6 @@ export default function UpdateBottomSheet({ product }: Props) {
         inputRef?.current?.click()
     }
 
-    // Mevcut resimleri silmek için düzeltilmiş fonksiyon
     function handleRemoveImage(index: number) {
         setExistingImages((prev) => prev.filter((_, i) => i !== index))
     }

@@ -1430,13 +1430,13 @@ const seedProducts = [
 
 const seedProductsData = async () => {
     try {
-        console.log("Məhsullar əlavə edilir...");
-        console.log('seedProducts.legth', seedProducts.length)
+        // console.log("Məhsullar əlavə edilir...");
+        // console.log('seedProducts.legth', seedProducts.length)
         for (const productData of seedProducts) {
             await Product.create(productData);
         }
 
-        console.log("Bütün məhsullar uğurla əlavə edildi!");
+        // console.log("Bütün məhsullar uğurla əlavə edildi!");
     } catch (error) {
         console.error("Məhsullar əlavə edilərkən xəta:", error);
     }

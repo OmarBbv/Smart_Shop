@@ -1,5 +1,6 @@
 import express from 'express';
 import userController from '../controllers/userController.js';
+import authorizeRole from '../middlewares/authorizeRole.js';
 
 const router = express.Router();
 
@@ -9,5 +10,6 @@ const router = express.Router();
 
 router.get('/', userController.allUsers);
 router.get('/:id', userController.getUser);
+// router.put('/', authorizeRole.isUser, userController.updateUser);
 
 export default router;
