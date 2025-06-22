@@ -2,6 +2,7 @@ import { Error } from "@/components/error"
 import { Loading } from "@/components/loading"
 import { Box } from "@/components/ui/Box"
 import { Typography } from "@/components/ui/Typography"
+import { formatISOToReadable } from "@/lib/dateTime"
 import { productService } from "@/services/productService"
 import { userService } from "@/services/userService"
 import { useQuery } from "@tanstack/react-query"
@@ -22,8 +23,14 @@ export default function DashboardPage() {
     queryFn: fetchAllData,
   })
 
-  const latestUser = data?.users?.[data.users.length - 1]
-  const latesProduct = data?.products?.data[data.products.data.length - 1]
+  const latestUser = data?.users?.[data.users.length - 1] ?? null;
+  const latesProduct = data?.products?.data?.[data.products.data.length - 1] ?? null;
+  const latesUserTime = latestUser?.updatedAt ?? null;
+  const latesProductTime = latesProduct?.updatedAt ?? null;
+
+
+  console.log('latesUserTime', latesUserTime);
+
 
   if (isLoading) return <Loading />
   if (isError) return <Error />
@@ -31,21 +38,17 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
           <p className="text-gray-600">Sistem durumu ve istatistikler</p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {/* Kullanıcı Kartı */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between h-full">
               <div>
-                <p className="text-sm font-medium text-gray-600">Toplam Kullanıcı</p>
+                <p className="text-sm font-medium text-gray-600">Toplam İstifadəçi</p>
                 <p className="text-3xl font-bold text-gray-900">{data?.users?.length || 0}</p>
-                {/* <p className="text-sm text-green-600 mt-1">+12% bu ay</p> */}
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <Users className="h-6 w-6 text-blue-600" />
@@ -53,27 +56,11 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Ürün Kartı */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Toplam Ürün</p>
-                <p className="text-3xl font-bold text-gray-900">{data?.products.data.length || 0}</p>
-                <p className="text-sm text-green-600 mt-1">+8% bu ay</p>
-              </div>
-              <div className="bg-green-100 p-3 rounded-full">
-                <Package className="h-6 w-6 text-green-600" />
-              </div>
-            </div>
-          </div>
-
-          {/* Satış Kartı */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Toplam Satış</p>
                 <p className="text-3xl font-bold text-gray-900">₺45,230</p>
-                <p className="text-sm text-green-600 mt-1">+15% bu ay</p>
               </div>
               <div className="bg-purple-100 p-3 rounded-full">
                 <TrendingUp className="h-6 w-6 text-purple-600" />
@@ -82,9 +69,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Bilgilendirme Mesajları */}
+
         <div className="lg:columns-2 space-y-2">
-          {/* Sol Kolon - Sistem Durumu */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Sistem Durumu</h2>
             <ul className="space-y-3">
@@ -112,18 +98,17 @@ export default function DashboardPage() {
             </ul>
           </div>
 
-          {/* Sağ Kolon - Son Aktiviteler */}
           <Box className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <Typography component='h2' className="text-lg font-semibold text-gray-900 mb-4">Son Aktiviteler</Typography>
+            <Typography component='h2' className="text-lg font-semibold text-gray-900 mb-4">Son Fəaliyyətlər</Typography>
             <Box component='ul' className="space-y-3">
               <li className="flex items-start p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="bg-blue-100 p-2 rounded-full mr-3 mt-1">
                   <Users className="h-4 w-4 text-blue-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Yeni kullanıcı kaydı</p>
+                  <p className="font-medium text-gray-900">Yeni istifadəçi qeydiyyatı</p>
                   <p className="text-sm text-gray-600">{latestUser?.email}</p>
-                  <p className="text-xs text-gray-500 mt-1">5 dakika önce</p>
+                  <p className="text-xs text-gray-500 mt-1">{formatISOToReadable(latesUserTime)}</p>
                 </div>
               </li>
               <li className="flex items-start p-3 hover:bg-gray-50 rounded-lg transition-colors">
@@ -131,9 +116,9 @@ export default function DashboardPage() {
                   <Package className="h-4 w-4 text-green-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Yeni ürün eklendi</p>
+                  <p className="font-medium text-gray-900">Yeni məhsul əlavə olundu</p>
                   <p className="text-sm text-gray-600">{latesProduct?.name}</p>
-                  <p className="text-xs text-gray-500 mt-1">15 dakika önce</p>
+                  <p className="text-xs text-gray-500 mt-1">{formatISOToReadable(latesProductTime)}</p>
                 </div>
               </li>
             </Box>

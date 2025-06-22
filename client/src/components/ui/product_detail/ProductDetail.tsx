@@ -38,7 +38,6 @@ export default function ProductDetail() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Ürün Görselleri */}
         <div className="space-y-4">
           <div className="bg-white rounded-lg overflow-hidden flex h-[400px] relative">
             {product?.images ?
@@ -83,7 +82,6 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Ürün Bilgileri */}
         <div className="space-y-6">
           <div>
             <div className="flex justify-between items-start">
@@ -133,7 +131,6 @@ export default function ProductDetail() {
 
           </div>
 
-          {/* Ürün Açıklaması */}
           <div>
             <h2 className="text-lg font-semibold text-gray-800 mb-2">
               Məhsul haqqında
@@ -143,7 +140,6 @@ export default function ProductDetail() {
             </p>
           </div>
 
-          {/* Renk Seçimi */}
           {/* {product.colors && product.colors.length > 0 && (
             <div>
               <h2 className="text-sm font-medium text-gray-700 mb-2">Renk</h2>
@@ -164,7 +160,6 @@ export default function ProductDetail() {
             </div>
           )} */}
 
-          {/* Boyut Seçimi */}
           {/* {product.sizes && product.sizes.length > 0 && (
             <div>
               <h2 className="text-sm font-medium text-gray-700 mb-2">
@@ -187,7 +182,6 @@ export default function ProductDetail() {
             </div>
           )} */}
 
-          {/* Miktar */}
           {/* <div>
             <h2 className="text-sm font-medium text-gray-700 mb-2">Miktar</h2>
             <div className="flex items-center space-x-3">
@@ -217,7 +211,6 @@ export default function ProductDetail() {
             </div>
           </div> */}
 
-          {/* Sepete Ekle ve Hemen Al Butonları */}
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
@@ -243,7 +236,6 @@ export default function ProductDetail() {
             </button>
           </div>
 
-          {/* Ekstra Bilgiler */}
           <div className="border-t border-gray-200 pt-6 space-y-4">
             <div className="flex items-start">
               <svg
@@ -297,10 +289,8 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* Ürün Özellikleri ve Sekmeler */}
       <div className="py-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-16">
-          {/* Sol Kolon */}
           <div className="sm:col-span-1">
             <div className="flex justify-between py-3 border-b border-gray-200">
               <dt className="text-sm font-medium text-gray-500">Marka</dt>
@@ -344,7 +334,6 @@ export default function ProductDetail() {
                 ))}
           </div>
 
-          {/* Sağ Kolon */}
           <div className="sm:col-span-1">
             {product?.features &&
               Object.entries(product.features)

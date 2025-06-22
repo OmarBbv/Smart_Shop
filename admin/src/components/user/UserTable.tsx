@@ -1,7 +1,7 @@
 import { userService } from "@/services/userService"
 import { useQuery } from "@tanstack/react-query"
-import { Loading } from "../loading"
-import { Error } from "../error"
+import { Loading } from "../Loading"
+import { Error } from "../Error"
 
 interface Props {
     refresh: number

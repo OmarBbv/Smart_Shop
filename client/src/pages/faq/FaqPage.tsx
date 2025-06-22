@@ -149,7 +149,6 @@ export default function FAQPage() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Hero Section */}
             <section className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
@@ -161,11 +160,9 @@ export default function FAQPage() {
                 </div>
             </section>
 
-            {/* Search and Filter Section */}
             <section className="py-12 -mt-8 relative z-10">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="bg-white p-6 rounded-xl shadow-lg">
-                        {/* Search Bar */}
                         <div className="relative mb-6">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                             <input
@@ -177,7 +174,6 @@ export default function FAQPage() {
                             />
                         </div>
 
-                        {/* Category Filter */}
                         <div className="flex flex-wrap gap-2">
                             {categories.map((category) => {
                                 const IconComponent = category.icon
@@ -200,7 +196,6 @@ export default function FAQPage() {
                 </div>
             </section>
 
-            {/* FAQ Items */}
             <section className="py-8">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     {filteredFAQs.length === 0 ? (
@@ -239,7 +234,6 @@ export default function FAQPage() {
                 </div>
             </section>
 
-            {/* Quick Stats */}
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -268,7 +262,6 @@ export default function FAQPage() {
                 </div>
             </section>
 
-            {/* Contact Support */}
             <section className="py-16 bg-gray-900 text-white">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-6">Cavabınızı Tapa Bilmədiniz?</h2>

@@ -38,7 +38,6 @@ export default function StaticDropdowns() {
 
     return (
         <>
-            {/* Price Input */}
             <div className="flex flex-col gap-2 relative justify-between">
                 <label htmlFor="price" className="text-sm font-medium">Qiymət</label>
                 <input
@@ -53,7 +52,6 @@ export default function StaticDropdowns() {
 
             </div>
 
-            {/* Status Dropdown */}
             <div className="flex flex-col gap-2 relative justify-between">
                 <label className="text-sm font-medium">Vəziyyəti</label>
                 <div
@@ -85,7 +83,6 @@ export default function StaticDropdowns() {
                 )}
             </div>
 
-            {/* Delivery Dropdown */}
             <div className="flex flex-col gap-2 relative justify-between">
                 <label className="text-sm font-medium">Çatdırılma</label>
                 <div

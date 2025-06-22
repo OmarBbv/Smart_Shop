@@ -3,7 +3,6 @@ import { CheckCircle, XCircle, Clock, Package, RefreshCw, AlertTriangle, Phone, 
 export default function ReturnExchangePage() {
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Hero Section */}
             <section className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
@@ -13,7 +12,6 @@ export default function ReturnExchangePage() {
                 </div>
             </section>
 
-            {/* Quick Info Cards */}
             <section className="py-12 -mt-8 relative z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-3 gap-6">
@@ -44,7 +42,6 @@ export default function ReturnExchangePage() {
                 </div>
             </section>
 
-            {/* Return Conditions */}
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -140,7 +137,6 @@ export default function ReturnExchangePage() {
                 </div>
             </section>
 
-            {/* Process Steps */}
             <section className="py-16 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -184,7 +180,6 @@ export default function ReturnExchangePage() {
                 </div>
             </section>
 
-            {/* Exchange Policy */}
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -238,7 +233,6 @@ export default function ReturnExchangePage() {
                 </div>
             </section>
 
-            {/* Important Notes */}
             <section className="py-16 bg-yellow-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="bg-white p-8 rounded-xl shadow-md">
@@ -286,7 +280,6 @@ export default function ReturnExchangePage() {
                 </div>
             </section>
 
-            {/* Contact Section */}
             <section className="py-16 bg-gray-900 text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">

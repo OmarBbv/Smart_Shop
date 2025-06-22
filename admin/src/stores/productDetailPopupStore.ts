@@ -1,26 +1,28 @@
 import { create } from 'zustand';
-import { subscribeWithSelector } from 'zustand/middleware';
-import { Datum } from '@/types/productTypes';
+import type { Datum } from '@/types/productTypes';
 
-type ProductPopUpStore = {
-    isUpdate: boolean,
-    isOpen: boolean;
-    selectedProduct: Datum | null;
-    openPopUp: (product: Datum) => void;
-    closePopUp: () => void;
-    isUpdateProd: () => void
-    isCloseUpdateProd: () => void
-};
+interface Product {
+    title: 'Bax' | 'Düzəlt',
+    product: Datum | null
+}
 
-export const useProductPopUp = create<ProductPopUpStore>()(
-    subscribeWithSelector((set) => ({
-        isUpdate: false,
-        isOpen: false,
-        selectedProduct: null,
-        isUpdateProd: () => set({ isUpdate: true }),
-        isCloseUpdateProd: () => set({ isUpdate: false }),
-        openPopUp: (product) => set({ isOpen: true, selectedProduct: product }),
-        closePopUp: () => set({ isOpen: false, selectedProduct: null }),
-    }))
-);
+interface ProductPopStore {
+    isToggle: boolean;
+    productIndex: number | null,
+    product: Product | null;
+    setProduct: (data: Datum, title: 'Bax' | 'Düzəlt') => void;
+    setToggleProd: () => void;
+    setSelectedProductIndex: (index: number) => void;
+}
 
+export const useProductPopStore = create<ProductPopStore>((set) => ({
+    productIndex: null,
+    isToggle: false,
+    product: null,
+    setSelectedProductIndex: (index: number) => set({ productIndex: index }),
+    setProduct: (data, title) => set((state) => ({
+        ...state,
+        product: { title, product: data }
+    })),
+    setToggleProd: () => set((state) => ({ isToggle: !state.isToggle })),
+}));

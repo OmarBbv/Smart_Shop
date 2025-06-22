@@ -1,12 +1,12 @@
-import { useProductPopUp } from '@/stores/productDetailPopupStore';
 import { Box } from '../ui/Box';
 import { CustomButton } from '../ui/CustomButton';
 import { Datum } from '@/types/productTypes';
 import { productService } from '@/services/productService';
 import React from 'react';
 import { useRefresh } from '@/stores/refreshStore';
-import { useShallow } from 'zustand/shallow';
 import { useMutation } from '@tanstack/react-query';
+import { useProductPopStore } from '@/stores/productDetailPopupStore';
+import { useShallow } from 'zustand/shallow';
 
 interface ActionButtonProps {
     product: Datum;
@@ -15,21 +15,23 @@ interface ActionButtonProps {
 export default function ActionButton({ product }: ActionButtonProps) {
     const refreshProduct = useRefresh((state) => state.refreshProduct);
 
-    const { openPopUp, isUpdateProd } = useProductPopUp(useShallow((state) => ({
-        openPopUp: state.openPopUp,
-        isUpdateProd: state.isUpdateProd,
+    const { setProduct, setSelectedProductIndex, setToggleProd } = useProductPopStore(useShallow((state) => ({
+        setProduct: state.setProduct,
+        setSelectedProductIndex: state.setSelectedProductIndex,
+        setToggleProd: state.setToggleProd,
     })));
-
-
 
     function handleOpen(event: React.MouseEvent<HTMLButtonElement>) {
         event.stopPropagation();
-        openPopUp(product)
+        setToggleProd();
+        setProduct(product, 'Bax')
     }
 
     function updateProduct(event: React.MouseEvent<HTMLButtonElement>) {
         event.stopPropagation();
-        isUpdateProd();
+        setSelectedProductIndex(product.id);
+        setProduct(product, 'Düzəlt');
+        setToggleProd();
     }
 
     const mutate = useMutation({

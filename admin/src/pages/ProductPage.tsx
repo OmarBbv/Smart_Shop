@@ -1,18 +1,24 @@
+import { Error } from "@/components/error";
+import { Loading } from "@/components/loading";
 import NotFoundElement from "@/components/NotFoundElement";
 import ProductCard from "@/components/product/ProductCard";
+import { ProductDetailPopUp } from "@/components/product/ProductDetailPopup";
 import ProductGrid from "@/components/product/ProductGrid";
 import { Box } from "@/components/ui/Box";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { Typography } from "@/components/ui/Typography";
 import { cn } from "@/lib/utils";
 import { productService } from "@/services/productService";
+import { useProductPopStore } from "@/stores/productDetailPopupStore";
 import { useRefresh } from "@/stores/refreshStore";
 import { useQuery } from "@tanstack/react-query";
 import { LayoutGrid, List } from 'lucide-react'
 import { useEffect, useState } from "react";
 
 export default function ProductPage() {
-    const prodIndex = useRefresh(set => set.prodRefIndex);
+    const prodIndex = useRefresh(state => state.prodRefIndex);
+    const isToggle = useProductPopStore(state => state.isToggle)
+
     const [isGrid, setIsGrid] = useState<boolean>(false);
 
     function handleGrid(str: string) {
@@ -21,7 +27,7 @@ export default function ProductPage() {
         localStorage.setItem('grid', String(value));
     }
 
-    const { data, isLoading, isError, error } = useQuery({
+    const { data, isLoading, isError } = useQuery({
         queryKey: ['get/products', prodIndex],
         queryFn: () => productService.getAllProducts(),
     });
@@ -38,18 +44,15 @@ export default function ProductPage() {
         }
     }, []);
 
-    if (isLoading) return <div>loading..</div>
-    if (isError) {
-        console.log('Error detay:', error);
-        return <div>error data</div>;
-    }
+    if (isLoading) return <Loading />
+    if (isError) return <Error />
 
 
     return (
-        <Box className="container mx-auto">
+        <Box className="container mx-auto relative">
             <Box className="flex justify-between flex-1 items-center mb-4">
                 <Typography component="h2" className="text-xl">Məhsullar</Typography>
-                <ul className="flex items-center gap-2">
+                <Box className="flex items-center gap-2">
                     <CustomButton
                         onClick={() => handleGrid('')}
                         className={cn('border border-gray-200 p-1 rounded-md cursor-pointer', !isGrid && 'bg-blue-500')}>
@@ -60,7 +63,7 @@ export default function ProductPage() {
                         className={cn('border border-gray-200 p-1 rounded-md cursor-pointer', isGrid && 'bg-blue-500')}>
                         <LayoutGrid className={cn('w-5 h-5', isGrid && 'text-white')} />
                     </CustomButton>
-                </ul>
+                </Box>
             </Box>
             <ProductGrid grid={dataGrid}>
                 {productData && productData.length > 0 ?
@@ -70,6 +73,8 @@ export default function ProductPage() {
                     : <NotFoundElement url="/mehsullar/yeni" title="Məhsul tapılmadı" desc="Sistemdə heç bir məhsul tapılmadı. Yeni məhsul əlavə etmək istəyirsiniz?" buttonContent="Yeni Məhsul Əlavə Et" />
                 }
             </ProductGrid>
+
+            {isToggle && <ProductDetailPopUp />}
         </Box>
     )
 }

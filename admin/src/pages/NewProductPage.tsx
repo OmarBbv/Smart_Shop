@@ -2,7 +2,7 @@ import { Error } from "@/components/error";
 import { Loading } from "@/components/loading";
 import { Box } from "@/components/ui/Box";
 import { categoryService } from "@/services/categoryService";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Typography } from "@/components/ui/Typography";
 import { Camera, X } from "lucide-react";
 import { CustomButton } from "@/components/ui/CustomButton";
@@ -12,8 +12,7 @@ import { CustomField } from "@/components/ui/CustomField";
 import { RenderCategory } from "@/components/new_products/RenderCategory";
 import TemplatesConfig from "@/components/templates/TemplatesConfig";
 import { usePostStore } from "@/stores/productPostStore";
-import { useShallow } from "zustand/shallow";
-import { productService } from "@/services/productService";
+import { ProductShare } from "@/components/new_products/ProductShare";
 
 const customStyles = {
     content: {
@@ -87,8 +86,6 @@ export default function NewProductPage() {
                 categoryId: lastCat.lastCatIndex,
             });
         }
-
-
         setCurrentPost({ images: selectedImages })
     }, [lastCat, selectedImages]);
 
@@ -98,6 +95,7 @@ export default function NewProductPage() {
         if (secondLast === "Mobil telefonlar" || secondLast === "Noutbuk və netbuklar") {
             if (secondLast) {
                 setLastCat(prev => ({ ...prev, lastCategory: secondLast }));
+                console.log('secondLast', secondLast);
             } else {
                 setLastCat(prev => ({ ...prev, lastCategory: last }));
             }
@@ -130,7 +128,6 @@ export default function NewProductPage() {
                             <span className="font-medium text-sm">Fotoşəkil əlavə edin</span>
                             <span className="text-xs text-gray-500">Əsas şəkil axtarış nəticələrində əks olunacaq</span>
 
-                            {/* Gizli input */}
                             <input
                                 type="file"
                                 accept="image/*"
@@ -248,40 +245,3 @@ export default function NewProductPage() {
 
 }
 
-function ProductShare() {
-
-    const { currentPost } = usePostStore(
-        useShallow((s) => ({
-            currentPost: s.currentPost
-        }))
-    );
-
-
-    const { mutate } = useMutation({
-        mutationKey: ['post/products'],
-        mutationFn: async () => {
-            if (currentPost.categoryId !== undefined) {
-                return productService.getCreateProduct(currentPost)
-            }
-        },
-        onSuccess: () => {
-            alert('Mehsul gonderildi')
-        },
-        onError: () => {
-            alert('mehsul gonderilmedi!')
-        }
-    })
-
-    const handlePostProduct = () => {
-        mutate();
-    }
-
-    return <Box className="mt-4">
-        <CustomButton
-            onClick={handlePostProduct}
-            className="cursor-pointer bg-green-500 p-2 rounded-sm text-white text-sm"
-        >
-            Məhsulu Paylaş
-        </CustomButton>
-    </Box>
-}

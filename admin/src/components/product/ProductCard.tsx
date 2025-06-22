@@ -2,10 +2,8 @@ import { Box } from "../ui/Box";
 import { Typography } from "../ui/Typography";
 import { cn } from "@/lib/utils";
 import ActionButton from "./ActionButton";
-import ProductDetailPopUp from "./ProductDetailPopup";
 import { Datum } from "@/types/productTypes";
 import { useNavigate } from 'react-router-dom'
-import { useProductPopUp } from "@/stores/productDetailPopupStore";
 
 interface Props {
     prod: Datum;
@@ -13,10 +11,8 @@ interface Props {
 }
 
 export default function ProductCard({ prod, grid }: Props) {
-    // const isUpdate = useProductPopUp(state => state.isUpdate);
 
     const navigate = useNavigate();
-
     function handleNavigate() {
         navigate(`/mehsullar/${prod.id}`)
     }
@@ -72,8 +68,6 @@ export default function ProductCard({ prod, grid }: Props) {
                 </Box>
 
                 <ActionButton product={prod} />
-
-                <ProductDetailPopUp />
             </Box>
         </Box>
     );

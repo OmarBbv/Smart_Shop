@@ -35,7 +35,7 @@ class ProductService implements ProductServiceInterface {
     }
 
     //? @desc Sends a request to create a new product with the given data
-    getCreateProduct(data: Post): void {
+    async getCreateProduct(data: Post): Promise<void> {
         const { categoryId, description, features, images, name, price } = data
 
         console.log('data', data)
@@ -51,13 +51,11 @@ class ProductService implements ProductServiceInterface {
         });
 
         try {
-            const res = httpClient.post('/products', formData, {
+            await httpClient.post('/products', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
-            console.log(res);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new Error(error.message || "Bilinməyən xəta baş verdi");

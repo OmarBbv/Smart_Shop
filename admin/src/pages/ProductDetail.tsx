@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
 import { productService } from '@/services/productService'
 import { useParams } from "react-router-dom"
-import { Loading } from "@/components/loading";
-import { Error } from "../components/error";
+import { Loading } from "@/components/Loading";
+import { Error } from "../components/Error";
 import CustomSwiper from "../components/Swiper";
 import { useImageSelectionStore } from "@/stores/imageSelectStore";
 import { Box } from "../components/ui/Box";

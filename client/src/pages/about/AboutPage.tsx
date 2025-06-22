@@ -3,7 +3,6 @@ import { Phone, Shield, Users, Award, MapPin, Clock, PhoneCall } from "lucide-re
 export default function AboutPage() {
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Hero Section */}
             <section className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
@@ -16,7 +15,6 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* Company Story */}
             <section className="py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -58,7 +56,6 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* Mission & Vision */}
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -94,7 +91,6 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* Services */}
             <section className="py-16 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -132,7 +128,6 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* Stats */}
             <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -156,7 +151,6 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* Contact Info */}
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -204,7 +198,6 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* CTA Section */}
             <section className="py-16 bg-gray-900 text-white">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-6">Bizə Qoşulun!</h2>

@@ -116,13 +116,11 @@ export default function UpdateBottomSheet({ product }: Props) {
         <>
             <Toaster position="top-center" containerClassName="z-[999999]" />
 
-            {/* Backdrop */}
             <div
                 className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] transition-opacity duration-300 ${animate ? "opacity-100" : "opacity-0"}`}
                 onClick={handleClose}
             />
 
-            {/* Bottom Sheet */}
             <div
                 className={`fixed bottom-0 left-0 w-full h-[94vh] bg-gradient-to-br from-white to-gray-50 shadow-2xl z-[9999] overflow-hidden transition-all duration-300 ease-out ${animate ? "translate-y-0" : "translate-y-full"}`}
                 onClick={(e) => e.stopPropagation()}
@@ -131,7 +129,6 @@ export default function UpdateBottomSheet({ product }: Props) {
                     borderTopRightRadius: "16px",
                 }}
             >
-                {/* Header */}
                 <div className="sticky top-0 bg-white/80 backdrop-blur-md flex items-center justify-between py-6 px-8 z-10 border-b border-gray-200/50">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -152,10 +149,8 @@ export default function UpdateBottomSheet({ product }: Props) {
                     </button>
                 </div>
 
-                {/* Content */}
                 <div className="h-full overflow-y-auto pb-24">
                     <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
-                        {/* Basic Info Section */}
                         <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
                             <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center gap-2">
                                 <FileText className="w-5 h-5 text-blue-500" />
@@ -197,14 +192,12 @@ export default function UpdateBottomSheet({ product }: Props) {
                             </div>
                         </div>
 
-                        {/* Images Section */}
                         <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
                             <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center gap-2">
                                 <ImageIcon className="w-5 h-5 text-green-500" />
                                 Şəkillər
                             </h3>
 
-                            {/* Upload Area */}
                             <div
                                 className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200 ${dragActive ? "border-blue-400 bg-blue-50" : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
                                     }`}
@@ -239,7 +232,6 @@ export default function UpdateBottomSheet({ product }: Props) {
                                 />
                             </div>
 
-                            {/* New Images Preview */}
                             {images.length > 0 && (
                                 <div className="mt-6">
                                     <h4 className="text-sm font-medium text-gray-700 mb-3">Yeni Şəkillər</h4>
@@ -264,7 +256,6 @@ export default function UpdateBottomSheet({ product }: Props) {
                                 </div>
                             )}
 
-                            {/* Existing Images Preview - Artık existingImages state'ini kullanıyor */}
                             {existingImages.length > 0 && (
                                 <div className="mt-6">
                                     <h4 className="text-sm font-medium text-gray-700 mb-3">Mövcud Şəkillər</h4>
@@ -291,7 +282,6 @@ export default function UpdateBottomSheet({ product }: Props) {
 
                         </div>
 
-                        {/* Options Section */}
                         <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
                             <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center gap-2">
                                 <CreditCard className="w-5 h-5 text-purple-500" />
@@ -311,7 +301,6 @@ export default function UpdateBottomSheet({ product }: Props) {
                             </label>
                         </div>
 
-                        {/* Submit Button */}
                         <div className="sticky bottom-0 bg-white p-6 border-t border-gray-200">
                             <button
                                 type="submit"

@@ -288,7 +288,6 @@ const categoryController = {
             const offset = (parseInt(page) - 1) * parseInt(limit);
             const limitValue = parseInt(limit);
 
-            // Toplam ürün sayısını bulalım
             const totalProducts = await Product.count({ where: whereCondition });
 
             // Ürünleri sorgulayalım

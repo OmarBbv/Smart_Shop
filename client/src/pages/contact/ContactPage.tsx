@@ -112,7 +112,6 @@ export default function ContactPage() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Hero Section */}
             <section className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
@@ -124,7 +123,6 @@ export default function ContactPage() {
                 </div>
             </section>
 
-            {/* Contact Methods */}
             <section className="py-12 -mt-8 relative z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -157,11 +155,9 @@ export default function ContactPage() {
                 </div>
             </section>
 
-            {/* Contact Form and Info */}
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid lg:grid-cols-2 gap-12">
-                        {/* Contact Form */}
                         <div>
                             <h2 className="text-3xl font-bold text-gray-900 mb-6">Mesaj Göndərin</h2>
                             <p className="text-gray-600 mb-8">
@@ -285,11 +281,9 @@ export default function ContactPage() {
                             </form>
                         </div>
 
-                        {/* Store Info */}
                         <div>
                             <h2 className="text-3xl font-bold text-gray-900 mb-6">Mağaza Məlumatları</h2>
 
-                            {/* Working Hours */}
                             <div className="bg-gray-50 p-6 rounded-xl mb-8">
                                 <div className="flex items-center mb-4">
                                     <Clock className="h-6 w-6 text-blue-600 mr-3" />
@@ -305,7 +299,6 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            {/* Departments */}
                             <div className="bg-gray-50 p-6 rounded-xl mb-8">
                                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Şöbələr</h3>
                                 <div className="space-y-4">
@@ -319,7 +312,6 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            {/* Social Media */}
                             <div className="bg-gray-50 p-6 rounded-xl">
                                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Sosial Şəbəkələr</h3>
                                 <div className="flex space-x-4">
@@ -345,7 +337,6 @@ export default function ContactPage() {
                 </div>
             </section>
 
-            {/* Map Section */}
             <section className="py-16 bg-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -412,7 +403,6 @@ export default function ContactPage() {
                 </div>
             </section>
 
-            {/* Emergency Contact */}
             <section className="py-16 bg-red-600 text-white">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <AlertCircle className="h-16 w-16 mx-auto mb-6" />

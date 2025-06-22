@@ -1,267 +1,232 @@
-import React, { useEffect, useRef, useState } from "react"
-import { createPortal } from "react-dom"
-import { useProductPopUp } from "@/stores/productDetailPopupStore"
-import { X, ChevronLeft, ChevronRight, Edit, Trash2 } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Box } from "../ui/Box"
-import { CustomButton } from "../ui/CustomButton"
-import { useShallow } from "zustand/shallow"
-import { productService } from "@/services/productService"
-import { useRefresh } from "@/stores/refreshStore"
+import { productService } from "@/services/productService";
+import { useProductPopStore } from "@/stores/productDetailPopupStore";
+import { UpdateServiceType } from "@/types/productTypes";
+import { useMutation } from "@tanstack/react-query";
+import { X } from "lucide-react";
+import { useState } from "react";
+import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
+import { useShallow } from "zustand/shallow";
+import { Swiper, SwiperSlide } from 'swiper/react';
+// import 'swiper/css';
 
-interface Product {
-    id: number
-    name: string
-    price: number
-    category?: { name: string }
-    features: Record<string, string>
-    images: string[] | null
-}
+export const ProductDetailPopUp = () => {
+    const { productObj, setToggleProd } = useProductPopStore(useShallow(state => ({
+        productObj: state.product,
+        setToggleProd: state.setToggleProd
+    })));
 
-export default function ProductDetailPopUp() {
-    const { closePopUp, isOpen, selectedProduct } = useProductPopUp(
-        useShallow((state) => ({
-            closePopUp: state.closePopUp,
-            isOpen: state.isOpen,
-            selectedProduct: state.selectedProduct,
-        }))
-    )
-    const prodRefresh = useRefresh(state => state.refreshProduct);
+    const product = productObj?.product;
+    const [indexImage, setIndexImage] = useState(0);
+    const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
-    const product = selectedProduct as Product | null
-
-    const [currentImageIndex, setCurrentImageIndex] = useState(0)
-    const [isMounted, setIsMounted] = useState(false)
-    const [isClosing, setIsClosing] = useState(false)
-
-    const scrollContainerRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        setIsMounted(true)
-        return () => setIsMounted(false)
-    }, [])
-
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = ""
+    const { register, handleSubmit, setValue } = useForm<UpdateServiceType>({
+        defaultValues: {
+            name: product?.name || '',
+            price: product?.price || '',
+            description: product?.description || '',
+            credit_available: product?.credit_available || false,
+            images: product?.images || []
         }
-    }, [isOpen])
+    });
 
-    useEffect(() => {
-        if (product?.images?.length) {
-            setCurrentImageIndex(0)
-        }
-    }, [product])
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
+        const filesArray = Array.from(e.target.files);
+        setSelectedImages(filesArray);
+        setValue('images', filesArray);
+    };
 
-    useEffect(() => {
-        function onEsc(e: KeyboardEvent) {
-            if (e.key === "Escape") handleClose()
-        }
-        if (isOpen) {
-            window.addEventListener("keydown", onEsc)
-        }
-        return () => window.removeEventListener("keydown", onEsc)
-    }, [isOpen])
+    const { mutate } = useMutation({
+        mutationKey: ['put/updateProduct'],
+        mutationFn: (data: any) => productService.updateProduct(product?.id!, data),
+        onSuccess: () => console.log('mehsul yuklendi'),
+        onError: () => console.log('error')
+    })
 
-    if (!isMounted || !product) return null
+    const onSubmit = (data: UpdateServiceType) => {
+        console.log("Form verisi:", data);
+        mutate(data);
+    };
 
-    const images = product.images && product.images.length > 0 ? product.images : ["/placeholder.svg?height=400&width=600"]
-    const priceNumber = Number(product?.price);
+    if (productObj?.title === 'Bax' && product) {
+        return createPortal(
+            <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-4">
+                <div className="bg-white rounded-lg w-full max-w-5xl h-[90vh] flex shadow-lg overflow-hidden">
 
-    function handleClose() {
-        setIsClosing(true)
-        setTimeout(() => {
-            closePopUp()
-            setIsClosing(false)
-        }, 300)
-    }
+                    <div className="w-1/2 flex flex-col border-r border-r-gray-300 h-full">
+                        <div className="h-3/4 p-2 bg-gray-100">
+                            <img
+                                src={product.images?.[indexImage]}
+                                alt="image"
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
 
-    function handleOverlayClick(e: React.MouseEvent<HTMLDivElement>) {
-        e.stopPropagation();
-        if (e.target === e.currentTarget) {
-            handleClose()
-        }
-    }
+                        <div className="flex-1 p-2">
+                            <Swiper
+                                spaceBetween={10}
+                                slidesPerView={'auto'}
+                                className="!flex items-center"
+                            >
+                                {product.images?.map((im, i) => (
+                                    <SwiperSlide
+                                        key={i}
+                                        style={{ width: '80px', flexShrink: 0, margin: '0px 10px' }}
+                                        className="!w-fit my-2"
+                                    >
+                                        <img
+                                            onClick={() => setIndexImage(i)}
+                                            className={`h-20 w-20 object-cover cursor-pointer rounded-md outline-offset-2 ${indexImage === i
+                                                ? 'outline-[4px] outline-blue-500'
+                                                : 'outline-none'
+                                                }`}
+                                            src={im}
+                                            alt={`product-${i}`}
+                                        />
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        </div>
+                    </div>
 
-    function scrollToNext() {
-        setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
-    }
+                    <div className="w-1/2 overflow-y-auto h-full relative">
+                        <div className="flex justify-between items-center sticky top-0 left-0 bg-white p-6">
+                            <h2 className="text-xl font-bold">{product.name}</h2>
+                            <button onClick={setToggleProd}>
+                                <X color="#cf2020" />
+                            </button>
+                        </div>
 
-    function scrollToPrev() {
-        setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
-    }
+                        <div className="px-6 pb-6">
+                            <p className="text-gray-600 text-sm mt-4">{product.description}</p>
 
-    function scrollToImage(index: number) {
-        setCurrentImageIndex(index)
-    }
-
-    function renderFeatureValue(value: string | object): React.ReactNode {
-        if (typeof value === "string") {
-            return value;
-        }
-        if (typeof value === "object" && value !== null) {
-            return (
-                <ul className="list-disc list-inside ml-4">
-                    {Object.entries(value).map(([k, v]) => (
-                        <li key={k}>
-                            <strong>{k}:</strong> {renderFeatureValue(v)}
-                        </li>
-                    ))}
-                </ul>
-            );
-        }
-        return null;
-    }
-
-    function handleRemoveProduct() {
-        const id = product?.id;
-
-        if (!id) return;
-
-        productService.removeProduct(String(id));
-        closePopUp();
-        prodRefresh();
-    }
-
-    const modalContent = (
-        <Box
-            id="overlay"
-            onClick={handleOverlayClick}
-            className={cn(
-                "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 transition-opacity",
-                isOpen && !isClosing ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-            )}
-        >
-            <Box
-                onClick={(e: any) => e.stopPropagation()}
-                className={cn(
-                    "relative max-w-6xl w-full max-h-[90vh] overflow-hidden rounded-xl bg-white shadow-lg transition-transform duration-300",
-                    isOpen && !isClosing ? "scale-100 opacity-100" : "scale-95 opacity-0"
-                )}
-            >
-                {/* Close Button */}
-                <CustomButton
-                    className="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 text-gray-700 shadow-md hover:bg-white hover:text-gray-900 transition-colors"
-                    onClick={handleClose}
-                    aria-label="Close popup"
-                >
-                    <X className="h-5 w-5" />
-                </CustomButton>
-
-                {/* Content */}
-                <Box className="flex flex-col md:flex-row max-h-[90vh] overflow-auto">
-                    {/* Left: Image Section */}
-                    <div className="md:w-1/2 p-4 md:p-6 bg-gray-50 flex flex-col">
-                        <div className="relative flex-grow">
-                            <div className="h-64 sm:h-80 md:h-96 mb-4 rounded-lg overflow-hidden bg-white flex items-center justify-center">
-                                <img
-                                    src={images[currentImageIndex]}
-                                    alt={`${product.name} image ${currentImageIndex + 1}`}
-                                    className="max-h-full max-w-full object-contain"
-                                />
+                            <div className="text-sm space-y-1 mt-4">
+                                <p><span className="font-semibold">Qiymət:</span> {product.price} ₼</p>
+                                <p><span className="font-semibold">Kreditlə satış:</span> {product.credit_available ? "Bəli" : "Xeyr"}</p>
+                                <p><span className="font-semibold">Tarix:</span> {new Date(product.createdAt).toLocaleDateString()}</p>
                             </div>
 
-                            {images.length > 1 && (
-                                <>
-                                    {/* Navigation buttons */}
-                                    <div className="absolute top-1/2 left-0 right-0 flex justify-between px-2 transform -translate-y-1/2 pointer-events-auto">
-                                        <CustomButton
-                                            onClick={scrollToPrev}
-                                            className="bg-white/90 hover:bg-white rounded-full p-2 shadow-md transition-colors"
-                                            aria-label="Previous image"
-                                        >
-                                            <ChevronLeft className="h-5 w-5" />
-                                        </CustomButton>
-                                        <CustomButton
-                                            onClick={scrollToNext}
-                                            className="bg-white/90 hover:bg-white rounded-full p-2 shadow-md transition-colors"
-                                            aria-label="Next image"
-                                        >
-                                            <ChevronRight className="h-5 w-5" />
-                                        </CustomButton>
-                                    </div>
-
-                                    {/* Thumbnails */}
-                                    <div
-                                        ref={scrollContainerRef}
-                                        className="flex space-x-2 overflow-x-auto pb-2 hide-scrollbar mt-2"
-                                        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                                    >
-                                        {images.map((img, idx) => (
-                                            <div
-                                                key={idx}
-                                                onClick={() => scrollToImage(idx)}
-                                                className={cn(
-                                                    "flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 cursor-pointer transition-all duration-200",
-                                                    currentImageIndex === idx
-                                                        ? "border-teal-500 shadow-md"
-                                                        : "border-gray-200 hover:border-gray-300"
-                                                )}
-                                            >
-                                                <img
-                                                    src={img}
-                                                    alt={`${product.name} thumbnail ${idx + 1}`}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            </div>
+                            {product.features && (
+                                <div className="mt-6">
+                                    <h3 className="font-semibold text-base mb-2">Xüsusiyyətlər</h3>
+                                    <ul className="grid grid-cols-1 gap-2 text-sm">
+                                        {Object.entries(product.features).map(([key, value]) => (
+                                            <li key={key} className="flex justify-between border-b border-b-gray-300 pb-1">
+                                                <span className="font-medium capitalize text-gray-800">{key}:</span>
+                                                <span className="text-gray-700 text-right">{value}</span>
+                                            </li>
                                         ))}
-                                    </div>
-                                </>
+                                    </ul>
+                                </div>
                             )}
                         </div>
                     </div>
+                </div>
+            </div>,
+            document.body
+        );
+    }
 
-                    {/* Right: Product Info */}
-                    <div className="md:w-1/2 p-6 overflow-y-auto">
-                        <div className="flex justify-between items-start mb-6">
-                            <div>
-                                <h1 className="text-2xl font-bold text-gray-800">{product?.name}</h1>
-                                {product?.category && (
-                                    <span className="inline-block bg-teal-50 text-teal-700 text-sm px-3 py-1 rounded-full mt-2 font-medium">
-                                        {product?.category?.name}
-                                    </span>
-                                )}
-                            </div>
-                            <div className="text-2xl font-bold text-teal-600">${priceNumber}</div>
-                        </div>
+    return createPortal(
+        <div className="fixed top-0 left-0 w-full h-screen bg-black/60 bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
+                <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-bold mb-4">Məhsulu Güncəllə</h2>
+                    <button onClick={setToggleProd}>
+                        <X color="#cf2020" />
+                    </button>
+                </div>
 
-                        <section className="mb-8">
-                            <h2 className="text-lg font-semibold text-gray-700 mb-3">Xüsusiyyətləri</h2>
-                            <div className="bg-gray-50 rounded-lg p-4 border border-gray-100 max-h-64 overflow-y-auto">
-                                {Object.entries(product.features || {}).map(([key, value], idx) => (
-                                    <div
-                                        key={key}
-                                        className={cn(
-                                            "flex flex-col py-3",
-                                            idx !== Object.entries(product.features).length - 1 && "border-b border-gray-200"
-                                        )}
-                                    >
-                                        <span className="text-gray-600 font-medium">{key}</span>
-                                        <span className="text-gray-800 font-semibold">{renderFeatureValue(value)}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Məhsul Adı</label>
+                        <input
+                            {...register('name')}
+                            type="text"
+                            className="mt-1 block w-full rounded-md p-1 outline-none border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Məhsul Adı"
+                        />
+                    </div>
 
-                        <div className="flex flex-col sm:flex-row gap-3 mt-8">
-                            <CustomButton className="flex items-center justify-center gap-2 px-5 py-2.5 bg-teal-500 hover:bg-teal-600 text-white transition-colors duration-200 font-medium flex-1">
-                                <Edit className="h-4 w-4" />
-                                Düzenle
-                            </CustomButton>
-                            <CustomButton
-                                onClick={handleRemoveProduct}
-                                className="flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-red-500 text-red-500 hover:bg-red-50 transition-colors duration-200 font-medium flex-1">
-                                <Trash2 className="h-4 w-4" />
-                                Sil
-                            </CustomButton>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Təsvir</label>
+                        <textarea
+                            {...register('description')}
+                            rows={4}
+                            className="mt-1 block w-full rounded-md p-1 outline-none border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Məhsul təsviri"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Qiymət (₼)</label>
+                            <input
+                                {...register('price')}
+                                type="text"
+                                className="mt-1 block w-full rounded-md p-1 outline-none border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Qiymət"
+                            />
                         </div>
                     </div>
-                </Box>
-            </Box>
-        </Box>
-    )
 
-    return isOpen ? createPortal(modalContent, document.body) : null
-}
+                    <div className="flex flex-wrap gap-6">
+                        <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 w-64 h-48 bg-gray-50 hover:border-blue-500 transition">
+                            <label htmlFor="imageUpload" className="cursor-pointer text-sm text-gray-500 hover:text-blue-600 transition text-center">
+                                📁 Şəkil yüklə <br />
+                                <span className="text-xs text-gray-400">(bir neçə şəkil seçə bilərsiniz)</span>
+                            </label>
+                            <input
+                                id="imageUpload"
+                                type="file"
+                                multiple
+                                className="hidden"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                            />
+                        </div>
+
+                        <div className="flex flex-wrap gap-3 items-start">
+                            {selectedImages.map((file, index) => (
+                                <img
+                                    key={index}
+                                    src={URL.createObjectURL(file)}
+                                    alt={`selected-${index}`}
+                                    className="w-24 h-24 object-cover rounded border border-gray-300"
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <input
+                            type="checkbox"
+                            id="credit"
+                            {...register('credit_available')}
+                            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                        />
+                        <label htmlFor="credit" className="text-sm text-gray-700">Kreditlə satış mövcuddur</label>
+                    </div>
+
+                    <div className="flex justify-end gap-4 mt-6">
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                            onClick={setToggleProd}
+                        >
+                            Ləğv et
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                        >
+                            Yadda saxla
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>,
+        document.body
+    );
+};

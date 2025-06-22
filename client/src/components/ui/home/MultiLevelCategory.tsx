@@ -37,7 +37,6 @@ export const MultiNav = forwardRef<HTMLDivElement>((_, ref) => {
       className="absolute top-full left-0 w-full bg-white shadow-2xl border border-gray-100 rounded-b-xl z-50 animate-in slide-in-from-top-2 duration-200"
     >
       <div className="w-full grid grid-cols-3 h-[400px]">
-        {/* 1. Kategori */}
         <div className="border-r bg-gradient-to-b from-gray-50 to-white">
           <div className="p-4 border-b bg-white">
             <h3 className="text-sm font-semibold text-gray-800 uppercase">Kategoriyalar</h3>
@@ -63,7 +62,6 @@ export const MultiNav = forwardRef<HTMLDivElement>((_, ref) => {
           </div>
         </div>
 
-        {/* 2. Alt Kategori */}
         <div className="border-r bg-white">
           <div className="p-4 border-b bg-gray-50">
             <h3 className="text-sm font-semibold text-gray-800 uppercase">
@@ -89,7 +87,6 @@ export const MultiNav = forwardRef<HTMLDivElement>((_, ref) => {
           </div>
         </div>
 
-        {/* 3. Alt Alt Kategori */}
         <div className="bg-gradient-to-b from-white to-gray-50">
           <div className="p-4 border-b bg-gray-50">
             <h3 className="text-sm font-semibold text-gray-800 uppercase">

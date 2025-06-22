@@ -4,10 +4,8 @@ import FeaturedProduct from '@/components/ui/home/FeaturedProduct';
 export default function HomePage() {
   return (
     <div className="space-y-12">
-      {/* Banner Slider */}
       <HeroBanner />
 
-      {/* Kategoriler */}
       {/* <section>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Bu gün əlavə edilən</h2>
@@ -40,10 +38,8 @@ export default function HomePage() {
         </div>
       </section> */}
 
-      {/* Öne Çıkan Ürünler */}
       <FeaturedProduct />
 
-      {/* Avantajlar Bölümü */}
       {/* <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-blue-50 rounded-xl p-6 flex items-center gap-4">
           <div className="bg-blue-500 p-3 rounded-full text-white">
@@ -121,7 +117,6 @@ export default function HomePage() {
         </div>
       </section> */}
 
-      {/* Alt Banner */}
       {/* <section className="relative rounded-2xl overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1588200908342-23b585c03e26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"

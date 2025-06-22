@@ -42,7 +42,6 @@ export default function DeliveryPage() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Hero Section */}
             <section className="bg-gradient-to-r from-green-600 to-blue-700 text-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
@@ -54,7 +53,6 @@ export default function DeliveryPage() {
                 </div>
             </section>
 
-            {/* Quick Info Cards */}
             <section className="py-12 -mt-8 relative z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-4 gap-6">
@@ -93,7 +91,6 @@ export default function DeliveryPage() {
                 </div>
             </section>
 
-            {/* Delivery Zones */}
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -147,7 +144,6 @@ export default function DeliveryPage() {
                 </div>
             </section>
 
-            {/* Payment Methods */}
             <section className="py-16 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -223,7 +219,6 @@ export default function DeliveryPage() {
                 </div>
             </section>
 
-            {/* Delivery Process */}
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
@@ -267,7 +262,6 @@ export default function DeliveryPage() {
                 </div>
             </section>
 
-            {/* Important Notes */}
             <section className="py-16 bg-yellow-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="bg-white p-8 rounded-xl shadow-md">
@@ -315,7 +309,6 @@ export default function DeliveryPage() {
                 </div>
             </section>
 
-            {/* Contact for Delivery */}
             <section className="py-16 bg-gray-900 text-white">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl md:text-4xl font-bold mb-6">Çatdırılma üçün Sifariş</h2>

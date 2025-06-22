@@ -12,6 +12,7 @@ import { seedCategories } from "./seed/seedCategories.js";
 import wishListRouter from "./routers/wishlistRouter.js";
 import heroRouter from "./routers/heroRouter.js";
 import seedProductsData from "./seed/seedProducts.js";
+import seedUsersData from "./seed/seedsUser.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,6 +43,7 @@ async function startApp() {
 
         await seedCategories();
         // await seedProductsData();
+        await seedUsersData();
 
         app.listen(PORT, () => {
             console.log(`✅ Server ${PORT} portunda çalışıyor`);
