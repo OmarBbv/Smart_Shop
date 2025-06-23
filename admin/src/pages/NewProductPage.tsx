@@ -1,5 +1,5 @@
-import { Error } from "@/components/error";
-import { Loading } from "@/components/loading";
+import { Error } from "@/components/Error";
+import { Loading } from "@/components/Loading";
 import { Box } from "@/components/ui/Box";
 import { categoryService } from "@/services/categoryService";
 import { useQuery } from "@tanstack/react-query";
